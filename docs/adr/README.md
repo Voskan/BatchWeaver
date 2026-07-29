@@ -45,6 +45,11 @@ shaped the way it is.
 - [ADR 0020 — Static analysis architecture and identities](0020-static-analysis-architecture.md)
 - [ADR 0021 — Declaration discovery and precedence](0021-declaration-discovery-precedence.md)
 - [ADR 0022 — SSA, call graph, and effect strategy](0022-ssa-callgraph-effects.md)
+- [ADR 0023 — Proof as strategy-specific obligations](0023-proof-as-strategy-obligations.md)
+- [ADR 0024 — Conservative unknown, no optimistic defaults](0024-conservative-unknown-no-optimism.md)
+- [ADR 0025 — Explicit assumptions and the data-race-free prerequisite](0025-assumptions-and-data-race-free.md)
+- [ADR 0026 — Deterministic proof identity and invalidation](0026-deterministic-proof-identity.md)
+- [ADR 0027 — Proof certificates are separate from transformation](0027-certificates-separate-from-transformation.md)
 
 ## Process
 

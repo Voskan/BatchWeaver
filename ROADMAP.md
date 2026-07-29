@@ -33,14 +33,21 @@ graph, conservative effect summaries, scalar-operation call-site indexing with
 structural context, a deterministic candidate inventory, and the `batchweaver
 scan` command. Discovery only; semantic safety is not proven. **Completed.**
 
-## Phase 5 — SSA and effect analysis
+## Phase 5 — Semantic proof engine ✅
 
-SSA-based analysis of data flow, effects, and independence to determine where
-batching is safe.
+Strategy-specific semantic eligibility over the candidate inventory: a closed
+proof-obligation registry evaluated on a status lattice; evaluation-order,
+key-dependency, effect-barrier, receiver, context, partition, result, error,
+panic/defer, and concurrency reasoning; explicit scoped assumptions and a
+data-race-free trust boundary; deterministic, evidence-backed proof certificates
+with witnesses; and the `batchweaver prove`, `candidate inspect`,
+`proof inspect/explain/graph`, `assumption list`, and `strategy` commands. Proof
+artifacts only — no source rewriting and no execution changes. **Completed.**
 
 ## Phase 6 — Loop batching transformations
 
-Semantically transparent transformation of scalar loops into batched execution.
+Semantically transparent transformation of scalar loops into batched execution,
+consuming Phase 5 proof certificates.
 
 ## Phase 7 — Compile-time integration
 

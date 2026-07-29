@@ -80,14 +80,22 @@ type CallSite struct {
 	Operation         string `json:"operation"`
 	Location          string `json:"location"`
 	EnclosingFunction string `json:"enclosing_function"`
-	Dispatch          string `json:"dispatch"`
-	Structural        string `json:"structural"`
-	LoopDepth         int    `json:"loop_depth,omitempty"`
-	InGoroutine       bool   `json:"in_goroutine,omitempty"`
-	Targets           int    `json:"targets"`
-	ContextArg        string `json:"context_arg,omitempty"`
-	KeyArg            string `json:"key_arg,omitempty"`
-	Receiver          string `json:"receiver,omitempty"`
+	// EnclosingFunctionID joins a call site to the effect summary of its
+	// enclosing function (EffectSummary.Function). It lets a later analysis
+	// stage reason about the observable effects surrounding a call without
+	// rebuilding SSA.
+	EnclosingFunctionID string `json:"enclosing_function_id,omitempty"`
+	Dispatch            string `json:"dispatch"`
+	Structural          string `json:"structural"`
+	LoopDepth           int    `json:"loop_depth,omitempty"`
+	InGoroutine         bool   `json:"in_goroutine,omitempty"`
+	Targets             int    `json:"targets"`
+	ContextArg          string `json:"context_arg,omitempty"`
+	KeyArg              string `json:"key_arg,omitempty"`
+	// KeyDependency classifies how the key argument is computed (structural,
+	// result-dependent, call-derived, or unknown). See keydep.go.
+	KeyDependency string `json:"key_dependency,omitempty"`
+	Receiver      string `json:"receiver,omitempty"`
 }
 
 // CallEdge is a normalized call graph edge.

@@ -10,6 +10,25 @@ The public API may evolve before the 1.0 release.
 
 ### Added
 
+- Semantic proof engine (`internal/proof`) and the `batchweaver prove`,
+  `candidate inspect`, `proof inspect|explain|graph`, `assumption list`, and
+  `strategy list|inspect` commands. The engine consumes the analysis snapshot and
+  validated operation contracts and decides, for every discovered candidate, a
+  strategy-specific eligibility outcome — proven eligible, proven ineligible,
+  requires assumption, unknown, or deferred — from a closed registry of
+  Go-semantic and operation-contract proof obligations evaluated on a status
+  lattice. It reasons about evaluation order and effect barriers, key dependency
+  (structural, result-dependent, call-derived), receiver and context invariance,
+  partition stability, result and first-error reconstruction, defer/recover
+  boundaries, and concurrency envelopes; records scoped assumptions and a
+  data-race-free trust boundary; and emits deterministic, evidence-backed proof
+  certificates with witnesses, `BW5xxx` diagnostics, and a schema-versioned
+  (`batchweaver.proof/v1alpha1`) text/JSON report with a `--reproducible` mode.
+  No source is modified and no execution is changed.
+- Analysis refinements consumed by the proof engine: builtins (`append`, `len`,
+  `make`, …) are classified as benign rather than unknown calls; each call site
+  records its enclosing-function effect-summary ID and a conservative key
+  dependency classification.
 - Static analysis foundation (`internal/analysis`) and the `batchweaver scan`
   command: real Go module and package loading via `golang.org/x/tools/go/packages`
   under an explicit build context; canonical, portable identities and paths;

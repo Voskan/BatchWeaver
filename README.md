@@ -27,14 +27,21 @@ foundational semantic layer:
   resolves operation declarations to canonical symbols, builds SSA and a
   conservative call graph, summarizes observable effects, discovers scalar
   operation call sites and their structural context (loops, goroutine fan-out),
-  and exports a deterministic candidate inventory — without modifying source.
+  and exports a deterministic candidate inventory — without modifying source;
+- a **semantic proof engine** (`batchweaver prove`) that turns each discovered
+  candidate into a strategy-specific eligibility decision — proven eligible,
+  proven ineligible, requires assumption, unknown, or deferred — derived from a
+  closed registry of Go-semantic and operation-contract proof obligations, with
+  deterministic, evidence-backed proof certificates and no source changes.
 
-**Automatic source transformation, N+1 elimination, adaptive scheduling, backend
-adapters, and any proof that a discovered call is safe to batch are not
-implemented yet.** The runtime is invoked through explicit typed operation
-handles, and the analyzer only discovers and inventories potential batching
-structure. See [docs/guides/runtime-api.md](docs/guides/runtime-api.md) and
-[docs/guides/scan.md](docs/guides/scan.md).
+**Automatic source transformation, N+1 elimination, adaptive scheduling, and
+backend adapters are not implemented yet.** The runtime is invoked through
+explicit typed operation handles, the analyzer discovers potential batching
+structure, and the proof engine decides eligibility and emits certificates that a
+future transformation stage will consume — it does not rewrite code or change
+execution. See [docs/guides/runtime-api.md](docs/guides/runtime-api.md),
+[docs/guides/scan.md](docs/guides/scan.md), and
+[docs/guides/proving-candidates.md](docs/guides/proving-candidates.md).
 
 ## The idea
 

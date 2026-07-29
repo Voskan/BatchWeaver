@@ -142,6 +142,13 @@ func callSiteDiscovery(l *loaded, sr *ssaResult, ops []Operation, appFuncs, asyn
 			scalarFnByOp[op.ID] = fn
 		}
 	}
+	// The set of declared scalar-operation functions, used to detect keys that
+	// are loop-carried through an operation result. It must contain only
+	// declared operations, not every resolvable function.
+	scalarFnSet := make(map[*ssa.Function]bool, len(scalarFnByOp))
+	for _, fn := range scalarFnByOp {
+		scalarFnSet[fn] = true
+	}
 
 	var sites []CallSite
 	byOp := make(map[string][]string)
@@ -165,15 +172,16 @@ func callSiteDiscovery(l *loaded, sr *ssaResult, ops []Operation, appFuncs, asyn
 				_, isGo := instr.(*ssa.Go)
 				pos := l.location(fn.Prog.Fset, call.Common().Pos())
 				site := CallSite{
-					Operation:         opID,
-					Location:          pos,
-					EnclosingFunction: funcDisplay(fn),
-					Dispatch:          dispatch,
-					Targets:           targets,
-					InGoroutine:       isGo || async,
-					LoopDepth:         loops[block],
+					Operation:           opID,
+					Location:            pos,
+					EnclosingFunction:   funcDisplay(fn),
+					EnclosingFunctionID: shortDigest("fn", funcKey(fn)),
+					Dispatch:            dispatch,
+					Targets:             targets,
+					InGoroutine:         isGo || async,
+					LoopDepth:           loops[block],
 				}
-				classifyArgs(&site, call, scalarFnByOp[opID])
+				classifyArgs(&site, call, scalarFnByOp[opID], scalarFnSet)
 				site.Structural = classifyStructural(&site)
 				site.ID = "bwcall_" + shortDigest("callsite", funcKey(fn), pos, opID, strconv.Itoa(len(sites)))
 				sites = append(sites, site)
@@ -237,7 +245,7 @@ func sameParamsResults(a, b *types.Signature) bool {
 }
 
 // classifyArgs records conservative context, key, and receiver classifications.
-func classifyArgs(site *CallSite, call ssa.CallInstruction, scalarFn *ssa.Function) {
+func classifyArgs(site *CallSite, call ssa.CallInstruction, scalarFn *ssa.Function, scalarFnSet map[*ssa.Function]bool) {
 	args := call.Common().Args
 	method := scalarFn != nil && scalarFn.Signature != nil && scalarFn.Signature.Recv() != nil
 	// For a static method call, Args[0] is the receiver.
@@ -253,6 +261,7 @@ func classifyArgs(site *CallSite, call ssa.CallInstruction, scalarFn *ssa.Functi
 	}
 	if len(args) > idx+1 {
 		site.KeyArg = describeValue(args[idx+1])
+		site.KeyDependency = classifyKeyDependency(args[idx+1], scalarFnSet)
 	}
 }
 

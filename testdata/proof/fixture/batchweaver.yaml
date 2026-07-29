@@ -1,0 +1,62 @@
+version: 1
+
+operations:
+  users.get:
+    kind: read-only
+    scalar:
+      symbol: example.com/prooffixture/repo.(*Repo).GetUser
+    batch:
+      symbol: example.com/prooffixture/repo.(*Repo).GetUsersBatch
+    results:
+      mode: ordered
+      missing: error
+      errors: per-item
+    partition:
+      scope: request
+      dimensions:
+        - receiver
+
+  prices.get:
+    kind: read-only
+    scalar:
+      symbol: example.com/prooffixture/repo.(*Repo).GetPrice
+    batch:
+      symbol: example.com/prooffixture/repo.(*Repo).GetPricesBatch
+    results:
+      mode: ordered
+      missing: error
+      errors: per-item
+    partition:
+      scope: request
+      dimensions:
+        - receiver
+
+  chain.get:
+    kind: read-only
+    scalar:
+      symbol: example.com/prooffixture/repo.(*Repo).GetNext
+    batch:
+      symbol: example.com/prooffixture/repo.(*Repo).GetNextBatch
+    results:
+      mode: ordered
+      missing: error
+      errors: per-item
+    partition:
+      scope: request
+      dimensions:
+        - receiver
+
+  events.append:
+    kind: non-idempotent-write
+    scalar:
+      symbol: example.com/prooffixture/repo.(*Repo).AppendEvent
+    batch:
+      symbol: example.com/prooffixture/repo.(*Repo).AppendEventsBatch
+    results:
+      mode: ordered
+      missing: error
+      errors: per-item
+    partition:
+      scope: request
+      dimensions:
+        - receiver

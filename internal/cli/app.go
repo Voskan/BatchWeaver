@@ -41,6 +41,11 @@ func New(stdout, stderr io.Writer) *App {
 	a.register(newConfigCommand())
 	a.register(newOperationCommand())
 	a.register(newScanCommand())
+	a.register(newProveCommand())
+	a.register(newCandidateCommand())
+	a.register(newProofCommand())
+	a.register(newAssumptionCommand())
+	a.register(newStrategyCommand())
 	a.register(newHelpCommand())
 	return a
 }

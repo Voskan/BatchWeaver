@@ -128,6 +128,15 @@ func directEffects(fn *ssa.Function) *funcEffects {
 func addCallEffect(fe *funcEffects, common *ssa.CallCommon) {
 	callee := common.StaticCallee()
 	if callee == nil {
+		// A builtin call is not an unresolved target: its semantics are fixed by
+		// the language specification. Classify it precisely rather than treating
+		// it as an unknown external effect.
+		if b, ok := common.Value.(*ssa.Builtin); ok {
+			if eff, observable := builtinEffect(b.Name()); observable {
+				fe.effects[eff] = true
+			}
+			return
+		}
 		if common.IsInvoke() || common.Signature() != nil {
 			fe.effects["unknown-call"] = true
 			fe.complete = false
@@ -139,6 +148,31 @@ func addCallEffect(fe *funcEffects, common *ssa.CallCommon) {
 	}
 	if eff, ok := stdlibEffect(callee.Pkg.Pkg.Path()); ok {
 		fe.effects[eff] = true
+	}
+}
+
+// builtinEffect returns the observable effect category implied by a Go builtin,
+// if any. Most builtins operate on local memory only and are not observable
+// reordering barriers; a few have specific semantics that are.
+func builtinEffect(name string) (effect string, observable bool) {
+	switch name {
+	case "close":
+		// Closing a channel is a communication/synchronization event.
+		return "channel", true
+	case "panic":
+		return "panic", true
+	case "recover":
+		return "recover", true
+	case "print", "println":
+		// The debug builtins write to standard error.
+		return "logging", true
+	case "append", "len", "cap", "make", "new", "copy", "delete", "clear",
+		"complex", "real", "imag", "min", "max":
+		return "", false
+	default:
+		// An unrecognized builtin is treated conservatively as benign local
+		// behavior; the set of Go builtins is fixed and fully enumerated above.
+		return "", false
 	}
 }
 
