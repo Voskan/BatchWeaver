@@ -25,10 +25,13 @@ scheduling, result validation, scalar fallback, and deterministic lifecycle
 behavior. Invoked through explicit operation handles; automatic call
 interception is not included. **Completed.**
 
-## Phase 4 — Static analysis and candidate discovery
+## Phase 4 — Static analysis and candidate discovery ✅
 
-Package loading and analysis to discover call sites that are candidates for
-batching.
+Package loading (via `go/packages`), canonical identities, typed and
+configuration declaration discovery, SSA construction, a conservative CHA call
+graph, conservative effect summaries, scalar-operation call-site indexing with
+structural context, a deterministic candidate inventory, and the `batchweaver
+scan` command. Discovery only; semantic safety is not proven. **Completed.**
 
 ## Phase 5 — SSA and effect analysis
 

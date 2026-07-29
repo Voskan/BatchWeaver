@@ -10,6 +10,20 @@ The public API may evolve before the 1.0 release.
 
 ### Added
 
+- Static analysis foundation (`internal/analysis`) and the `batchweaver scan`
+  command: real Go module and package loading via `golang.org/x/tools/go/packages`
+  under an explicit build context; canonical, portable identities and paths;
+  operation discovery from typed declarations (by AST inspection) and
+  configuration, merged with provenance and conflict diagnostics; symbol
+  resolution and conservative signature compatibility; SSA construction
+  (`go/ssa`); a conservative CHA call graph; scalar-operation call-site indexing
+  with loop and goroutine-fan-out context; conservative interprocedural effect
+  summaries; a candidate inventory with explicit states; a deterministic,
+  schema-versioned (`batchweaver.analysis/v1alpha1`) snapshot with text and JSON
+  output and a `--reproducible` mode; and an `operation inspect` command. No
+  source is modified and no batching safety is claimed.
+- Dependency `golang.org/x/tools` (v0.48.0, BSD-3-Clause) for package loading,
+  SSA, and call-graph analysis.
 - Explicit, typed request-coalescing runtime (`runtime`, imported as
   `batchruntime`): an instance-scoped `Engine`; typed operation `Bind` and
   `BoundOperation.Do`; explicit `Scope`s carried through context with flush,

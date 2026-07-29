@@ -42,6 +42,9 @@ shaped the way it is.
 - [ADR 0017 — Queue overflow policies](0017-queue-overflow-policies.md)
 - [ADR 0018 — Provider and callback panic isolation](0018-provider-panic-isolation.md)
 - [ADR 0019 — Runtime event-hook boundary](0019-event-hook-boundary.md)
+- [ADR 0020 — Static analysis architecture and identities](0020-static-analysis-architecture.md)
+- [ADR 0021 — Declaration discovery and precedence](0021-declaration-discovery-precedence.md)
+- [ADR 0022 — SSA, call graph, and effect strategy](0022-ssa-callgraph-effects.md)
 
 ## Process
 

@@ -40,6 +40,7 @@ func New(stdout, stderr io.Writer) *App {
 	a.register(newVersionCommand())
 	a.register(newConfigCommand())
 	a.register(newOperationCommand())
+	a.register(newScanCommand())
 	a.register(newHelpCommand())
 	return a
 }

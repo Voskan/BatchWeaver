@@ -1,0 +1,17 @@
+version: 1
+
+operations:
+  users.get:
+    kind: read-only
+    scalar:
+      symbol: example.com/fixture/users.(*Repository).GetUser
+    batch:
+      symbol: example.com/fixture/users.(*Repository).GetUsersBatch
+    results:
+      mode: ordered
+      missing: error
+      errors: per-item
+    partition:
+      scope: request
+      dimensions:
+        - receiver

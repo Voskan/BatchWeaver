@@ -22,12 +22,19 @@ foundational semantic layer:
   `batchruntime`) that safely coalesces compatible scalar requests into bounded
   batch provider calls while preserving scope isolation, partition boundaries,
   independent cancellation, caller deadlines, per-item outcomes, and
-  deterministic lifecycle behavior.
+  deterministic lifecycle behavior;
+- a **static analysis** engine (`batchweaver scan`) that loads real Go modules,
+  resolves operation declarations to canonical symbols, builds SSA and a
+  conservative call graph, summarizes observable effects, discovers scalar
+  operation call sites and their structural context (loops, goroutine fan-out),
+  and exports a deterministic candidate inventory — without modifying source.
 
-**Automatic source transformation, N+1 elimination, static call-site discovery,
-adaptive scheduling, and backend adapters are not implemented yet.** The runtime
-is invoked through explicit typed operation handles; it does not yet intercept
-scalar calls automatically. See [docs/guides/runtime-api.md](docs/guides/runtime-api.md).
+**Automatic source transformation, N+1 elimination, adaptive scheduling, backend
+adapters, and any proof that a discovered call is safe to batch are not
+implemented yet.** The runtime is invoked through explicit typed operation
+handles, and the analyzer only discovers and inventories potential batching
+structure. See [docs/guides/runtime-api.md](docs/guides/runtime-api.md) and
+[docs/guides/scan.md](docs/guides/scan.md).
 
 ## The idea
 

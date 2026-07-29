@@ -16,6 +16,8 @@ This directory contains the project's design and development documentation.
   positions, collection, sorting, and rendering.
 - [Runtime engine](architecture/runtime-engine.md) — the coalescing runtime's
   ownership, concurrency model, lifecycle, and deadline algorithm.
+- [Static analysis](architecture/static-analysis.md) — package loading, SSA, call
+  graph, effects, and the deterministic analysis snapshot.
 - [Future compiler pipeline](architecture/future-compiler-pipeline.md) — the
   planned compiler stages (not yet implemented).
 
@@ -33,6 +35,7 @@ This directory contains the project's design and development documentation.
 ## Guides
 
 - [Runtime API guide](guides/runtime-api.md) — using the coalescing runtime.
+- [Scan guide](guides/scan.md) — running static analysis with `batchweaver scan`.
 
 ## Reference
 
@@ -41,6 +44,7 @@ This directory contains the project's design and development documentation.
 - [Diagnostic codes](reference/diagnostic-codes.md) — the code registry.
 - [Provider contract](reference/provider-contract.md) — provider requirements.
 - [Cancellation and deadlines](reference/cancellation-and-deadlines.md) — timing semantics.
+- [Analysis diagnostics](reference/analysis-diagnostics.md) — the BW3xxx code range.
 
 ## Development
 
