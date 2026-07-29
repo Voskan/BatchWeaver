@@ -16,10 +16,14 @@ Typed contracts describing scalar operations and their batch equivalents, the
 strict versioned configuration system that declares them, and the deterministic
 diagnostic infrastructure that reports problems with them. **Completed.**
 
-## Phase 3 — Runtime request coalescing
+## Phase 3 — Runtime request coalescing ✅
 
-A runtime that coalesces independent logical requests into batches within a
-defined scope, including deduplication and result distribution.
+An explicit, typed runtime that coalesces independent logical requests into
+bounded batches within a defined scope, with partition isolation, in-flight
+deduplication, scope memoization, independent cancellation, caller-deadline-aware
+scheduling, result validation, scalar fallback, and deterministic lifecycle
+behavior. Invoked through explicit operation handles; automatic call
+interception is not included. **Completed.**
 
 ## Phase 4 — Static analysis and candidate discovery
 

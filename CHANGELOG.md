@@ -10,6 +10,18 @@ The public API may evolve before the 1.0 release.
 
 ### Added
 
+- Explicit, typed request-coalescing runtime (`runtime`, imported as
+  `batchruntime`): an instance-scoped `Engine`; typed operation `Bind` and
+  `BoundOperation.Do`; explicit `Scope`s carried through context with flush,
+  drain, and idempotent close; a typed `Provider` contract; key strategies
+  (comparable, string, bytes) with collision-safe deduplication; opaque,
+  privacy-preserving `Partition`s; bounded queues with reject, fallback, and
+  block overflow policies; immediate, fixed-window, deadline-aware, and manual
+  scheduling over a testable `Clock`; in-flight deduplication and opt-in
+  scope-local memoization; independent per-caller cancellation and a dedicated
+  provider deadline algorithm; provider-response validation; scalar fallback;
+  recursion detection; backend-neutral event hooks; and immutable statistics
+  snapshots. Concurrency is race-detector clean.
 - Foundational operation domain model: strict operation IDs, Go symbol
   references, semantic kinds, and result, partition, scheduler, deduplication,
   retry, and fallback contracts, with cross-field validation that reports

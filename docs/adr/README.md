@@ -32,6 +32,16 @@ shaped the way it is.
 - [ADR 0007 — Stable diagnostic codes](0007-stable-diagnostic-codes.md)
 - [ADR 0008 — Declarations without global registration](0008-declarations-without-global-registration.md)
 - [ADR 0009 — YAML decoder selection](0009-yaml-decoder-selection.md)
+- [ADR 0010 — Instance-scoped runtime engine](0010-instance-scoped-engine.md)
+- [ADR 0011 — Explicit runtime scope model](0011-explicit-scope-model.md)
+- [ADR 0012 — Key strategy and collision-safe deduplication](0012-key-strategy-and-collision-safety.md)
+- [ADR 0013 — Opaque partition representation and privacy](0013-opaque-partition-representation.md)
+- [ADR 0014 — Provider context and deadline algorithm](0014-provider-context-and-deadline.md)
+- [ADR 0015 — In-flight deduplication versus scope memoization](0015-dedup-versus-memoization.md)
+- [ADR 0016 — Deterministic scheduler and clock abstraction](0016-scheduler-and-clock.md)
+- [ADR 0017 — Queue overflow policies](0017-queue-overflow-policies.md)
+- [ADR 0018 — Provider and callback panic isolation](0018-provider-panic-isolation.md)
+- [ADR 0019 — Runtime event-hook boundary](0019-event-hook-boundary.md)
 
 ## Process
 

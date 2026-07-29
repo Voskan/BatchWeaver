@@ -14,6 +14,8 @@ This directory contains the project's design and development documentation.
   decoding, includes, merge, normalization, and digest.
 - [Diagnostics pipeline](architecture/diagnostics-pipeline.md) — codes,
   positions, collection, sorting, and rendering.
+- [Runtime engine](architecture/runtime-engine.md) — the coalescing runtime's
+  ownership, concurrency model, lifecycle, and deadline algorithm.
 - [Future compiler pipeline](architecture/future-compiler-pipeline.md) — the
   planned compiler stages (not yet implemented).
 
@@ -25,12 +27,20 @@ This directory contains the project's design and development documentation.
 - [Result semantics](concepts/result-semantics.md)
 - [Isolation and partitioning](concepts/isolation-and-partitioning.md)
 - [Scheduling policy](concepts/scheduling-policy.md)
+- [Runtime partitioning](concepts/partitioning.md)
+- [Deduplication and memoization](concepts/deduplication.md)
+
+## Guides
+
+- [Runtime API guide](guides/runtime-api.md) — using the coalescing runtime.
 
 ## Reference
 
 - [Configuration](reference/configuration.md) — every configuration field.
 - [Typed declarations](reference/typed-declarations.md) — the declaration API.
 - [Diagnostic codes](reference/diagnostic-codes.md) — the code registry.
+- [Provider contract](reference/provider-contract.md) — provider requirements.
+- [Cancellation and deadlines](reference/cancellation-and-deadlines.md) — timing semantics.
 
 ## Development
 

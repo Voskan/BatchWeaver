@@ -17,11 +17,17 @@ foundational semantic layer:
 - a strict, versioned (schema 1) YAML/JSON configuration system with includes,
   deterministic merge, and a semantic digest;
 - a deterministic, machine-readable diagnostics system;
-- configuration and operation CLI commands.
+- configuration and operation CLI commands;
+- an explicit, typed request-coalescing **runtime** (`runtime`, imported as
+  `batchruntime`) that safely coalesces compatible scalar requests into bounded
+  batch provider calls while preserving scope isolation, partition boundaries,
+  independent cancellation, caller deadlines, per-item outcomes, and
+  deterministic lifecycle behavior.
 
-**Automatic analysis, source transformation, runtime scheduling, request
-coalescing, and adapters are not implemented yet.** Declaring an operation does
-not cause any call to be intercepted or batched.
+**Automatic source transformation, N+1 elimination, static call-site discovery,
+adaptive scheduling, and backend adapters are not implemented yet.** The runtime
+is invoked through explicit typed operation handles; it does not yet intercept
+scalar calls automatically. See [docs/guides/runtime-api.md](docs/guides/runtime-api.md).
 
 ## The idea
 

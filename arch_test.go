@@ -21,11 +21,13 @@ func TestDependencyDirection(t *testing.T) {
 	// For each package directory, the module-local import prefixes it must not use.
 	// An entry equal to modulePath bans importing the root package itself.
 	forbidden := map[string][]string{
-		"diagnostics": {modulePath, "/config", "/operation", "/internal", "/cmd"},
-		"operation":   {modulePath, "/config", "/internal", "/cmd"},
-		"runtime":     {modulePath, "/config", "/operation", "/internal", "/cmd"},
-		"config":      {"/cmd"},
-		".":           {"/config", "/diagnostics", "/internal", "/cmd"},
+		"diagnostics": {modulePath, "/config", "/operation", "/runtime", "/internal", "/cmd"},
+		"operation":   {modulePath, "/config", "/runtime", "/internal", "/cmd"},
+		// runtime is a higher layer: it may import the root package, operation,
+		// diagnostics, and internal packages, but not config or the CLI.
+		"runtime": {"/config", "/cmd"},
+		"config":  {"/runtime", "/cmd"},
+		".":       {"/config", "/diagnostics", "/runtime", "/internal", "/cmd"},
 	}
 
 	root := repoRoot(t)
