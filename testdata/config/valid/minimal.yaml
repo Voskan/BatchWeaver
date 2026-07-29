@@ -1,0 +1,8 @@
+version: 1
+operations:
+  users.get:
+    kind: read-only
+    scalar:
+      symbol: github.com/example/app/users.(*Repository).GetUser
+    batch:
+      symbol: github.com/example/app/users.(*Repository).GetUsersBatch

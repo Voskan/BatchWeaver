@@ -1,0 +1,8 @@
+version: 1
+operations:
+  users.get:
+    kind: teleporting-read
+    scalar:
+      symbol: github.com/example/app/users.GetUser
+    batch:
+      symbol: github.com/example/app/users.GetUsersBatch

@@ -1,8 +1,10 @@
 # Examples
 
-This directory will hold runnable examples once BatchWeaver has functionality to
-demonstrate. It is intentionally empty of code today because there is no
-batching, analysis, or transformation behavior to show yet.
+Runnable, compile-tested examples of BatchWeaver's foundational contracts. These
+demonstrate the data and type contracts only — no automatic batching, scheduling,
+or transformation is performed yet.
 
-Examples added here must build and run against the current codebase and must not
-imply that unimplemented features exist.
+- [declarations](declarations) — declaring operations with typed scalar and batch
+  contracts.
+- [configuration](configuration) — valid YAML and JSON configuration, semantically
+  equivalent.

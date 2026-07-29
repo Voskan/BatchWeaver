@@ -1,14 +1,15 @@
-// Package diagnostics defines the foundational, dependency-free data model for
-// diagnostics produced by BatchWeaver's future analyzers, compiler, and
-// verification tooling.
+// Package diagnostics defines the stable, dependency-free data model for
+// diagnostics produced across BatchWeaver: configuration loading, the operation
+// model, and future analyzers, compiler passes, and verification tooling.
 //
-// The types here are plain values with stable formatting and no dependency on
-// compiler internals, so that any layer — from the CLI to deep analysis passes
-// — can produce and render diagnostics without creating an import cycle. The
-// dependency direction is strictly one-way: diagnostics must not import the CLI
-// or compiler packages.
+// The types here are plain values with deterministic formatting and no
+// dependency on any other BatchWeaver package, the Go tooling AST, SSA values,
+// or the YAML dependency's tokens. This one-way dependency direction lets any
+// layer produce and render diagnostics without creating an import cycle:
+// diagnostics must not import config, operation, the root batchweaver package,
+// the CLI, or compiler packages.
 //
-// Diagnostic codes use the reserved format "BWxxxx" (for example "BW0001").
-// Codes are allocated deliberately as real diagnostics are introduced; this
-// package documents the format without pre-allocating a large set.
+// Diagnostic codes use the reserved format described by [Code]. Once a code is
+// committed and documented it must keep its meaning; see
+// docs/reference/diagnostic-codes.md.
 package diagnostics

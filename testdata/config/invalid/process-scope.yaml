@@ -1,0 +1,10 @@
+version: 1
+operations:
+  cache.get:
+    kind: read-only
+    scalar:
+      symbol: github.com/example/app/cache.Get
+    batch:
+      symbol: github.com/example/app/cache.GetBatch
+    partition:
+      scope: process

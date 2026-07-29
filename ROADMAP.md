@@ -10,10 +10,11 @@ Repository structure, build and test foundation, an initial standard-library
 CLI (`version`, `help`), foundational packages, documentation, governance, and
 quality automation. **Completed.**
 
-## Phase 2 — Operation declaration model
+## Phase 2 — Operation declaration model ✅
 
-Typed contracts describing scalar operations and their batch equivalents, plus
-the diagnostic infrastructure to report problems with them.
+Typed contracts describing scalar operations and their batch equivalents, the
+strict versioned configuration system that declares them, and the deterministic
+diagnostic infrastructure that reports problems with them. **Completed.**
 
 ## Phase 3 — Runtime request coalescing
 

@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "compiler": { "mode": "transparent" },
+  "runtime": { "default_scope": "request" },
+  "security": {
+    "cross_scope_batching": false,
+    "raw_key_observability": false
+  },
+  "observability": {
+    "metrics": true,
+    "tracing": true,
+    "logging": "warnings"
+  },
+  "operations": {
+    "users.get": {
+      "kind": "read-only",
+      "scalar": { "symbol": "github.com/example/app/users.(*Repository).GetUser" },
+      "batch": { "symbol": "github.com/example/app/users.(*Repository).GetUsersBatch" },
+      "results": { "mode": "ordered", "missing": "error", "errors": "mixed" },
+      "partition": {
+        "scope": "request",
+        "dimensions": ["receiver", "tenant", "authorization"]
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "min_size": 1,
+        "max_size": 256,
+        "max_weight": 4096,
+        "max_payload": "4MiB",
+        "max_wait": "500us",
+        "deadline_margin": "200us",
+        "max_concurrency": 8,
+        "queue_items": 100000,
+        "queue_bytes": "64MiB"
+      },
+      "deduplication": {
+        "mode": "exact",
+        "inflight": true,
+        "scope_memoization": true,
+        "max_items": 10000,
+        "max_bytes": "4MiB"
+      },
+      "retry": {
+        "enabled": true,
+        "maximum_attempts": 2,
+        "initial_backoff": "5ms",
+        "maximum_backoff": "100ms",
+        "retryable": ["transport", "throttled"]
+      },
+      "fallback": { "mode": "scalar" }
+    },
+    "prices.get": {
+      "kind": "freshness-sensitive-read",
+      "scalar": { "symbol": "github.com/example/app/pricing.(*Repository).GetPrice" },
+      "batch": { "symbol": "github.com/example/app/pricing.(*Repository).GetPricesBatch" },
+      "results": { "mode": "keyed", "missing": "not-found", "errors": "per-item" },
+      "partition": { "scope": "request", "dimensions": ["receiver", "tenant"] },
+      "scheduler": { "mode": "immediate-wave", "max_size": 128, "max_wait": "250us" },
+      "fallback": { "mode": "scalar" }
+    },
+    "orders.create": {
+      "kind": "idempotent-write",
+      "scalar": { "symbol": "github.com/example/app/orders.(*Repository).CreateOrder" },
+      "batch": { "symbol": "github.com/example/app/orders.(*Repository).CreateOrdersBatch" },
+      "results": { "mode": "ordered", "missing": "error", "errors": "per-item" },
+      "partition": {
+        "scope": "request",
+        "dimensions": ["receiver", "tenant", "authorization"]
+      },
+      "fallback": { "mode": "scalar" }
+    }
+  }
+}

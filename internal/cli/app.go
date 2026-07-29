@@ -10,6 +10,7 @@ package cli
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"sort"
@@ -37,6 +38,8 @@ func New(stdout, stderr io.Writer) *App {
 		commands: make(map[string]*Command),
 	}
 	a.register(newVersionCommand())
+	a.register(newConfigCommand())
+	a.register(newOperationCommand())
 	a.register(newHelpCommand())
 	return a
 }
@@ -77,6 +80,13 @@ func (a *App) Run(ctx context.Context, args []string) ExitCode {
 	}
 
 	if err := cmd.Run(ctx, a, args[1:]); err != nil {
+		var ce *CommandError
+		if errors.As(err, &ce) {
+			if !ce.silent() {
+				fmt.Fprintf(a.stderr, "%s %s: %s\n", programName, name, ce.Message)
+			}
+			return ce.Code
+		}
 		fmt.Fprintf(a.stderr, "%s %s: %v\n", programName, name, err)
 		return ExitError
 	}

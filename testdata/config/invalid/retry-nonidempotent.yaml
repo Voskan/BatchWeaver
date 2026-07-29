@@ -1,0 +1,15 @@
+version: 1
+operations:
+  orders.create:
+    kind: non-idempotent-write
+    scalar:
+      symbol: github.com/example/app/orders.CreateOrder
+    batch:
+      symbol: github.com/example/app/orders.CreateOrdersBatch
+    retry:
+      enabled: true
+      maximum_attempts: 3
+      initial_backoff: 5ms
+      maximum_backoff: 100ms
+      retryable:
+        - transport

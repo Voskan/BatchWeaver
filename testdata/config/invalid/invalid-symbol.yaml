@@ -1,0 +1,8 @@
+version: 1
+operations:
+  users.get:
+    kind: read-only
+    scalar:
+      symbol: "./not/an/import.Path"
+    batch:
+      symbol: github.com/example/app/users.GetUsersBatch

@@ -10,12 +10,33 @@ type ExitCode int
 const (
 	// ExitOK indicates successful execution.
 	ExitOK ExitCode = 0
-	// ExitError indicates a runtime error while executing a command.
+	// ExitError indicates an internal or unexpected runtime error.
 	ExitError ExitCode = 1
 	// ExitUsage indicates the command line was used incorrectly, for example an
 	// unknown command or bad flags.
 	ExitUsage ExitCode = 2
+	// ExitConfigInvalid indicates the configuration was loaded but is invalid.
+	ExitConfigInvalid ExitCode = 3
+	// ExitConfigNotFound indicates no configuration file was found.
+	ExitConfigNotFound ExitCode = 4
 )
+
+// CommandError lets a command control the process exit code and whether the CLI
+// prints a generic error line. A command that has already written its own output
+// (for example rendered diagnostics) returns a CommandError with an empty
+// Message so nothing further is printed.
+type CommandError struct {
+	// Code is the exit code to use.
+	Code ExitCode
+	// Message, when non-empty, is written to stderr by the CLI.
+	Message string
+}
+
+// Error implements the error interface.
+func (e *CommandError) Error() string { return e.Message }
+
+// silent reports whether the CLI should suppress its generic error line.
+func (e *CommandError) silent() bool { return e.Message == "" }
 
 // Command is a single BatchWeaver subcommand. Commands are values with no
 // hidden global state; everything they need is passed through the App and their

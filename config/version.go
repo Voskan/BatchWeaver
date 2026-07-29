@@ -1,10 +1,18 @@
 package config
 
-// CurrentSchemaVersion is the version of the BatchWeaver configuration schema
-// that this build understands.
-//
-// It is incremented whenever the configuration format changes in a way that
-// requires migration or compatibility handling. Loading logic introduced in
-// later prompts uses it to detect and adapt to older or newer configuration
-// files.
+// CurrentSchemaVersion is the configuration schema version this build produces
+// and treats as canonical.
 const CurrentSchemaVersion = 1
+
+// supportedSchemaVersions is the set of schema versions this build can load.
+// Future migrations will extend this set deliberately.
+var supportedSchemaVersions = map[int]struct{}{
+	1: {},
+}
+
+// SchemaVersionSupported reports whether v is a schema version this build can
+// load.
+func SchemaVersionSupported(v int) bool {
+	_, ok := supportedSchemaVersions[v]
+	return ok
+}

@@ -26,6 +26,12 @@ shaped the way it is.
 - [ADR 0001 — Project architecture](0001-project-architecture.md)
 - [ADR 0002 — Go version policy](0002-go-version-policy.md)
 - [ADR 0003 — Agent state is local only](0003-agent-state-is-local-only.md)
+- [ADR 0004 — Public contract boundaries](0004-public-contract-boundaries.md)
+- [ADR 0005 — Canonical batch request and response](0005-canonical-batch-request-response.md)
+- [ADR 0006 — Strict versioned configuration](0006-strict-versioned-configuration.md)
+- [ADR 0007 — Stable diagnostic codes](0007-stable-diagnostic-codes.md)
+- [ADR 0008 — Declarations without global registration](0008-declarations-without-global-registration.md)
+- [ADR 0009 — YAML decoder selection](0009-yaml-decoder-selection.md)
 
 ## Process
 

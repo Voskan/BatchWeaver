@@ -1,0 +1,6 @@
+a.yaml:1:1: error BWCFG012: configuration include cycle detected
+  a.yaml includes b.yaml (a.yaml:2:3)
+  b.yaml includes a.yaml (b.yaml:2:3)
+batchweaver.yaml:27:5: error BWCFG021: unknown field "max_batch_items"
+  did you mean "max_size"?
+batchweaver.yaml:40:7: warning BWOP005: operation declares reorderable results

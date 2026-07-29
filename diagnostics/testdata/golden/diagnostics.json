@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "diagnostics": [
+    {
+      "code": "BWCFG012",
+      "severity": "error",
+      "message": "configuration include cycle detected",
+      "source": "config",
+      "range": {
+        "start": {
+          "file": "a.yaml",
+          "line": 1,
+          "column": 1
+        }
+      },
+      "related": [
+        {
+          "message": "a.yaml includes b.yaml",
+          "range": {
+            "start": {
+              "file": "a.yaml",
+              "line": 2,
+              "column": 3
+            }
+          }
+        },
+        {
+          "message": "b.yaml includes a.yaml",
+          "range": {
+            "start": {
+              "file": "b.yaml",
+              "line": 2,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "BWCFG021",
+      "severity": "error",
+      "message": "unknown field \"max_batch_items\"",
+      "source": "config",
+      "range": {
+        "start": {
+          "file": "batchweaver.yaml",
+          "line": 27,
+          "column": 5
+        }
+      },
+      "details": "did you mean \"max_size\"?"
+    },
+    {
+      "code": "BWOP005",
+      "severity": "warning",
+      "message": "operation declares reorderable results",
+      "source": "operation",
+      "range": {
+        "start": {
+          "file": "batchweaver.yaml",
+          "line": 40,
+          "column": 7
+        }
+      }
+    }
+  ]
+}

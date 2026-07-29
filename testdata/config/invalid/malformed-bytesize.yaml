@@ -1,0 +1,10 @@
+version: 1
+operations:
+  users.get:
+    kind: read-only
+    scalar:
+      symbol: github.com/example/app/users.GetUser
+    batch:
+      symbol: github.com/example/app/users.GetUsersBatch
+    scheduler:
+      max_payload: 4Petabytes

@@ -9,10 +9,19 @@ bindings, and a batching-aware runtime.
 
 ## Development status
 
-BatchWeaver is under active development. The repository currently contains the
-engineering foundation; compiler and runtime functionality will be introduced
-incrementally. **No batching, analysis, transformation, scheduling, or adapter
-functionality is implemented yet.** The only usable command today is `version`.
+BatchWeaver is under active development. The repository now contains the
+foundational semantic layer:
+
+- the operation domain model (IDs, symbols, semantics, and contracts);
+- typed scalar and batch function contracts and typed declarations;
+- a strict, versioned (schema 1) YAML/JSON configuration system with includes,
+  deterministic merge, and a semantic digest;
+- a deterministic, machine-readable diagnostics system;
+- configuration and operation CLI commands.
+
+**Automatic analysis, source transformation, runtime scheduling, request
+coalescing, and adapters are not implemented yet.** Declaring an operation does
+not cause any call to be intercepted or batched.
 
 ## The idea
 
@@ -69,8 +78,22 @@ make build
 # Or run without building:
 go run ./cmd/batchweaver version
 
+# Validate and inspect a configuration
+go run ./cmd/batchweaver config validate --file examples/configuration/batchweaver.yaml
+go run ./cmd/batchweaver operation list --file examples/configuration/batchweaver.yaml
+
 # Run the full local quality gate
 make check
+```
+
+Example `config validate` output:
+
+```text
+Configuration is valid.
+Schema: 1
+Files: 1
+Operations: 3
+Digest: sha256:...
 ```
 
 Example `version` output:
