@@ -1,0 +1,13 @@
+---
+blank_issues_enabled: false
+contact_links:
+  - name: Question or design discussion
+    url: https://github.com/Voskan/BatchWeaver/discussions
+    about: >-
+      Ask usage or design questions in Discussions (once enabled). Please do not
+      open an issue for open-ended questions.
+  - name: Report a security vulnerability
+    url: https://github.com/Voskan/BatchWeaver/security/advisories/new
+    about: >-
+      Report vulnerabilities privately through GitHub Security Advisories. Do not
+      open a public issue.

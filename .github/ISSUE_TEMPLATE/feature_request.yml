@@ -1,0 +1,63 @@
+---
+name: Feature request
+description: Propose new functionality or an improvement.
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thanks for proposing an improvement. Because BatchWeaver's core promise is
+        semantic transparency, please consider correctness implications carefully.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem are you trying to solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: What should BatchWeaver do?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility concerns
+      description: Any impact on existing behavior, the public API, or generated code.
+    validations:
+      required: false
+
+  - type: textarea
+    id: semantics
+    attributes:
+      label: Semantic-safety implications
+      description: >-
+        How might this affect the guarantee that batched execution preserves
+        observable behavior?
+    validations:
+      required: false
+
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Willingness to contribute
+      options:
+        - "Yes, I can work on this"
+        - "Yes, with guidance"
+        - "No, I am requesting it"
+    validations:
+      required: true

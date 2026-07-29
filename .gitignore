@@ -1,0 +1,75 @@
+# Operating systems
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors and IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.classpath
+
+# Go build output
+/bin/
+/dist/
+/build/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Test and coverage output
+/coverage/
+coverage.out
+coverage.html
+/artifacts/
+*.prof
+*.pprof
+*.trace
+
+# Go workspace and local toolchain files
+go.work
+go.work.sum
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local BatchWeaver data
+.batchweaver/
+.batchweaver-cache/
+.batchweaver-artifacts/
+
+# Temporary files
+/tmp/
+.temp/
+.cache/
+*.tmp
+*.log
+
+# AI coding agents and local handoff state
+.agent/
+.agents/
+.claude/
+.codex/
+.cursor/
+.windsurf/
+.continue/
+.aider*
+AGENTS.md
+CLAUDE.md
+CODEX.md
+*.agent.md
+*.prompt.md

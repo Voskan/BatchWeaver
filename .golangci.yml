@@ -1,0 +1,50 @@
+# golangci-lint v2 configuration.
+# The selection favors high-signal correctness checks over stylistic churn.
+version: "2"
+
+run:
+  timeout: 5m
+
+linters:
+  # Enable a curated set on top of the v2 defaults (errcheck, govet,
+  # ineffassign, staticcheck, unused are on by default).
+  enable:
+    - bodyclose # detect unclosed HTTP response bodies
+    - durationcheck # catch multiplying two durations
+    - errorlint # correct error wrapping and comparisons
+    - gocritic # opinionated but high-value diagnostics
+    - makezero # catch append to a non-zero-length make slice
+    - misspell # spelling in comments and strings
+    - nilerr # returning nil after a non-nil error check
+    - revive # replacement for golint; selected rules below
+    - whitespace # leading/trailing whitespace issues
+  settings:
+    revive:
+      rules:
+        - name: exported # exported symbols must be documented
+        - name: package-comments
+        - name: error-strings # error strings should not be capitalized/punctuated
+        - name: error-return
+        - name: context-as-argument
+        - name: indent-error-flow
+    misspell:
+      locale: US
+    errcheck:
+      # Writes to the CLI's output streams (stdout/stderr) cannot be
+      # meaningfully recovered from, so ignoring their errors is intentional.
+      exclude-functions:
+        - fmt.Fprint
+        - fmt.Fprintf
+        - fmt.Fprintln
+  exclusions:
+    generated: lax
+    rules:
+      # Test files may omit some exported-doc requirements and are less strict.
+      - path: _test\.go
+        linters:
+          - revive
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

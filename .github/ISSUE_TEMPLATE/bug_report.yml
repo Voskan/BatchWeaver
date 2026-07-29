@@ -1,0 +1,83 @@
+---
+name: Bug report
+description: Report a reproducible problem in BatchWeaver.
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thanks for reporting a bug. Please provide enough detail to reproduce it.
+        Remember to remove any secrets from commands and output.
+
+  - type: input
+    id: version
+    attributes:
+      label: BatchWeaver version / commit
+      description: Output of `batchweaver version`, or the commit you built from.
+      placeholder: "dev (commit abc1234)"
+    validations:
+      required: true
+
+  - type: input
+    id: go-version
+    attributes:
+      label: Go version
+      description: Output of `go version`.
+      placeholder: "go1.26.5"
+    validations:
+      required: true
+
+  - type: input
+    id: platform
+    attributes:
+      label: OS / architecture
+      placeholder: "darwin/arm64"
+    validations:
+      required: true
+
+  - type: input
+    id: command
+    attributes:
+      label: Command
+      description: The exact command you ran.
+      placeholder: "batchweaver version"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: The smallest steps or code that reproduce the problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostic output
+      description: Any relevant logs or diagnostics.
+      render: shell
+
+  - type: checkboxes
+    id: secrets
+    attributes:
+      label: Confirmation
+      options:
+        - label: I have removed all secrets from this report.
+          required: true

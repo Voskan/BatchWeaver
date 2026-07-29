@@ -1,0 +1,104 @@
+# BatchWeaver
+
+BatchWeaver is an automatic semantic batching compiler and runtime for Go.
+
+It aims to convert ordinary scalar Go calls into semantically equivalent,
+optimized batch execution — without forcing you to restructure your code by
+hand — through static analysis, compile-time transformation, generated typed
+bindings, and a batching-aware runtime.
+
+## Development status
+
+BatchWeaver is under active development. The repository currently contains the
+engineering foundation; compiler and runtime functionality will be introduced
+incrementally. **No batching, analysis, transformation, scheduling, or adapter
+functionality is implemented yet.** The only usable command today is `version`.
+
+## The idea
+
+Scalar code that issues one call per item is easy to write but often
+inefficient, because each call pays a full round trip. BatchWeaver's goal is to
+let you keep writing scalar code while it arranges for the underlying work to be
+executed in batches.
+
+The following illustrates the **target** behavior. It is a conceptual example of
+what BatchWeaver intends to enable — it is **not** implemented today:
+
+```go
+// You write ordinary scalar code:
+for _, id := range ids {
+    user := LoadUser(ctx, id) // one logical call per id
+    use(user)
+}
+
+// BatchWeaver's goal is to execute this as an equivalent batched operation:
+users := LoadUsersBatch(ctx, ids) // one batched call for all ids
+```
+
+The transformation must be semantically transparent: observable behavior stays
+the same, while redundant per-item work is coalesced.
+
+## Planned architecture (high level)
+
+BatchWeaver is planned as a pipeline that flows in one direction:
+
+```text
+CLI → project discovery → configuration → package loading → static analysis
+→ intermediate representation → optimization planning → transformation
+→ generated typed bindings → runtime scheduler → adapters → verification
+→ observability
+```
+
+See [docs/architecture/overview.md](docs/architecture/overview.md) for details
+and [ROADMAP.md](ROADMAP.md) for the phased plan.
+
+## Requirements
+
+- Go 1.26 or newer. The module pins `toolchain go1.26.5`; with the default
+  `GOTOOLCHAIN=auto`, the correct toolchain is fetched automatically.
+
+## Build and test
+
+```bash
+# Build the CLI to bin/batchweaver
+make build
+
+# Run the current command
+./bin/batchweaver version
+
+# Or run without building:
+go run ./cmd/batchweaver version
+
+# Run the full local quality gate
+make check
+```
+
+Example `version` output:
+
+```text
+BatchWeaver dev
+Go: go1.26.5
+Platform: darwin/arm64
+Commit: unknown
+Build date: unknown
+```
+
+## Repository structure
+
+The layout and package boundaries are documented in
+[docs/architecture/package-boundaries.md](docs/architecture/package-boundaries.md).
+
+## Contributing
+
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before
+opening a pull request.
+
+## Security
+
+Please report vulnerabilities privately as described in
+[SECURITY.md](SECURITY.md). Do not open public issues for security reports.
+
+## License
+
+BatchWeaver is licensed under the Apache License, Version 2.0. See
+[LICENSE](LICENSE) and [NOTICE](NOTICE).

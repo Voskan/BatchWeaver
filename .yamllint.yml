@@ -1,0 +1,23 @@
+---
+# yamllint configuration. Extends the default ruleset with practical relaxations
+# for GitHub Actions and configuration files.
+extends: default
+
+rules:
+  document-start: disable
+  line-length:
+    max: 120
+    level: warning
+  truthy:
+    # GitHub Actions uses "on:" as a key, which the truthy rule otherwise flags.
+    allowed-values: ["true", "false", "on", "off"]
+    check-keys: true
+  comments:
+    min-spaces-from-content: 1
+  indentation:
+    spaces: 2
+    indent-sequences: true
+
+ignore: |
+  .git/
+  bin/
