@@ -10,6 +10,22 @@ The public API may evolve before the 1.0 release.
 
 ### Added
 
+- Transformation engine (`internal/transform`, `internal/gocommand`) and the
+  `batchweaver transform` (plan, diff, inspect, verify, materialize, revert,
+  clean, recover) and `build`, `test`, `run` commands. It consumes Prompt 05 proof
+  certificates and performs the first production transformation — static
+  slice/array loop prefetch for a certified read-only operation with an ordered,
+  global-error batch provider: typed key collection in source order, a single
+  batch call, global-result validation mirroring the scalar error return, and
+  source-order replay. It produces a deterministic, schema-versioned
+  (`batchweaver.transform/v1alpha1`) plan with content-addressed IDs, a unified
+  diff, and a source map; validates every plan by parsing and type-checking the
+  affected packages through an overlay; and executes transformed code through a Go
+  `-overlay` without modifying source. Materialization is explicit, atomic, and
+  reversible with a backup manifest, conflict-aware revert, and idempotent
+  recovery. Added an end-to-end `examples/static-prefetch` package with a semantic
+  equivalence harness. Supports a certified subset of read-only slice/array loops
+  only; see docs/limitations/prompt-06.md.
 - Semantic proof engine (`internal/proof`) and the `batchweaver prove`,
   `candidate inspect`, `proof inspect|explain|graph`, `assumption list`, and
   `strategy list|inspect` commands. The engine consumes the analysis snapshot and

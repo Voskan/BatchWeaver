@@ -19,6 +19,12 @@ const (
 	ExitConfigInvalid ExitCode = 3
 	// ExitConfigNotFound indicates no configuration file was found.
 	ExitConfigNotFound ExitCode = 4
+	// ExitStale indicates a stale analysis, proof, source, or plan.
+	ExitStale ExitCode = 5
+	// ExitGoCommand indicates the underlying Go command reported failure.
+	ExitGoCommand ExitCode = 6
+	// ExitMaterialize indicates a materialization or revert conflict.
+	ExitMaterialize ExitCode = 7
 )
 
 // CommandError lets a command control the process exit code and whether the CLI

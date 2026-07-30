@@ -44,15 +44,23 @@ with witnesses; and the `batchweaver prove`, `candidate inspect`,
 `proof inspect/explain/graph`, `assumption list`, and `strategy` commands. Proof
 artifacts only — no source rewriting and no execution changes. **Completed.**
 
-## Phase 6 — Loop batching transformations
+## Phase 6 — Loop batching transformations ✅
 
-Semantically transparent transformation of scalar loops into batched execution,
-consuming Phase 5 proof certificates.
+Versioned transformation IR consuming Phase 5 proof certificates; certificate
+validation and stable source anchoring; deterministic rewrite planning; the first
+production strategy (static slice/array loop prefetch for certified read-only
+operations) with typed key collection, a single batch call, global-result
+validation, and source-order replay; build overlays and transformed
+`build`/`test`/`run`; deterministic unified diffs and source maps; and atomic
+materialization with backup, revert, and recovery. Certified read-only slice/array
+loops only; other candidate classes remain discovered and proven but not yet
+rewritten. **Completed.**
 
 ## Phase 7 — Compile-time integration
 
 Integration with the Go build process so transformations apply during a normal
-build.
+build, plus runtime-call lowering and sibling/fan-out transformations building on
+the Phase 6 infrastructure.
 
 ## Phase 8 — Verification engine
 

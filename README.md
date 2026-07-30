@@ -32,16 +32,23 @@ foundational semantic layer:
   candidate into a strategy-specific eligibility decision — proven eligible,
   proven ineligible, requires assumption, unknown, or deferred — derived from a
   closed registry of Go-semantic and operation-contract proof obligations, with
-  deterministic, evidence-backed proof certificates and no source changes.
+  deterministic, evidence-backed proof certificates and no source changes;
+- a **transformation engine** (`batchweaver transform`, `build`, `test`, `run`)
+  that consumes those certificates and performs the first production
+  transformation — static slice/array loop prefetch for a certified read-only
+  operation — producing a deterministic plan, unified diff, and source map,
+  building and testing through a Go overlay without editing source, and
+  optionally materializing and reverting the edits safely.
 
-**Automatic source transformation, N+1 elimination, adaptive scheduling, and
-backend adapters are not implemented yet.** The runtime is invoked through
-explicit typed operation handles, the analyzer discovers potential batching
-structure, and the proof engine decides eligibility and emits certificates that a
-future transformation stage will consume — it does not rewrite code or change
-execution. See [docs/guides/runtime-api.md](docs/guides/runtime-api.md),
-[docs/guides/scan.md](docs/guides/scan.md), and
-[docs/guides/proving-candidates.md](docs/guides/proving-candidates.md).
+**Broad Go coverage, SQL/backend batch-provider generation, write batching,
+goroutine fan-out lowering, and universal performance improvements are not
+implemented.** BatchWeaver transforms only a certified subset of read-only
+slice/array loops; every other candidate class is discovered and proven but not
+yet rewritten. See [docs/guides/runtime-api.md](docs/guides/runtime-api.md),
+[docs/guides/scan.md](docs/guides/scan.md),
+[docs/guides/proving-candidates.md](docs/guides/proving-candidates.md),
+[docs/guides/plan-a-transformation.md](docs/guides/plan-a-transformation.md), and
+[docs/limitations/prompt-06.md](docs/limitations/prompt-06.md).
 
 ## The idea
 

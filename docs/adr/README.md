@@ -50,6 +50,12 @@ shaped the way it is.
 - [ADR 0025 — Explicit assumptions and the data-race-free prerequisite](0025-assumptions-and-data-race-free.md)
 - [ADR 0026 — Deterministic proof identity and invalidation](0026-deterministic-proof-identity.md)
 - [ADR 0027 — Proof certificates are separate from transformation](0027-certificates-separate-from-transformation.md)
+- [ADR 0028 — Versioned transformation IR independent of AST/SSA](0028-versioned-transformation-ir.md)
+- [ADR 0029 — Proof-certificate-gated rewrites](0029-certificate-gated-rewrites.md)
+- [ADR 0030 — Go command overlays as the default non-mutating path](0030-overlays-default-non-mutating.md)
+- [ADR 0031 — Explicit, atomic materialization with backup and revert](0031-atomic-materialization-and-revert.md)
+- [ADR 0032 — Static slice/array loop prefetch as the first strategy](0032-static-loop-prefetch-first-strategy.md)
+- [ADR 0033 — No transformation without type-check validation; deterministic names](0033-typecheck-and-deterministic-names.md)
 
 ## Process
 
