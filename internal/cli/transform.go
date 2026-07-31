@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/Voskan/BatchWeaver/internal/buildinfo"
 	"github.com/Voskan/BatchWeaver/internal/gocommand"
@@ -27,6 +28,17 @@ func cwd() string {
 		return "."
 	}
 	return d
+}
+
+// splitDashDash splits args at the first "--" separator into the portion before
+// (BatchWeaver flags) and after (arguments forwarded to the Go command).
+func splitDashDash(args []string) (before, after []string) {
+	for i, a := range args {
+		if a == "--" {
+			return args[:i], args[i+1:]
+		}
+	}
+	return args, nil
 }
 
 func runTransform(ctx context.Context, app *App, args []string) error {
@@ -56,15 +68,44 @@ func runTransform(ctx context.Context, app *App, args []string) error {
 	}
 }
 
-func planFromArgs(ctx context.Context, args []string, filter transform.Filter) (*transform.Plan, error) {
+func planFromArgs(ctx context.Context, args []string, filter transform.Filter, strategies []transform.StrategyID) (*transform.Plan, error) {
 	patterns := args
 	if len(patterns) == 0 {
 		patterns = []string{"./..."}
 	}
 	return transform.BuildPlan(ctx, transform.Request{
 		Patterns: patterns, Dir: cwd(), ToolVersion: buildinfo.Get().Version,
-		Toolchain: buildinfo.Get().GoVersion, Filter: filter,
+		Toolchain: buildinfo.Get().GoVersion, Filter: filter, Strategies: strategies,
 	})
+}
+
+// knownStrategies is the closed set of transformation strategies the CLI accepts.
+var knownStrategies = map[string]transform.StrategyID{
+	"static-loop-prefetch":    transform.StrategyStaticLoopPrefetch,
+	"runtime-call-coalescing": transform.StrategyRuntimeCallCoalescing,
+	"static-sibling-fusion":   transform.StrategyStaticSiblingFusion,
+	"fanout-coalescing":       transform.StrategyFanoutCoalescing,
+	"errgroup-coalescing":     transform.StrategyErrgroupCoalescing,
+}
+
+// parseStrategies parses a comma-separated strategy list, rejecting unknown IDs.
+func parseStrategies(s string) ([]transform.StrategyID, error) {
+	if s == "" {
+		return nil, nil
+	}
+	var out []transform.StrategyID
+	for _, part := range strings.Split(s, ",") {
+		part = strings.TrimSpace(part)
+		if part == "" {
+			continue
+		}
+		id, ok := knownStrategies[part]
+		if !ok {
+			return nil, fmt.Errorf("unknown strategy %q", part)
+		}
+		out = append(out, id)
+	}
+	return out, nil
 }
 
 func runTransformPlan(ctx context.Context, app *App, args []string) error {
@@ -74,6 +115,7 @@ func runTransformPlan(ctx context.Context, app *App, args []string) error {
 	candidate := fs.String("candidate", "", "only this candidate ID")
 	operation := fs.String("operation", "", "only this operation ID")
 	file := fs.String("file", "", "only candidates in this file")
+	strategy := fs.String("strategy", "", "comma-separated strategies (default: static-loop-prefetch)")
 	max := fs.Int("max-transformations", 0, "maximum transformations (0 = unlimited)")
 	if err := fs.Parse(args); err != nil {
 		return &CommandError{Code: ExitUsage}
@@ -81,7 +123,11 @@ func runTransformPlan(ctx context.Context, app *App, args []string) error {
 	if *format != "text" && *format != "json" {
 		return &CommandError{Code: ExitUsage, Message: fmt.Sprintf("unknown format %q", *format)}
 	}
-	plan, err := planFromArgs(ctx, fs.Args(), transform.Filter{Candidate: *candidate, Operation: *operation, File: *file, Max: *max})
+	strategies, serr := parseStrategies(*strategy)
+	if serr != nil {
+		return &CommandError{Code: ExitUsage, Message: serr.Error()}
+	}
+	plan, err := planFromArgs(ctx, fs.Args(), transform.Filter{Candidate: *candidate, Operation: *operation, File: *file, Max: *max}, strategies)
 	if err != nil {
 		return &CommandError{Code: ExitError, Message: err.Error()}
 	}
@@ -111,7 +157,7 @@ func loadOrPlan(ctx context.Context, args []string) (*transform.Plan, error) {
 	if len(args) > 0 && looksLikePlanID(args[0]) {
 		return transform.LoadPlan(root, args[0])
 	}
-	return planFromArgs(ctx, args, transform.Filter{})
+	return planFromArgs(ctx, args, transform.Filter{}, nil)
 }
 
 func looksLikePlanID(s string) bool {
@@ -160,7 +206,7 @@ func runTransformVerify(ctx context.Context, app *App, args []string) error {
 	if err != nil {
 		return &CommandError{Code: ExitStale, Message: err.Error()}
 	}
-	fresh, err := planFromArgs(ctx, args[1:], transform.Filter{})
+	fresh, err := planFromArgs(ctx, args[1:], transform.Filter{}, nil)
 	if err != nil {
 		return &CommandError{Code: ExitError, Message: err.Error()}
 	}
@@ -273,9 +319,24 @@ func transformedGo(sub string) func(context.Context, *App, []string) error {
 		if err != nil {
 			return &CommandError{Code: ExitError, Message: err.Error()}
 		}
+		// Separate BatchWeaver flags (before "--") from Go arguments (after).
+		bwArgs, goArgs := splitDashDash(args)
+		fs := flag.NewFlagSet(sub, flag.ContinueOnError)
+		fs.SetOutput(app.Stderr())
+		strategy := fs.String("strategy", "", "comma-separated strategies (default: static-loop-prefetch)")
+		if err := fs.Parse(bwArgs); err != nil {
+			return &CommandError{Code: ExitUsage}
+		}
+		// Any positional BatchWeaver args before "--" join the Go arguments so the
+		// common form `batchweaver build ./cmd/x` keeps working.
+		goArgs = append(fs.Args(), goArgs...)
+		strategies, serr := parseStrategies(*strategy)
+		if serr != nil {
+			return &CommandError{Code: ExitUsage, Message: serr.Error()}
+		}
 		plan, err := transform.BuildPlan(ctx, transform.Request{
 			Patterns: []string{"./..."}, Dir: cwd(), ToolVersion: buildinfo.Get().Version,
-			Toolchain: buildinfo.Get().GoVersion,
+			Toolchain: buildinfo.Get().GoVersion, Strategies: strategies,
 		})
 		if err != nil {
 			return &CommandError{Code: ExitError, Message: err.Error()}
@@ -292,7 +353,7 @@ func transformedGo(sub string) func(context.Context, *App, []string) error {
 			overlay = p
 		}
 		runner := gocommand.Runner{Dir: cwd(), Stdout: app.Stdout(), Stderr: app.Stderr()}
-		code, err := runner.Run(ctx, sub, overlay, args)
+		code, err := runner.Run(ctx, sub, overlay, goArgs)
 		if err != nil {
 			return &CommandError{Code: ExitError, Message: err.Error()}
 		}

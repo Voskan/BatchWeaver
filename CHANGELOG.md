@@ -10,6 +10,25 @@ The public API may evolve before the 1.0 release.
 
 ### Added
 
+- Runtime call lowering and the public `bridge` package (ABI
+  `batchweaver.bridge/v1alpha1`). Certified scalar calls are rewritten to a typed,
+  reflection-free `bridge.Operation.Call` that routes through the Prompt 03 runtime
+  when a scope with an installed bound operation is active and otherwise calls the
+  scalar function directly (exact fallback). The same lowering covers standalone,
+  loop, straight-line sibling, and existing goroutine/errgroup fan-out call sites
+  without introducing new concurrency, preserving context, cancellation cause,
+  deadlines, receiver identity, partitions, and error semantics. Adds strategy
+  IDs `runtime-call-coalescing`, `static-sibling-fusion`, `fanout-coalescing`, and
+  `errgroup-coalescing`; deterministic generated bridge files
+  (`zz_batchweaver_<op>_gen.go`) with the standard generated-code header; created
+  (generated) files in plans, overlays, materialization, and revert; an
+  overlay-first `-toolexec` driver (`batchweaver toolexec`) with recursion
+  prevention and environment hygiene, plus `tool-exec doctor`/`explain`; explicit
+  `bridge.Flush`/`Barrier` batching barriers and `barrier inspect`; and
+  `runtime inspect`. `transform plan`, `build`, `test`, and `run` gain a
+  `--strategy` selector, and build/test/run separate BatchWeaver flags from Go
+  arguments with `--`. Every lowered operation still requires a declared batch
+  provider; no backend batch synthesis. See docs/limitations/prompt-07.md.
 - Transformation engine (`internal/transform`, `internal/gocommand`) and the
   `batchweaver transform` (plan, diff, inspect, verify, materialize, revert,
   clean, recover) and `build`, `test`, `run` commands. It consumes Prompt 05 proof

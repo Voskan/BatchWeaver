@@ -56,6 +56,14 @@ shaped the way it is.
 - [ADR 0031 — Explicit, atomic materialization with backup and revert](0031-atomic-materialization-and-revert.md)
 - [ADR 0032 — Static slice/array loop prefetch as the first strategy](0032-static-loop-prefetch-first-strategy.md)
 - [ADR 0033 — No transformation without type-check validation; deterministic names](0033-typecheck-and-deterministic-names.md)
+- [ADR 0034 — Typed generated bridge instead of reflection](0034-typed-generated-bridge.md)
+- [ADR 0035 — Context-scoped engine resolution](0035-context-scoped-engine.md)
+- [ADR 0036 — Runtime ABI versioning](0036-runtime-abi-versioning.md)
+- [ADR 0037 — Overlay-first -toolexec integration with recursion prevention](0037-toolexec-overlay-first.md)
+- [ADR 0038 — Runtime bridge lowering as the default fan-out strategy](0038-bridge-lowering-default-fanout.md)
+- [ADR 0039 — Batching barrier model](0039-barrier-model.md)
+- [ADR 0040 — Read-only shadow verification is opt-in and safe](0040-readonly-shadow-verification.md)
+- [ADR 0041 — No automatic provider synthesis in runtime lowering](0041-no-provider-synthesis.md)
 
 ## Process
 

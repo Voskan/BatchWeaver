@@ -50,6 +50,10 @@ func New(stdout, stderr io.Writer) *App {
 	a.register(newBuildCommand())
 	a.register(newTestCommand())
 	a.register(newRunCommand())
+	a.register(newRuntimeCommand())
+	a.register(newBarrierCommand())
+	a.register(newToolExecCommand())
+	a.register(newToolexecCommand())
 	a.register(newHelpCommand())
 	return a
 }

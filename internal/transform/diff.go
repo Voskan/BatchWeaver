@@ -218,11 +218,27 @@ func splitLinesKeep(s string) []string {
 }
 
 // PlanDiff renders the full unified diff for a plan across all files in stable
-// path order.
+// path order. Created files are shown as additions against /dev/null.
 func PlanDiff(plan *Plan, context int) string {
 	var sb strings.Builder
 	for _, fp := range plan.Files {
+		if fp.Created {
+			sb.WriteString(newFileDiff(fp.Path, fp.transformed))
+			continue
+		}
 		sb.WriteString(UnifiedDiff(fp.Path, fp.original, fp.transformed, context))
+	}
+	return sb.String()
+}
+
+// newFileDiff renders a unified diff for a newly created file.
+func newFileDiff(path string, content []byte) string {
+	lines := splitLinesKeep(string(content))
+	var sb strings.Builder
+	fmt.Fprintf(&sb, "--- /dev/null\n+++ b/%s\n", path)
+	fmt.Fprintf(&sb, "@@ -0,0 +1,%d @@\n", len(lines))
+	for _, ln := range lines {
+		sb.WriteString("+" + ln)
 	}
 	return sb.String()
 }

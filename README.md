@@ -34,21 +34,27 @@ foundational semantic layer:
   closed registry of Go-semantic and operation-contract proof obligations, with
   deterministic, evidence-backed proof certificates and no source changes;
 - a **transformation engine** (`batchweaver transform`, `build`, `test`, `run`)
-  that consumes those certificates and performs the first production
-  transformation — static slice/array loop prefetch for a certified read-only
-  operation — producing a deterministic plan, unified diff, and source map,
-  building and testing through a Go overlay without editing source, and
-  optionally materializing and reverting the edits safely.
+  that consumes those certificates and performs static slice/array loop prefetch
+  for a certified read-only operation — producing a deterministic plan, unified
+  diff, and source map, building and testing through a Go overlay without editing
+  source, and optionally materializing and reverting the edits safely;
+- **runtime call lowering** that rewrites certified scalar calls into a typed,
+  reflection-free runtime bridge (`bridge.Operation.Call`), coalescing compatible
+  standalone, sibling, and existing goroutine/errgroup fan-out calls through the
+  runtime while preserving context, cancellation, deadlines, partitions, and
+  error semantics — with an overlay-first `-toolexec` integration, explicit
+  batching barriers, and a guaranteed direct scalar fallback.
 
-**Broad Go coverage, SQL/backend batch-provider generation, write batching,
-goroutine fan-out lowering, and universal performance improvements are not
-implemented.** BatchWeaver transforms only a certified subset of read-only
-slice/array loops; every other candidate class is discovered and proven but not
-yet rewritten. See [docs/guides/runtime-api.md](docs/guides/runtime-api.md),
-[docs/guides/scan.md](docs/guides/scan.md),
+**SQL/backend batch-provider generation, write batching, universal goroutine
+transformation, and universal performance improvements are not implemented.**
+Every lowered operation still requires an explicitly declared, compatible batch
+provider; a lowered call falls back to the original scalar call unless the
+application installs a bound operation into the scope. See
 [docs/guides/proving-candidates.md](docs/guides/proving-candidates.md),
-[docs/guides/plan-a-transformation.md](docs/guides/plan-a-transformation.md), and
-[docs/limitations/prompt-06.md](docs/limitations/prompt-06.md).
+[docs/guides/plan-a-transformation.md](docs/guides/plan-a-transformation.md),
+[docs/guides/enable-runtime-lowering.md](docs/guides/enable-runtime-lowering.md),
+[docs/limitations/prompt-06.md](docs/limitations/prompt-06.md), and
+[docs/limitations/prompt-07.md](docs/limitations/prompt-07.md).
 
 ## The idea
 

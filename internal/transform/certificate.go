@@ -35,17 +35,10 @@ func newCertificate(cp proof.CandidateProof) Certificate {
 	}
 }
 
-// eligibleFor reports whether the certificate proves the candidate eligible for
-// the requested strategy, and a skip reason otherwise. It enforces the core
-// safety rule: a candidate is transformable only when the overall decision is
-// proven eligible and the exact requested strategy is itself proven eligible.
-func (c Certificate) eligibleFor(strategy StrategyID) (bool, string) {
-	if c.Decision != proof.DecisionProvenEligible {
-		return false, SkipNotEligible
-	}
-	status, ok := c.Strategies[string(strategy)]
-	if !ok || status != proof.DecisionProvenEligible {
-		return false, SkipNotEligible
-	}
-	return true, ""
+// eligibleForProof reports whether the certificate proves the candidate eligible
+// for a proof-engine strategy identifier. It enforces the core safety rule: a
+// candidate is transformable only when the overall decision is proven eligible
+// and the exact strategy is itself proven eligible.
+func (c Certificate) eligibleForProof(proofStrategy string) bool {
+	return c.Decision == proof.DecisionProvenEligible && c.Strategies[proofStrategy] == proof.DecisionProvenEligible
 }

@@ -56,11 +56,19 @@ materialization with backup, revert, and recovery. Certified read-only slice/arr
 loops only; other candidate classes remain discovered and proven but not yet
 rewritten. **Completed.**
 
-## Phase 7 — Compile-time integration
+## Phase 7 — Runtime call lowering and fan-out coalescing ✅
 
-Integration with the Go build process so transformations apply during a normal
-build, plus runtime-call lowering and sibling/fan-out transformations building on
-the Phase 6 infrastructure.
+Typed, reflection-free runtime bridge ABI (`bridge` package); lowering of
+certified scalar calls into `bridge.Operation.Call` for standalone, sibling, and
+existing goroutine/errgroup fan-out call sites, coalescing through the Prompt 03
+runtime with a guaranteed scalar fallback; context/cancellation/deadline/partition
+and error preservation; explicit batching barriers; an overlay-first `-toolexec`
+driver with recursion prevention and `tool-exec doctor`/`explain`; and
+`runtime inspect`/`barrier inspect`. Runtime lowering reuses the Phase 6 IR,
+overlays, and materialization. No backend batch synthesis. **Completed.**
+
+Prompt 08 targets the provider/adapter SDK and the first production backend
+adapters (`database/sql`/pgx, Redis), covered by the adapter phase below.
 
 ## Phase 8 — Verification engine
 

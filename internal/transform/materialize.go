@@ -28,6 +28,9 @@ type BackupFile struct {
 	TransformedDigest string `json:"transformed_digest"`
 	BackupObject      string `json:"backup_object"`
 	Committed         bool   `json:"committed"`
+	// Created is true for a generated file that did not exist before
+	// materialization; revert deletes it rather than restoring an original.
+	Created bool `json:"created,omitempty"`
 }
 
 // MaterializeResult summarizes a materialization.
@@ -41,9 +44,17 @@ type MaterializeResult struct {
 // verifying every source precondition, taking a full backup first. It is atomic
 // per file and refuses to proceed if any source file changed since planning.
 func Materialize(root, tool string, plan *Plan) (*MaterializeResult, error) {
-	// Precondition: current source digests must match the plan.
+	// Precondition: existing source digests must match the plan; created files
+	// must not already exist.
 	for _, fp := range plan.Files {
-		cur, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(fp.Path)))
+		target := filepath.Join(root, filepath.FromSlash(fp.Path))
+		cur, err := os.ReadFile(target)
+		if fp.Created {
+			if err == nil {
+				return nil, fmt.Errorf("BW3701: generated file %s already exists", fp.Path)
+			}
+			continue
+		}
 		if err != nil {
 			return nil, fmt.Errorf("materialize: read %s: %w", fp.Path, err)
 		}
@@ -67,6 +78,7 @@ func Materialize(root, tool string, plan *Plan) (*MaterializeResult, error) {
 			Path: fp.Path, OriginalDigest: fp.OriginalDigest,
 			TransformedDigest: fp.TransformedDigest,
 			BackupObject:      digestFileName(fp.OriginalDigest),
+			Created:           fp.Created,
 		})
 	}
 	manifestPath := filepath.Join(backupDir, "manifest.json")
@@ -74,10 +86,13 @@ func Materialize(root, tool string, plan *Plan) (*MaterializeResult, error) {
 		return nil, err
 	}
 
-	// Back up originals, then commit transformed files atomically.
+	// Back up originals (for existing files), then commit transformed files
+	// atomically.
 	for i, fp := range plan.Files {
-		if err := atomicWrite(filepath.Join(backupDir, "files", manifest.Files[i].BackupObject), fp.original, 0o644); err != nil {
-			return nil, err
+		if !fp.Created {
+			if err := atomicWrite(filepath.Join(backupDir, "files", manifest.Files[i].BackupObject), fp.original, 0o644); err != nil {
+				return nil, err
+			}
 		}
 		target := filepath.Join(root, filepath.FromSlash(fp.Path))
 		if err := atomicWrite(target, fp.transformed, 0o644); err != nil {
@@ -124,6 +139,14 @@ func Revert(root, matID string) (*RevertResult, error) {
 		if hashBytes(cur) != bf.TransformedDigest {
 			// The file was edited after materialization; do not overwrite.
 			res.Conflicts = append(res.Conflicts, bf.Path)
+			continue
+		}
+		if bf.Created {
+			// Remove the generated file rather than restoring an original.
+			if err := os.Remove(target); err != nil {
+				return nil, err
+			}
+			res.FilesRestored++
 			continue
 		}
 		orig, err := os.ReadFile(filepath.Join(backupDir, "files", bf.BackupObject))
