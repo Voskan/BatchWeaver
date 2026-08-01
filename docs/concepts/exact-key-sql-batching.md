@@ -1,0 +1,24 @@
+# Exact-key SQL batching
+
+An exact-key read (`SELECT ... WHERE id = $1`) issued once per item is the classic
+N+1 pattern. BatchWeaver replaces N such reads with one ordered PostgreSQL query
+that joins the requested keys (bound as a typed array) against the relation and
+returns one row per request ordinal.
+
+## Guarantees
+
+- **Order** — results map back by request ordinal.
+- **Duplicates** — duplicate keys keep distinct ordinals and each receives the
+  same row.
+- **Missing** — a key with no row reconstructs the declared scalar missing outcome
+  (`sql.ErrNoRows`).
+- **Parameterization** — keys are a single array parameter; values are never
+  interpolated into SQL.
+- **Transaction identity** — the batch runs on the caller's `*sql.DB`, `*sql.Tx`,
+  or `*sql.Conn`; the provider never acquires its own.
+
+## When it is rejected
+
+Anything outside the supported exact-key shape is rejected with a precise
+diagnostic rather than transformed. Use an explicit batch provider for those
+cases. See [SQL synthesis](../architecture/sql-synthesis.md).

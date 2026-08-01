@@ -64,6 +64,16 @@ shaped the way it is.
 - [ADR 0039 — Batching barrier model](0039-barrier-model.md)
 - [ADR 0040 — Read-only shadow verification is opt-in and safe](0040-readonly-shadow-verification.md)
 - [ADR 0041 — No automatic provider synthesis in runtime lowering](0041-no-provider-synthesis.md)
+- [ADR 0042 — Adapter SDK separates compile-time and runtime](0042-adapter-sdk-separation.md)
+- [ADR 0043 — Declarative, deterministic adapter manifests](0043-declarative-adapter-manifests.md)
+- [ADR 0044 — Narrow exact-key SQL synthesis](0044-narrow-exact-key-sql-synthesis.md)
+- [ADR 0045 — PostgreSQL-first SQL dialect](0045-postgres-first-dialect.md)
+- [ADR 0046 — Generated typed row decoders, no reflection in hot paths](0046-generated-typed-row-decoders.md)
+- [ADR 0047 — pgx native batch versus synthesized query](0047-pgx-native-batch-vs-synthesis.md)
+- [ADR 0048 — Redis MGET/HMGET/pipeline capability model](0048-redis-command-capability-model.md)
+- [ADR 0049 — Redis cluster slot partitioning](0049-redis-cluster-slot-partitioning.md)
+- [ADR 0050 — Adapter contract verification artifacts](0050-adapter-verification-artifacts.md)
+- [ADR 0051 — No automatic write synthesis in Prompt 08](0051-no-automatic-write-synthesis.md)
 
 ## Process
 

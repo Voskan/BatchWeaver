@@ -10,6 +10,24 @@ The public API may evolve before the 1.0 release.
 
 ### Added
 
+- Backend adapter SDK (`internal/adapter`) and the `batchweaver adapter`
+  (`list`, `inspect`, `explain`, `verify`, `doctor`) command. It provides a
+  versioned, deterministic manifest and closed capability model with no mutable
+  global registry; a narrow, real SQL parser (a hand-written tokenizer and strict
+  recursive parser, never regex-primary, never panics) that safely synthesizes
+  exact-key PostgreSQL read batches (`unnest($1::TYPE[]) WITH ORDINALITY` +
+  `LEFT JOIN` + `ORDER BY` ordinal, fully parameterized) and rejects every
+  unsupported construct with an exact code, node, and byte offset; a typed,
+  reflection-free `database/sql` runtime batch provider that maps rows by request
+  ordinal, preserving order, duplicates, and `sql.ErrNoRows`, with deterministic
+  chunking; Redis cluster hash-slot computation (CRC-16/XMODEM with hash tags) and
+  slot grouping plus MGET/HMGET/pipeline mapping logic; and a scalar/batch
+  contract-verification harness that emits a deterministic contract artifact.
+  Adapter diagnostics use the `BW6xxx` range (distinct from the proof stage's
+  `BW5xxx`). The concrete pgx v5 and go-redis v9 client bindings are
+  contract-defined but deferred in this build (offline dependency); no arbitrary
+  SQL transformation or automatic write synthesis. See
+  docs/limitations/prompt-08.md. ADRs 0042-0051.
 - Runtime call lowering and the public `bridge` package (ABI
   `batchweaver.bridge/v1alpha1`). Certified scalar calls are rewritten to a typed,
   reflection-free `bridge.Operation.Call` that routes through the Prompt 03 runtime

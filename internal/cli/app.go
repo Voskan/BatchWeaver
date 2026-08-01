@@ -54,6 +54,7 @@ func New(stdout, stderr io.Writer) *App {
 	a.register(newBarrierCommand())
 	a.register(newToolExecCommand())
 	a.register(newToolexecCommand())
+	a.register(newAdapterCommand())
 	a.register(newHelpCommand())
 	return a
 }

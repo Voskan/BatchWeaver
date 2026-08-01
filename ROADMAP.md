@@ -74,10 +74,16 @@ adapters (`database/sql`/pgx, Redis), covered by the adapter phase below.
 
 Differential verification that transformed code preserves observable behavior.
 
-## Phase 9 — Adapter ecosystem
+## Phase 9 — Adapter ecosystem 🚧
 
-Adapters for common batchable backends (for example databases and network
-services) built on stable extension interfaces.
+Adapters for common batchable backends built on a stable extension interface.
+Delivered: the versioned adapter SDK and manifest/capability model; a narrow real
+SQL parser with exact-key PostgreSQL read synthesis; a typed reflection-free
+`database/sql` batch provider; Redis cluster hash-slot grouping and MGET/HMGET/
+pipeline mapping; and scalar/batch contract verification. Concrete pgx and
+go-redis client bindings are contract-defined but deferred (offline dependency).
+Prompt 09 adds GraphQL, gRPC, and HTTP/OpenAPI adapters and safe query/document
+fusion.
 
 ## Phase 10 — Observability and adaptive scheduling
 

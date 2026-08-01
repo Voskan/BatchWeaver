@@ -43,18 +43,25 @@ foundational semantic layer:
   standalone, sibling, and existing goroutine/errgroup fan-out calls through the
   runtime while preserving context, cancellation, deadlines, partitions, and
   error semantics — with an overlay-first `-toolexec` integration, explicit
-  batching barriers, and a guaranteed direct scalar fallback.
+  batching barriers, and a guaranteed direct scalar fallback;
+- a **backend adapter SDK** (`batchweaver adapter`) with a versioned manifest and
+  capability model, a narrow real SQL parser that safely synthesizes exact-key
+  PostgreSQL read batches (parameterized `unnest(...) WITH ORDINALITY` joins) or
+  rejects unsupported queries with exact diagnostics, a typed reflection-free
+  `database/sql` batch provider, Redis cluster hash-slot grouping and MGET/HMGET/
+  pipeline mapping, and scalar/batch contract verification.
 
-**SQL/backend batch-provider generation, write batching, universal goroutine
-transformation, and universal performance improvements are not implemented.**
-Every lowered operation still requires an explicitly declared, compatible batch
-provider; a lowered call falls back to the original scalar call unless the
-application installs a bound operation into the scope. See
-[docs/guides/proving-candidates.md](docs/guides/proving-candidates.md),
+**Arbitrary SQL transformation, automatic write synthesis, GraphQL/gRPC fusion,
+and universal performance improvements are not implemented.** Only a narrow,
+documented exact-key PostgreSQL read shape is synthesized; everything else is
+rejected with an exact diagnostic. Every lowered operation still requires an
+explicitly declared, compatible batch provider, and the concrete pgx and go-redis
+client bindings are contract-defined but deferred in this build. See
 [docs/guides/plan-a-transformation.md](docs/guides/plan-a-transformation.md),
 [docs/guides/enable-runtime-lowering.md](docs/guides/enable-runtime-lowering.md),
-[docs/limitations/prompt-06.md](docs/limitations/prompt-06.md), and
-[docs/limitations/prompt-07.md](docs/limitations/prompt-07.md).
+[docs/guides/configure-database-sql.md](docs/guides/configure-database-sql.md),
+[docs/reference/sql-support-matrix.md](docs/reference/sql-support-matrix.md), and
+[docs/limitations/prompt-08.md](docs/limitations/prompt-08.md).
 
 ## The idea
 
