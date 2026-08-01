@@ -88,13 +88,24 @@ batch adapter (net/http + typed JSON envelopes + OpenAPI x-batchweaver binding),
 GraphQL resolver-wave analysis with a real query parser and one-scope-per-operation
 semantics, an explicit gRPC batch-binding and metadata policy layer, and protocol
 contract verification. Concrete gqlgen and grpc-go client integrations are
-contract-defined but deferred (offline dependency). Prompt 10 targets adaptive
-scheduling and cost-based tuning.
+contract-defined but deferred (offline dependency).
+
+Prompt 10 delivered the adaptive scheduling and production tuning layer:
+privacy-safe workload profiling, a versioned cost model, a bounded and
+explainable controller (adaptive `max_wait`, `max_batch_size`, concurrency, chunk
+size, and execution mode) with shadow/active modes, SLO guardrails, and automatic
+rollback, integrated with the runtime through bounded atomic settings updates;
+multi-operation wave planning; recursive breadth-first batching for proven
+traversals; fairness, quotas, and reserved capacity; overload detection,
+admission control, and load shedding; and deterministic offline replay,
+simulation, and tuning reports. Diagnostics use the `BW8xxx` range. Concrete
+observability exporter bindings remain a documented follow-up.
 
 ## Phase 10 — Observability and adaptive scheduling
 
-Metrics, tracing, and scheduling that adapts batch sizing and timing to observed
-load.
+Adaptive scheduling shipped in Prompt 10. The remaining work in this phase is
+concrete metrics, tracing, and dashboard exporter bindings for the adaptive
+layer's already-specified, bounded-label telemetry.
 
 ## Phase 11 — IDE integration
 

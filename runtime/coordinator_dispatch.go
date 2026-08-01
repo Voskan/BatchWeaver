@@ -116,7 +116,7 @@ func (c *coordinator[K, V]) schedule(force bool) {
 		if p == nil {
 			continue
 		}
-		for len(p.pending) > 0 && c.activeProvider < c.cfg.maxConcurrency {
+		for len(p.pending) > 0 && c.activeProvider < c.effectiveMaxConcurrency() {
 			c.prune(p)
 			if len(p.pending) == 0 {
 				break
@@ -148,7 +148,7 @@ func (c *coordinator[K, V]) shouldDispatch(p *partitionState[K, V], force bool, 
 	if force {
 		return FlushManual, true
 	}
-	if n >= c.cfg.maxBatchSize {
+	if n >= c.effectiveMaxBatchSize() {
 		return FlushSize, true
 	}
 	if c.cfg.maxBatchWeight > 0 && p.weight >= c.cfg.maxBatchWeight {
@@ -157,17 +157,18 @@ func (c *coordinator[K, V]) shouldDispatch(p *partitionState[K, V], force bool, 
 	if c.cfg.maxBatchBytes > 0 && p.bytes >= c.cfg.maxBatchBytes {
 		return FlushBytes, true
 	}
+	maxWait := c.effectiveMaxWait()
 	switch c.cfg.flushMode {
 	case flushImmediate:
 		return FlushWait, true
 	case flushManual:
 		return 0, false
 	case flushFixedWindow:
-		if c.cfg.maxWait > 0 && !now.Before(p.pending[0].enqueue.Add(c.cfg.maxWait)) {
+		if maxWait > 0 && !now.Before(p.pending[0].enqueue.Add(maxWait)) {
 			return FlushWait, true
 		}
 	case flushDeadlineAware:
-		if c.cfg.maxWait > 0 && !now.Before(p.pending[0].enqueue.Add(c.cfg.maxWait)) {
+		if maxWait > 0 && !now.Before(p.pending[0].enqueue.Add(maxWait)) {
 			return FlushWait, true
 		}
 		if t, ok := c.earliestDeadline(p); ok && !now.Before(t.Add(-c.cfg.deadlineMargin)) {
@@ -276,7 +277,7 @@ func (c *coordinator[K, V]) dispatchBatch(p *partitionState[K, V], reason FlushR
 
 // fits reports whether adding it keeps the batch within hard limits.
 func (c *coordinator[K, V]) fits(count int, weight, bytes int64, it *qitem[K, V]) bool {
-	if c.cfg.maxBatchSize > 0 && count+1 > c.cfg.maxBatchSize {
+	if mbs := c.effectiveMaxBatchSize(); mbs > 0 && count+1 > mbs {
 		return false
 	}
 	if c.cfg.maxBatchWeight > 0 && weight+it.weight > c.cfg.maxBatchWeight {
@@ -483,14 +484,15 @@ func (c *coordinator[K, V]) computeNextTimer(now time.Time) {
 		if len(p.pending) == 0 {
 			continue
 		}
+		maxWait := c.effectiveMaxWait()
 		switch c.cfg.flushMode {
 		case flushFixedWindow:
-			if c.cfg.maxWait > 0 {
-				consider(p.pending[0].enqueue.Add(c.cfg.maxWait))
+			if maxWait > 0 {
+				consider(p.pending[0].enqueue.Add(maxWait))
 			}
 		case flushDeadlineAware:
-			if c.cfg.maxWait > 0 {
-				consider(p.pending[0].enqueue.Add(c.cfg.maxWait))
+			if maxWait > 0 {
+				consider(p.pending[0].enqueue.Add(maxWait))
 			}
 			if t, ok := c.earliestDeadline(p); ok {
 				consider(t.Add(-c.cfg.deadlineMargin))

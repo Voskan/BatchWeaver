@@ -10,6 +10,31 @@ The public API may evolve before the 1.0 release.
 
 ### Added
 
+- Adaptive scheduling and production tuning layer (`internal/adaptive`) and the
+  `batchweaver profile`, `tune`, `fairness`, `overload`, `wave`, and `recursive`
+  commands. Privacy-safe, versioned workload profiles
+  (`batchweaver.profile/v1alpha1`) store only bounded, mergeable histograms and
+  anonymized categorical counts — never raw keys, tenants, tokens, payloads, or
+  parameters — with atomic checksummed persistence, compatibility and staleness
+  checks, and merge. A versioned cost model (`batchweaver.cost/v1alpha1`) with
+  explicit objective weights drives a bounded, explainable controller that
+  recommends `max_wait`, `max_batch_size`, concurrency, chunk size, and execution
+  mode, with cold/warm start, shadow and active modes, canary and exploration
+  limits, phase-change detection, SLO guardrails, and automatic rollback; every
+  decision is content-addressed with evidence, reasons, and confidence. The
+  runtime applies accepted settings atomically through
+  `BoundOperation.ApplyAdaptiveSettings`, clamped to the binding's hard
+  configuration limits. A multi-operation wave DAG (`batchweaver.wave/v1alpha1`)
+  co-schedules independent operations and computes waves and the critical path;
+  recursive breadth-first batching loads proven traversals one batched call per
+  frontier with explicit cycle, ordering, error, and limit policies. Fairness
+  (weighted fair queueing and deficit round robin) adds priority classes,
+  quotas, reserved capacity, and starvation detection; overload control adds
+  admission policies, non-silent load shedding, and backpressure. Deterministic
+  offline replay, policy simulation, counterfactuals, seeded synthetic workload
+  generators, and text/JSON/Markdown tuning reports round out the layer.
+  Diagnostics use the `BW8xxx` range, kept distinct from earlier stages. No new
+  module dependencies.
 - Network protocol adapters extending the adapter SDK, and the `batchweaver
   graphql`, `grpc`, `http`, and `openapi` commands (plus `adapter list
   --category`). A fully implemented HTTP explicit-batch adapter over `net/http`

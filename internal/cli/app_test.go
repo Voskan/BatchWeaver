@@ -100,12 +100,12 @@ func TestHelpListsOnlyRealCommands(t *testing.T) {
 	// Command entries are rendered as two-space-indented lines; check those
 	// specifically so that prose mentioning a word (for example "build") is not
 	// mistaken for an advertised command.
-	for _, unavailable := range []string{"profile", "materialize", "optimize"} {
+	for _, unavailable := range []string{"materialize", "optimize"} {
 		if strings.Contains(stdout, "\n  "+unavailable+" ") {
 			t.Errorf("help advertises unimplemented command %q:\n%s", unavailable, stdout)
 		}
 	}
-	for _, real := range []string{"help", "version"} {
+	for _, real := range []string{"help", "version", "profile", "tune", "fairness", "overload", "wave", "recursive"} {
 		if !strings.Contains(stdout, real) {
 			t.Errorf("help missing real command %q:\n%s", real, stdout)
 		}

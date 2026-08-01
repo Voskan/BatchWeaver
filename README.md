@@ -56,7 +56,20 @@ foundational semantic layer:
   resolver-wave analysis (a real, non-regex query parser, one scope per operation,
   selection/authorization partitioning, error/nullability preservation); an
   explicit gRPC batch-binding and metadata-partition policy layer; and protocol
-  contract verification.
+  contract verification;
+- an **adaptive scheduling and production tuning** layer (`batchweaver profile`,
+  `tune`, `fairness`, `overload`, `wave`, `recursive`): privacy-safe, versioned
+  workload profiles that store only bounded histograms and anonymized counts
+  (never raw keys, tenants, or payloads); a versioned, explicitly weighted cost
+  model; a bounded, explainable controller that recommends — and, only when
+  explicitly enabled and within authoritative hard bounds, applies — `max_wait`,
+  `max_batch_size`, concurrency, chunk size, and execution mode, with shadow and
+  active modes, SLO guardrails, and automatic rollback; multi-operation wave
+  planning; recursive breadth-first batching for proven traversals; fairness,
+  quotas, and reserved capacity; overload detection, admission control, and
+  non-silent load shedding; and deterministic offline replay, simulation, and
+  tuning reports. Adaptive tuning can never bypass a semantic proof, exceed a
+  configured bound, or guarantee a universal performance improvement.
 
 **Arbitrary SQL transformation, automatic write synthesis, GraphQL/gRPC fusion,
 and universal performance improvements are not implemented.** Only a narrow,
@@ -70,8 +83,9 @@ arbitrary HTTP request fusion are not implemented. See
 [docs/guides/enable-runtime-lowering.md](docs/guides/enable-runtime-lowering.md),
 [docs/guides/configure-database-sql.md](docs/guides/configure-database-sql.md),
 [docs/reference/sql-support-matrix.md](docs/reference/sql-support-matrix.md),
-[docs/limitations/prompt-08.md](docs/limitations/prompt-08.md), and
-[docs/limitations/prompt-09.md](docs/limitations/prompt-09.md).
+[docs/limitations/prompt-08.md](docs/limitations/prompt-08.md),
+[docs/limitations/prompt-09.md](docs/limitations/prompt-09.md), and
+[docs/limitations/prompt-10.md](docs/limitations/prompt-10.md).
 
 ## The idea
 

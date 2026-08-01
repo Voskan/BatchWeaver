@@ -73,3 +73,6 @@ CLAUDE.md
 CODEX.md
 *.agent.md
 *.prompt.md
+
+# Workload profiles (may summarize production traffic)
+*.bwp

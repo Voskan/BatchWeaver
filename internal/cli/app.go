@@ -59,6 +59,12 @@ func New(stdout, stderr io.Writer) *App {
 	a.register(newGRPCCommand())
 	a.register(newHTTPCommand())
 	a.register(newOpenAPICommand())
+	a.register(newProfileCommand())
+	a.register(newTuneCommand())
+	a.register(newFairnessCommand())
+	a.register(newOverloadCommand())
+	a.register(newWaveCommand())
+	a.register(newRecursiveCommand())
 	a.register(newHelpCommand())
 	return a
 }

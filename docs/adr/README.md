@@ -84,6 +84,16 @@ shaped the way it is.
 - [ADR 0059 — OpenAPI vendor-extension schema](0059-openapi-vendor-extension.md)
 - [ADR 0060 — No inferred HTTP batching](0060-no-inferred-http-batching.md)
 - [ADR 0061 — Protocol contract verification artifacts](0061-protocol-verification-artifacts.md)
+- [ADR 0062 — Bounded, explainable adaptive controller](0062-bounded-explainable-controller.md)
+- [ADR 0063 — Workload profiles store no raw keys](0063-profile-privacy-no-raw-keys.md)
+- [ADR 0064 — Shadow mode precedes active mode](0064-shadow-before-active.md)
+- [ADR 0065 — SLO guardrails and automatic rollback](0065-slo-guardrails-and-rollback.md)
+- [ADR 0066 — Profile compatibility and invalidation](0066-profile-compatibility-invalidation.md)
+- [ADR 0067 — Multi-operation wave DAG](0067-multi-operation-wave-dag.md)
+- [ADR 0068 — Recursive breadth-first batching only for proven forms](0068-recursive-bfs-proven-only.md)
+- [ADR 0069 — Fairness algorithm](0069-fairness-algorithm.md)
+- [ADR 0070 — Overload detection, admission control, and load shedding](0070-overload-admission-shedding.md)
+- [ADR 0071 — Deterministic offline replay](0071-deterministic-offline-replay.md)
 
 ## Process
 

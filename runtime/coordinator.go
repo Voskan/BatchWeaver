@@ -3,6 +3,7 @@ package runtime
 import (
 	"context"
 	"sort"
+	"sync/atomic"
 	"time"
 
 	batchweaver "github.com/Voskan/BatchWeaver"
@@ -186,6 +187,13 @@ type coordinator[K, V any] struct {
 
 	counters *opCounters
 	barriers []*barrier
+
+	// dyn holds optional adaptive settings applied atomically by the adaptive
+	// controller. It is written from other goroutines and read only on this
+	// coordinator goroutine, so an atomic pointer keeps the hot path lock-free.
+	// The runtime always clamps these to the binding's hard configuration limits,
+	// so adaptive tuning can never exceed a configured bound.
+	dyn atomic.Pointer[dynamicSettings]
 }
 
 // run is the coordinator event loop. It exits when the engine context is
