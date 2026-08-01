@@ -27,7 +27,7 @@ func runAdapter(ctx context.Context, app *App, args []string) error {
 	}
 	switch args[0] {
 	case "list":
-		return adapterList(app)
+		return adapterList(app, args[1:])
 	case "inspect":
 		return adapterInspect(app, args[1:])
 	case "explain":
@@ -41,10 +41,19 @@ func runAdapter(ctx context.Context, app *App, args []string) error {
 	}
 }
 
-func adapterList(app *App) error {
+func adapterList(app *App, args []string) error {
+	fs := flag.NewFlagSet("adapter list", flag.ContinueOnError)
+	fs.SetOutput(app.Stderr())
+	category := fs.String("category", "", "filter by category: backend or network")
+	if err := fs.Parse(args); err != nil {
+		return &CommandError{Code: ExitUsage}
+	}
 	w := app.Stdout()
 	fmt.Fprintln(w, "BatchWeaver adapters")
 	for _, m := range adapter.Manifests() {
+		if *category != "" && m.Category != *category {
+			continue
+		}
 		fmt.Fprintf(w, "\n%s\n", m.AdapterID)
 		fmt.Fprintf(w, "  version:      %d\n", m.Version)
 		fmt.Fprintf(w, "  status:       %s\n", m.Status)

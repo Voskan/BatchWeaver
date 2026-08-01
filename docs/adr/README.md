@@ -74,6 +74,16 @@ shaped the way it is.
 - [ADR 0049 — Redis cluster slot partitioning](0049-redis-cluster-slot-partitioning.md)
 - [ADR 0050 — Adapter contract verification artifacts](0050-adapter-verification-artifacts.md)
 - [ADR 0051 — No automatic write synthesis in Prompt 08](0051-no-automatic-write-synthesis.md)
+- [ADR 0052 — One GraphQL operation per default BatchWeaver scope](0052-graphql-operation-scope.md)
+- [ADR 0053 — gqlgen integration through supported extension APIs](0053-gqlgen-extension-integration.md)
+- [ADR 0054 — Selection-dependent partitioning](0054-graphql-selection-partitioning.md)
+- [ADR 0055 — GraphQL error and nullability preservation](0055-graphql-error-nullability.md)
+- [ADR 0056 — Explicit gRPC batch protocols only](0056-explicit-grpc-batch-only.md)
+- [ADR 0057 — gRPC metadata and call-option partitioning](0057-grpc-metadata-partitioning.md)
+- [ADR 0058 — Explicit multiplexed stream contracts](0058-explicit-stream-contracts.md)
+- [ADR 0059 — OpenAPI vendor-extension schema](0059-openapi-vendor-extension.md)
+- [ADR 0060 — No inferred HTTP batching](0060-no-inferred-http-batching.md)
+- [ADR 0061 — Protocol contract verification artifacts](0061-protocol-verification-artifacts.md)
 
 ## Process
 

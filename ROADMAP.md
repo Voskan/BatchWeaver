@@ -82,8 +82,14 @@ SQL parser with exact-key PostgreSQL read synthesis; a typed reflection-free
 `database/sql` batch provider; Redis cluster hash-slot grouping and MGET/HMGET/
 pipeline mapping; and scalar/batch contract verification. Concrete pgx and
 go-redis client bindings are contract-defined but deferred (offline dependency).
-Prompt 09 adds GraphQL, gRPC, and HTTP/OpenAPI adapters and safe query/document
-fusion.
+
+Prompt 09 delivered the network protocol layer: a fully implemented HTTP explicit
+batch adapter (net/http + typed JSON envelopes + OpenAPI x-batchweaver binding),
+GraphQL resolver-wave analysis with a real query parser and one-scope-per-operation
+semantics, an explicit gRPC batch-binding and metadata policy layer, and protocol
+contract verification. Concrete gqlgen and grpc-go client integrations are
+contract-defined but deferred (offline dependency). Prompt 10 targets adaptive
+scheduling and cost-based tuning.
 
 ## Phase 10 — Observability and adaptive scheduling
 

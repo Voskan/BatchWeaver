@@ -10,6 +10,27 @@ The public API may evolve before the 1.0 release.
 
 ### Added
 
+- Network protocol adapters extending the adapter SDK, and the `batchweaver
+  graphql`, `grpc`, `http`, and `openapi` commands (plus `adapter list
+  --category`). A fully implemented HTTP explicit-batch adapter over `net/http`
+  maps typed keyed/positional JSON envelopes to ordered outcomes with correlation
+  validation, deterministic chunking, and preserved transport/auth identity,
+  verified hermetically with `httptest`; OpenAPI 3.1+ documents (JSON via the
+  standard library, YAML via the existing goccy dependency) are loaded with a
+  bounded size and no remote references, discovering `x-batchweaver` batch
+  bindings. A framework-neutral GraphQL model with a recursive-descent query
+  parser (no regex, never panics) computes resolver execution waves, normalized
+  selection digests, and one scope per operation, preserving field paths,
+  errors, nullability, and authorization/selection partitions. An explicit gRPC
+  batch-binding model with strict validation, metadata partition policy
+  (authorization/tenant/routing never merged across callers), response-correlation
+  modes, and a streaming lifecycle vocabulary is provided. Protocol contract
+  verification reuses the Prompt 08 harness. Network diagnostics use the `BW7xxx`
+  range (BW71xx GraphQL, BW72xx gRPC, BW73xx HTTP/OpenAPI). Concrete gqlgen and
+  grpc-go client integrations are contract-defined but deferred in this build
+  (offline dependency); no new module dependencies were added. No universal
+  GraphQL optimization, remote batch-method generation, or arbitrary HTTP request
+  fusion. See docs/limitations/prompt-09.md. ADRs 0052-0061.
 - Backend adapter SDK (`internal/adapter`) and the `batchweaver adapter`
   (`list`, `inspect`, `explain`, `verify`, `doctor`) command. It provides a
   versioned, deterministic manifest and closed capability model with no mutable

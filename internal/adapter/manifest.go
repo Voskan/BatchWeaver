@@ -37,6 +37,31 @@ const (
 	CapGeneratedRowDecoding  Capability = "generated-row-decoding"
 	CapMGet                  Capability = "mget"
 	CapHMGet                 Capability = "hmget"
+
+	// Network protocol capabilities (Prompt 09).
+	CapGraphQLOperationScope  Capability = "graphql-operation-scope"
+	CapGraphQLResolverWave    Capability = "graphql-resolver-wave"
+	CapGraphQLSelectionNorm   Capability = "graphql-selection-normalization"
+	CapGraphQLErrorPath       Capability = "graphql-error-path"
+	CapGraphQLNullability     Capability = "graphql-nullability"
+	CapGraphQLSubscription    Capability = "graphql-subscription-awareness"
+	CapGRPCUnaryBatch         Capability = "grpc-unary-explicit-batch"
+	CapGRPCClientStreaming    Capability = "grpc-client-streaming-explicit"
+	CapGRPCServerStreaming    Capability = "grpc-server-streaming-explicit"
+	CapGRPCBidiStreaming      Capability = "grpc-bidi-streaming-explicit"
+	CapGRPCMetadata           Capability = "grpc-metadata"
+	CapGRPCStatusDetails      Capability = "grpc-status-details"
+	CapGRPCInterceptor        Capability = "grpc-interceptor-compatible"
+	CapHTTPExplicitBatch      Capability = "http-explicit-batch"
+	CapOpenAPIDiscovery       Capability = "openapi-discovery"
+	CapOpenAPIExtension       Capability = "openapi-extension-binding"
+	CapHTTPJSONArray          Capability = "http-json-array"
+	CapHTTPKeyedEnvelope      Capability = "http-keyed-envelope"
+	CapHTTPPositionalEnvelope Capability = "http-positional-envelope"
+	CapHTTPStreamingNDJSON    Capability = "http-streaming-ndjson"
+	CapProtocolVerification   Capability = "protocol-contract-verification"
+	CapTransportPartitioning  Capability = "transport-partitioning"
+	CapBoundedChunking        Capability = "bounded-chunking"
 )
 
 // knownCapabilities is the set used to reject unknown capabilities.
@@ -46,6 +71,14 @@ var knownCapabilities = map[Capability]struct{}{
 	CapPerItemError: {}, CapGlobalError: {}, CapTransactionPartition: {}, CapSessionPartition: {},
 	CapPreparedStatements: {}, CapChunking: {}, CapPipeline: {}, CapClusterSlotPartition: {},
 	CapSemanticVerification: {}, CapGeneratedRowDecoding: {}, CapMGet: {}, CapHMGet: {},
+	CapGraphQLOperationScope: {}, CapGraphQLResolverWave: {}, CapGraphQLSelectionNorm: {},
+	CapGraphQLErrorPath: {}, CapGraphQLNullability: {}, CapGraphQLSubscription: {},
+	CapGRPCUnaryBatch: {}, CapGRPCClientStreaming: {}, CapGRPCServerStreaming: {},
+	CapGRPCBidiStreaming: {}, CapGRPCMetadata: {}, CapGRPCStatusDetails: {}, CapGRPCInterceptor: {},
+	CapHTTPExplicitBatch: {}, CapOpenAPIDiscovery: {}, CapOpenAPIExtension: {},
+	CapHTTPJSONArray: {}, CapHTTPKeyedEnvelope: {}, CapHTTPPositionalEnvelope: {},
+	CapHTTPStreamingNDJSON: {}, CapProtocolVerification: {}, CapTransportPartitioning: {},
+	CapBoundedChunking: {},
 }
 
 // Valid reports whether c is a known capability.
@@ -68,6 +101,7 @@ type Manifest struct {
 	AdapterID     string       `json:"adapter_id"`
 	Version       int          `json:"version"`
 	DisplayName   string       `json:"display_name"`
+	Category      string       `json:"category"`
 	Status        Status       `json:"status"`
 	RuntimeABI    string       `json:"runtime_abi"`
 	Capabilities  []Capability `json:"capabilities"`
@@ -112,6 +146,7 @@ func computeDigest(m Manifest) string {
 	write(m.SchemaVersion)
 	write(m.AdapterID)
 	write(fmt.Sprintf("v%d", m.Version))
+	write(m.Category)
 	write(string(m.Status))
 	write(m.RuntimeABI)
 	caps := make([]string, 0, len(m.Capabilities))

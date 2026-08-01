@@ -49,19 +49,29 @@ foundational semantic layer:
   PostgreSQL read batches (parameterized `unnest(...) WITH ORDINALITY` joins) or
   rejects unsupported queries with exact diagnostics, a typed reflection-free
   `database/sql` batch provider, Redis cluster hash-slot grouping and MGET/HMGET/
-  pipeline mapping, and scalar/batch contract verification.
+  pipeline mapping, and scalar/batch contract verification;
+- **network protocol adapters** (`batchweaver graphql|grpc|http|openapi`): a fully
+  implemented HTTP explicit-batch adapter over `net/http` with typed keyed/
+  positional JSON envelopes and OpenAPI 3.1+ `x-batchweaver` binding; GraphQL
+  resolver-wave analysis (a real, non-regex query parser, one scope per operation,
+  selection/authorization partitioning, error/nullability preservation); an
+  explicit gRPC batch-binding and metadata-partition policy layer; and protocol
+  contract verification.
 
 **Arbitrary SQL transformation, automatic write synthesis, GraphQL/gRPC fusion,
 and universal performance improvements are not implemented.** Only a narrow,
 documented exact-key PostgreSQL read shape is synthesized; everything else is
 rejected with an exact diagnostic. Every lowered operation still requires an
-explicitly declared, compatible batch provider, and the concrete pgx and go-redis
-client bindings are contract-defined but deferred in this build. See
+explicitly declared, compatible batch provider, and the concrete pgx, go-redis,
+gqlgen, and grpc-go client bindings are contract-defined but deferred in this
+build. Universal GraphQL optimization, remote batch-method generation, and
+arbitrary HTTP request fusion are not implemented. See
 [docs/guides/plan-a-transformation.md](docs/guides/plan-a-transformation.md),
 [docs/guides/enable-runtime-lowering.md](docs/guides/enable-runtime-lowering.md),
 [docs/guides/configure-database-sql.md](docs/guides/configure-database-sql.md),
-[docs/reference/sql-support-matrix.md](docs/reference/sql-support-matrix.md), and
-[docs/limitations/prompt-08.md](docs/limitations/prompt-08.md).
+[docs/reference/sql-support-matrix.md](docs/reference/sql-support-matrix.md),
+[docs/limitations/prompt-08.md](docs/limitations/prompt-08.md), and
+[docs/limitations/prompt-09.md](docs/limitations/prompt-09.md).
 
 ## The idea
 

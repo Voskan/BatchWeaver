@@ -55,6 +55,10 @@ func New(stdout, stderr io.Writer) *App {
 	a.register(newToolExecCommand())
 	a.register(newToolexecCommand())
 	a.register(newAdapterCommand())
+	a.register(newGraphQLCommand())
+	a.register(newGRPCCommand())
+	a.register(newHTTPCommand())
+	a.register(newOpenAPICommand())
 	a.register(newHelpCommand())
 	return a
 }
