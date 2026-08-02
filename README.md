@@ -1,11 +1,34 @@
 # BatchWeaver
 
-BatchWeaver is an automatic semantic batching compiler and runtime for Go.
+BatchWeaver is a proof-gated Go compiler/runtime toolkit that turns supported
+scalar access patterns into reviewed batch execution while preserving explicit
+semantic and isolation contracts.
 
-It aims to convert ordinary scalar Go calls into semantically equivalent,
-optimized batch execution — without forcing you to restructure your code by
-hand — through static analysis, compile-time transformation, generated typed
-bindings, and a batching-aware runtime.
+> **Public beta preparation — v0.1.0-beta.1.** The source repository is public,
+> but this version is not tagged or released yet. APIs may change. Review every
+> transformation diff and run your full test suite before materializing changes.
+
+## Why BatchWeaver?
+
+Batching can reduce repeated backend round trips, but a rewrite can also change
+evaluation order, errors, cancellation, transactions, authorization, and result
+mapping. BatchWeaver requires proof obligations for supported strategies,
+rejects unknowns conservatively, leaves source unchanged by default, previews a
+deterministic diff, and runs transformed tests through a Go overlay.
+
+After the public tag exists, the supported install path will be:
+
+```bash
+go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v0.1.0-beta.1
+batchweaver version
+batchweaver doctor
+batchweaver scan ./...
+```
+
+See the [documentation site source](site/index.html),
+[five-minute release quickstart](docs/release/release-notes-0.1.0-beta.1.md),
+[compatibility matrix](docs/release/compatibility.md), and
+[known issues](KNOWN-ISSUES.md).
 
 ## Development status
 
@@ -98,10 +121,10 @@ arbitrary HTTP request fusion are not implemented. See
 [docs/guides/enable-runtime-lowering.md](docs/guides/enable-runtime-lowering.md),
 [docs/guides/configure-database-sql.md](docs/guides/configure-database-sql.md),
 [docs/reference/sql-support-matrix.md](docs/reference/sql-support-matrix.md),
-[docs/limitations/prompt-08.md](docs/limitations/prompt-08.md),
-[docs/limitations/prompt-09.md](docs/limitations/prompt-09.md),
-[docs/limitations/prompt-10.md](docs/limitations/prompt-10.md), and
-[docs/limitations/prompt-11.md](docs/limitations/prompt-11.md).
+[docs/limitations/backend-adapters.md](docs/limitations/backend-adapters.md),
+[docs/limitations/network-adapters.md](docs/limitations/network-adapters.md),
+[docs/limitations/adaptive.md](docs/limitations/adaptive.md), and
+[docs/limitations/editor.md](docs/limitations/editor.md).
 
 ## The idea
 
@@ -110,8 +133,8 @@ inefficient, because each call pays a full round trip. BatchWeaver's goal is to
 let you keep writing scalar code while it arranges for the underlying work to be
 executed in batches.
 
-The following illustrates the **target** behavior. It is a conceptual example of
-what BatchWeaver intends to enable — it is **not** implemented today:
+The following is a simplified illustration. Current implementations are limited
+to documented proven shapes and require an explicit compatible batch provider:
 
 ```go
 // You write ordinary scalar code:
@@ -171,8 +194,10 @@ make check
 ./bin/batchweaver release verify dist/release-manifest.json
 ```
 
-The proposed candidate is `0.1.0-rc.1`; it has not been selected, tagged, or
-published. See [the compatibility report](docs/release/compatibility.md),
+The selected beta is `v0.1.0-beta.1`; it has not been tagged or published because
+mandatory authenticated publication gates remain blocked. See
+[the launch decision](docs/release/0.1.0-beta.1/launch-decision.md),
+[the compatibility report](docs/release/compatibility.md),
 [known issues](KNOWN-ISSUES.md), and [release policy](docs/release/release-policy.md).
 
 Example `config validate` output:

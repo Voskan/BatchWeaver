@@ -1,4 +1,4 @@
-# Network adapter limitations (this stage)
+# Network Adapter Limitations
 
 This stage delivers the network protocol adapter SDK, a fully implemented HTTP
 batch adapter, GraphQL resolver-wave analysis, gRPC batch-binding and metadata

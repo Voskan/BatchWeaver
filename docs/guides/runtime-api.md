@@ -36,7 +36,7 @@ getUser, err := batchruntime.Bind(engine, users.GetUserOperation, batchruntime.B
 ```
 
 The declaration (`users.GetUserOperation`) supplies the operation ID, semantics,
-and policies from Prompt 02; the `Binding` supplies the runtime provider and
+and operation policies; the `Binding` supplies the runtime provider and
 strategies. This differs from a variadic-option sketch because a config struct
 keeps type inference clean while keys are unconstrained.
 

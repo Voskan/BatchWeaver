@@ -1,6 +1,6 @@
 # Known Issues
 
-This file lists verified limitations for the proposed `0.1.0-rc.1` snapshot. It
+This file lists verified limitations for the selected `v0.1.0-beta.1` build. It
 does not imply that the candidate has been published.
 
 ## BW-KI-001 — Concrete framework client bindings are absent
@@ -23,7 +23,7 @@ does not imply that the candidate has been published.
   but a real headless Extension Host session has not been demonstrated.
 - Workaround: use the standalone LSP or install the local VSIX in a disposable
   Extension Development Host before relying on it.
-- Tracking: Prompt 13 launch prerequisites
+- Tracking: beta launch prerequisites
 - Release blocker: yes for Marketplace publication; no publication is authorized
 - Disclosure: public
 
@@ -57,7 +57,7 @@ does not imply that the candidate has been published.
   authenticated maintainer token, so hosted enforcement was not verified.
 - Workaround: an authorized maintainer must inspect main-branch rules and required
   checks before approving publication.
-- Tracking: Prompt 13 launch checklist
+- Tracking: beta launch checklist
 - Release blocker: yes for public publication; snapshot construction remains local
 - Disclosure: public
 
@@ -65,11 +65,25 @@ does not imply that the candidate has been published.
 
 - Severity: informational
 - Affected: GitHub Actions dependencies
-- Impact: six Dependabot pull requests were open during the audit. Prompt 12
+- Impact: six Dependabot pull requests were open during the audit. Release hardening
   independently verified and pinned current action releases, so those branches
   may now be stale or partially superseded.
 - Workaround: review CI results and close or rebase pull requests 1–6; do not
   merge them mechanically over the reviewed pins.
 - Tracking: GitHub pull requests 1–6
 - Release blocker: no while current pinned checks pass without a known finding
+- Disclosure: public
+
+## BW-KI-007 — Hosted Windows test job failed before beta preparation
+
+- Severity: major
+- Affected: Windows compatibility evidence at commit `d588b30`
+- Impact: build succeeded, but `go test ./...` failed in the hosted Windows job;
+  Linux, macOS, validation, release assurance, VS Code, coverage, and CodeQL
+  passed. Public logs require authentication, so the exact failing assertion was
+  not exposed by the public API.
+- Workaround: none for publication; platform-neutral LSP URI tests were corrected
+  and the hosted matrix must rerun at the release commit.
+- Tracking: beta publication gate
+- Release blocker: yes until the Windows job is green
 - Disclosure: public

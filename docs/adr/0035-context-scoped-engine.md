@@ -15,4 +15,4 @@ Generated code must not own a global engine or create an implicit process-wide s
 
 ## Consequences
 
-No hidden global engines; runtime behavior is explicit and per-scope, matching Prompt 03.
+No hidden global engines; runtime behavior is explicit and per-scope.

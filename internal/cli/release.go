@@ -99,7 +99,11 @@ func runRelease(_ context.Context, app *App, args []string) error {
 		fmt.Fprint(app.Stdout(), string(data))
 		return nil
 	case "notes":
-		data, err := os.ReadFile(filepath.Join(root, "docs", "release", "release-notes-0.1.0-rc.1.md"))
+		version, err := release.RecommendedVersion(root)
+		if err != nil {
+			return err
+		}
+		data, err := os.ReadFile(filepath.Join(root, "docs", "release", "release-notes-"+version+".md"))
 		if err != nil {
 			return err
 		}

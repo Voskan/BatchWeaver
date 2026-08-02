@@ -1,4 +1,4 @@
-# Runtime lowering limitations (this stage)
+# Runtime Lowering Limitations
 
 This stage lowers certified scalar calls into a typed runtime bridge and
 integrates with the Go build. This document records what it does not yet do.

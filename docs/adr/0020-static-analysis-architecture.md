@@ -12,7 +12,7 @@ tooling types.
 
 ## Decision
 
-- All analysis lives in `internal/analysis`, depending on Prompt 02 contracts,
+- All analysis lives in `internal/analysis`, depending on operation contracts,
   configuration, and diagnostics — never on the runtime or command packages.
 - Packages load through `golang.org/x/tools/go/packages` under an explicit,
   reported build context.
@@ -29,7 +29,7 @@ tooling types.
 
 ## Consequences
 
-Deterministic, portable output; a stable basis for Prompt 05.
+Deterministic, portable output; a stable basis for semantic proof.
 
 ## Security and compatibility
 

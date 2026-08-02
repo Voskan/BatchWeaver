@@ -31,4 +31,4 @@ safe for concurrent use by goroutines inside them.
 
 ## Compatibility
 
-New API; no Prompt 02 changes.
+New API; no foundational contract changes.

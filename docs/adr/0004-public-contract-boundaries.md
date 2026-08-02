@@ -5,7 +5,7 @@
 
 ## Context
 
-Prompt 02 introduces the foundational contracts that every later component
+The foundational domain layer introduces contracts that every later component
 depends on. Their placement determines what is a stable public API versus an
 implementation detail that can change freely.
 

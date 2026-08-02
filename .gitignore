@@ -16,7 +16,9 @@ Desktop.ini
 # Go build output
 /bin/
 /dist/
+/.release/
 /build/
+/_site/
 *.exe
 *.exe~
 *.dll

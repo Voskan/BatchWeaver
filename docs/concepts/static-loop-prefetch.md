@@ -48,5 +48,5 @@ recorded on the certificate.
 
 Map range, channel range, integer range, writes, deduplication, canonicalization,
 conditional scalar calls, and early-exit forms beyond the supported error guard.
-See [limitations](../limitations/prompt-06.md) and
+See [limitations](../limitations/transformation.md) and
 [ADR 0032](../adr/0032-static-loop-prefetch-first-strategy.md).

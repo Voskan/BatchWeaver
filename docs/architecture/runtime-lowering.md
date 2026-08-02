@@ -1,8 +1,8 @@
 # Runtime call lowering
 
 Runtime lowering rewrites a certified scalar call site into a typed bridge call
-that routes through the Prompt 03 runtime when a scope is active and otherwise
-calls the original scalar function directly. It builds on the Prompt 06
+that routes through the typed runtime when a scope is active and otherwise
+calls the original scalar function directly. It builds on the transformation
 transformation IR, overlays, and materialization rather than a second engine.
 
 ## What is lowered

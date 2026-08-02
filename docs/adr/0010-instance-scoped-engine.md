@@ -33,4 +33,4 @@ leaks. The engine is safe for concurrent use.
 
 ## Compatibility
 
-Preserves the Prompt 02 no-global-registration decision.
+Preserves the no-global-registration decision.

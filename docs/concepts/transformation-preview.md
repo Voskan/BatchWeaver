@@ -8,5 +8,5 @@ diff and proof certificate.
 
 Applying a transformation is a separate, explicit action gated on a current
 proof, unchanged documents, a type-checking package, and client support for
-versioned workspace edits. Edits that require generated files use the Prompt 06
+versioned workspace edits. Edits that require generated files use the transformation
 materialization command, only after explicit consent, with backup and revert.

@@ -1,5 +1,5 @@
 // Package bridge is the stable, typed application binary interface (ABI) between
-// BatchWeaver-generated code and the Prompt 03 runtime. Generated bridge files
+// BatchWeaver-generated code and the typed runtime. Generated bridge files
 // (zz_batchweaver_*_gen.go) declare an Operation for each lowered operation and
 // call its Call method in place of the original scalar call.
 //

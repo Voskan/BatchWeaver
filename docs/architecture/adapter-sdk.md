@@ -24,13 +24,13 @@ rejected. See [the adapter manifest reference](../reference/adapter-manifest.md)
   chunking, and semantic verification.
 - `pgx` — **deferred**. Contract defined; the concrete pgx v5 client binding is
   not compiled into this build because its dependency closure is unavailable
-  offline. See [limitations](../limitations/prompt-08.md).
+  offline. See [limitations](../limitations/backend-adapters.md).
 - `redis` — **deferred client**. Cluster hash-slot grouping and MGET/HMGET/
   pipeline mapping logic are implemented and tested; the concrete go-redis client
   binding is deferred offline.
 
 ## Runtime provider
 
-A runtime provider implements the Prompt 03 batch contract
+A runtime provider implements the typed batch contract
 (`Execute(ctx, BatchRequest[K]) (BatchResponse[V], error)`), so adapter providers
-plug directly into the runtime and the Prompt 07 bridge.
+plug directly into the runtime and generated bridge.

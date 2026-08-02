@@ -25,7 +25,7 @@ shaped the way it is.
 
 - [ADR 0001 — Project architecture](0001-project-architecture.md)
 - [ADR 0002 — Go version policy](0002-go-version-policy.md)
-- [ADR 0003 — Agent state is local only](0003-agent-state-is-local-only.md)
+- [ADR 0003 — Local workspace state is never published](0003-local-workspace-state.md)
 - [ADR 0004 — Public contract boundaries](0004-public-contract-boundaries.md)
 - [ADR 0005 — Canonical batch request and response](0005-canonical-batch-request-response.md)
 - [ADR 0006 — Strict versioned configuration](0006-strict-versioned-configuration.md)
@@ -73,7 +73,7 @@ shaped the way it is.
 - [ADR 0048 — Redis MGET/HMGET/pipeline capability model](0048-redis-command-capability-model.md)
 - [ADR 0049 — Redis cluster slot partitioning](0049-redis-cluster-slot-partitioning.md)
 - [ADR 0050 — Adapter contract verification artifacts](0050-adapter-verification-artifacts.md)
-- [ADR 0051 — No automatic write synthesis in Prompt 08](0051-no-automatic-write-synthesis.md)
+- [ADR 0051 — No automatic write synthesis](0051-no-automatic-write-synthesis.md)
 - [ADR 0052 — One GraphQL operation per default BatchWeaver scope](0052-graphql-operation-scope.md)
 - [ADR 0053 — gqlgen integration through supported extension APIs](0053-gqlgen-extension-integration.md)
 - [ADR 0054 — Selection-dependent partitioning](0054-graphql-selection-partitioning.md)

@@ -2,7 +2,7 @@
 // per-workspace process that CLI, LSP, and editor integrations can share to
 // avoid recomputing expensive analysis. This build provides the versioned local
 // protocol, discovery, health, and lifecycle; the analysis-sharing cache is a
-// documented follow-up (see docs/limitations/prompt-11.md). The daemon is
+// documented follow-up (see docs/limitations/editor.md). The daemon is
 // local-only: it listens on a Unix-domain socket inside the workspace's ignored
 // state directory and never opens a network port.
 package daemon

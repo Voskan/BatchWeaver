@@ -1,0 +1,34 @@
+name: Beta feedback
+description: Share a real evaluation outcome or blocker
+title: "[Beta feedback]: "
+labels: ["kind/feedback", "status/needs-triage"]
+body:
+  - type: input
+    id: environment
+    attributes: {label: Version, Go, OS, and architecture}
+    validations: {required: true}
+  - type: textarea
+    id: use_case
+    attributes: {label: Use case and installation path}
+    validations: {required: true}
+  - type: textarea
+    id: outcome
+    attributes: {label: First success or blocker, description: "What worked first, or what prevented evaluation?"}
+    validations: {required: true}
+  - type: input
+    id: surface
+    attributes: {label: Adapter, transformation, and editor used}
+  - type: textarea
+    id: confidence
+    attributes: {label: Safety confidence and documentation gaps}
+  - type: dropdown
+    id: repro
+    attributes: {label: "Can you share a sanitized reproduction?", options: ["Yes", "Maybe with help", "No"]}
+    validations: {required: true}
+  - type: checkboxes
+    id: facts
+    attributes:
+      label: Accuracy
+      options:
+        - label: This describes an actual evaluation; it is not a testimonial or production-validation claim.
+          required: true

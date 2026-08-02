@@ -5,8 +5,8 @@ reviewed breaking changes; patch releases preserve supported public APIs and
 versioned artifact decoders. Deprecations should remain for at least one minor
 release unless retaining them would create a security or semantic-safety defect.
 
-The first recommended candidate is `0.1.0-rc.1`. No tag has been selected or
-published. The recommendation reflects the absence of prior tags and the broad
+The selected first beta is `v0.1.0-beta.1`. No tag has been published. Beta is
+more truthful than RC while APIs and external launch evidence can still change. The version reflects the absence of prior tags and the broad
 but pre-stable feature surface. Stable 1.0 requires a proven compatibility
 window, supported concrete adapter bindings, repeated clean release runs, and
 maintainer approval.

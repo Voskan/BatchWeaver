@@ -5,7 +5,7 @@ sharing expensive analysis between the CLI, the LSP server, and editor
 integrations. This build provides the versioned local protocol
 (`batchweaver.daemon/v1alpha1`), discovery, health, and lifecycle; routing CLI
 and LSP analysis through the daemon's cache is a documented follow-up (see
-[limitations](../limitations/prompt-11.md)).
+[limitations](../limitations/editor.md)).
 
 ## Local-only and secure
 

@@ -1,4 +1,4 @@
-# Limitations — Prompt 11 (LSP, IDE, and developer experience)
+# Editor Integration Limitations
 
 ## Implemented
 

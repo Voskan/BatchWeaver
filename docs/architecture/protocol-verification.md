@@ -1,6 +1,6 @@
 # Protocol contract verification
 
-Protocol adapters reuse the Prompt 08 verification harness to compare scalar and
+Protocol adapters reuse the adapter verification harness to compare scalar and
 batch behavior over hermetic fixtures
 ([ADR 0061](../adr/0061-protocol-verification-artifacts.md)).
 

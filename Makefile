@@ -114,8 +114,12 @@ docs-check: ## Lint Markdown and YAML (skips a linter if it is not installed)
 		echo "yamllint not found; skipping YAML lint"; \
 	fi
 
+.PHONY: site
+site: ## Build the deterministic documentation site under _site/
+	scripts/build-docs-site.sh _site
+
 .PHONY: check
-check: fmt-check vet test test-race assurance build lint vulncheck docs-check ## Run all mandatory local gates
+check: fmt-check vet test test-race assurance build lint vulncheck docs-check site ## Run all mandatory local gates
 
 .PHONY: clean
 clean: ## Remove build and coverage output

@@ -1,7 +1,7 @@
 # Runtime call coalescing
 
 Runtime call coalescing lowers a certified scalar call into a typed bridge call
-that routes through the Prompt 03 runtime. When several lowered calls run in the
+that routes through the typed runtime. When several lowered calls run in the
 same scope (sequentially through repeated invocation, or concurrently through
 existing fan-out), the runtime coalesces compatible requests into batch provider
 calls while preserving per-caller context, cancellation, deadlines, partitions,
@@ -13,7 +13,7 @@ and error identity.
   request and the runtime batches compatible items.
 - With no scope, `Call` invokes the scalar function directly (direct fallback),
   exactly preserving the original behavior.
-- Deduplication, memoization, partitioning, and overflow follow the Prompt 03
+- Deduplication, memoization, partitioning, and overflow follow the runtime
   operation policy; the bridge never duplicates that logic.
 
 ## Execution modes

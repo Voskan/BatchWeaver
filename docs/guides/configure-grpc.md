@@ -25,4 +25,4 @@ batchweaver grpc inspect --scalar=/users.v1.UserService/GetUser \
 
 Different authorization, credentials, tenant, or routing metadata partition
 callers so they never share a batch. The concrete grpc-go client integration is
-deferred in this build; see [limitations](../limitations/prompt-09.md).
+deferred in this build; see [limitations](../limitations/network-adapters.md).

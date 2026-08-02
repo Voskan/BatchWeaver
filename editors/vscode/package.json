@@ -2,7 +2,7 @@
   "name": "batchweaver-vscode",
   "displayName": "BatchWeaver",
   "description": "Live batching diagnostics, proof-aware code actions, transformation previews, and operation views for Go, powered by the BatchWeaver language server.",
-  "version": "0.1.0-rc.1",
+  "version": "0.1.0-beta.1",
   "publisher": "batchweaver",
   "license": "Apache-2.0",
   "private": true,

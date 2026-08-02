@@ -19,7 +19,7 @@ reported as `BW8101` and is a hard error.
 
 ## Provider fusion
 
-Where a Prompt 08/09 adapter explicitly declares a compound capability (one
+Where an adapter explicitly declares a compound capability (one
 GraphQL document with multiple fields, one HTTP batch envelope, one gRPC
 multiplexed request), nodes sharing a fusion group can be issued as one compound
 request. BatchWeaver provides the scheduling hook only; it never invents an

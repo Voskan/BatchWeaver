@@ -31,4 +31,4 @@ rejected. Deduplication state is owned by the coordinator goroutine.
 
 ## Compatibility
 
-New API; consistent with Prompt 02 policies.
+New API; consistent with operation policies.

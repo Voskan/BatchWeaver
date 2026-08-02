@@ -34,7 +34,7 @@ typed bound operation into the scope context:
 ctx = bridge.WithOperation(ctx, "users.get", boundUsersGet)
 ```
 
-Declare the batch provider and bind the operation with the Prompt 03 runtime, then
+Declare the batch provider and bind the operation with the typed runtime, then
 install it for the scope. Without this, lowered calls behave exactly like the
 original scalar calls.
 

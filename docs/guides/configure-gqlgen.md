@@ -30,4 +30,4 @@ double queues.
 
 The framework-neutral model and wave analysis are implemented and tested. The
 concrete gqlgen runtime hook is deferred in this build; see
-[limitations](../limitations/prompt-09.md).
+[limitations](../limitations/network-adapters.md).

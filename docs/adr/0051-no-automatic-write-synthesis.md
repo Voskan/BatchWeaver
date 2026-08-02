@@ -1,4 +1,4 @@
-# ADR 0051: No automatic write synthesis in Prompt 08
+# ADR 0051: No automatic write synthesis
 
 - Status: Accepted
 - Date: 2026-07-29

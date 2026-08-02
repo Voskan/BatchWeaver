@@ -68,6 +68,7 @@ func New(stdout, stderr io.Writer) *App {
 	a.register(newLSPCommand())
 	a.register(newDaemonCommand())
 	a.register(newEditorCommand())
+	a.register(newDoctorCommand())
 	a.register(newVerifyCommand())
 	a.register(newCompatibilityCommand())
 	a.register(newSecurityCommand())

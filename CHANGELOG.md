@@ -10,6 +10,14 @@ The public API may evolve before the 1.0 release.
 
 ### Added
 
+- Public-beta preparation for `v0.1.0-beta.1`: machine-readable launch gates,
+  authenticated publication stop conditions and idempotent helper scripts,
+  deterministic GitHub Pages source/workflow, privacy-safe `doctor --bundle`,
+  beta issue forms and label policy, support/security/governance and incident
+  procedures, adoption/migration/rollout guides, launch-health and beta-exit
+  criteria, and an unposted announcement/demo kit. Publication remains blocked
+  until authenticated GitHub and hosted release gates are verified.
+
 - Release-candidate assurance commands: `release check|build|verify|reproduce|
   notes|manifest|clean`, `compatibility report`, `verify differential`, and
   `security audit`; deterministic five-target binary archives and source archive;
@@ -18,7 +26,7 @@ The public API may evolve before the 1.0 release.
   schema compatibility and manifest fuzzing; central deterministic differential,
   modeled safety-mutation, fault-injection, short-soak, and performance-budget
   suites; explicit compatibility/security/performance/reproducibility reports;
-  release policy, checklist, rollback, draft notes, and Prompt 13 handoff.
+  release policy, checklist, rollback, draft notes, and beta-launch handoff.
 - A locked VS Code extension dependency graph, pinned VSIX packager, manifest
   consistency test, and removal of two unimplemented editor settings. Generated
   Mach-O binaries are no longer tracked in source control.
@@ -81,12 +89,12 @@ The public API may evolve before the 1.0 release.
   batch-binding model with strict validation, metadata partition policy
   (authorization/tenant/routing never merged across callers), response-correlation
   modes, and a streaming lifecycle vocabulary is provided. Protocol contract
-  verification reuses the Prompt 08 harness. Network diagnostics use the `BW7xxx`
+  verification reuses the adapter harness. Network diagnostics use the `BW7xxx`
   range (BW71xx GraphQL, BW72xx gRPC, BW73xx HTTP/OpenAPI). Concrete gqlgen and
   grpc-go client integrations are contract-defined but deferred in this build
   (offline dependency); no new module dependencies were added. No universal
   GraphQL optimization, remote batch-method generation, or arbitrary HTTP request
-  fusion. See docs/limitations/prompt-09.md. ADRs 0052-0061.
+  fusion. See docs/limitations/network-adapters.md. ADRs 0052-0061.
 - Backend adapter SDK (`internal/adapter`) and the `batchweaver adapter`
   (`list`, `inspect`, `explain`, `verify`, `doctor`) command. It provides a
   versioned, deterministic manifest and closed capability model with no mutable
@@ -104,10 +112,10 @@ The public API may evolve before the 1.0 release.
   `BW5xxx`). The concrete pgx v5 and go-redis v9 client bindings are
   contract-defined but deferred in this build (offline dependency); no arbitrary
   SQL transformation or automatic write synthesis. See
-  docs/limitations/prompt-08.md. ADRs 0042-0051.
+  docs/limitations/backend-adapters.md. ADRs 0042-0051.
 - Runtime call lowering and the public `bridge` package (ABI
   `batchweaver.bridge/v1alpha1`). Certified scalar calls are rewritten to a typed,
-  reflection-free `bridge.Operation.Call` that routes through the Prompt 03 runtime
+  reflection-free `bridge.Operation.Call` that routes through the typed runtime
   when a scope with an installed bound operation is active and otherwise calls the
   scalar function directly (exact fallback). The same lowering covers standalone,
   loop, straight-line sibling, and existing goroutine/errgroup fan-out call sites
@@ -123,10 +131,10 @@ The public API may evolve before the 1.0 release.
   `runtime inspect`. `transform plan`, `build`, `test`, and `run` gain a
   `--strategy` selector, and build/test/run separate BatchWeaver flags from Go
   arguments with `--`. Every lowered operation still requires a declared batch
-  provider; no backend batch synthesis. See docs/limitations/prompt-07.md.
+  provider; no backend batch synthesis. See docs/limitations/runtime-lowering.md.
 - Transformation engine (`internal/transform`, `internal/gocommand`) and the
   `batchweaver transform` (plan, diff, inspect, verify, materialize, revert,
-  clean, recover) and `build`, `test`, `run` commands. It consumes Prompt 05 proof
+  clean, recover) and `build`, `test`, `run` commands. It consumes semantic proof
   certificates and performs the first production transformation — static
   slice/array loop prefetch for a certified read-only operation with an ordered,
   global-error batch provider: typed key collection in source order, a single
@@ -139,7 +147,7 @@ The public API may evolve before the 1.0 release.
   reversible with a backup manifest, conflict-aware revert, and idempotent
   recovery. Added an end-to-end `examples/static-prefetch` package with a semantic
   equivalence harness. Supports a certified subset of read-only slice/array loops
-  only; see docs/limitations/prompt-06.md.
+  only; see docs/limitations/transformation.md.
 - Semantic proof engine (`internal/proof`) and the `batchweaver prove`,
   `candidate inspect`, `proof inspect|explain|graph`, `assumption list`, and
   `strategy list|inspect` commands. The engine consumes the analysis snapshot and

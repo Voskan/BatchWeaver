@@ -451,7 +451,7 @@ func TestBindRejectsMemoizationOnWrite(t *testing.T) {
 	e := mustEngine(t)
 	defer func() { _ = e.Close(context.Background()) }()
 	// A non-idempotent write cannot enable memoization; binding validation must
-	// reject it. (Prompt 02 spec validation already rejects in-flight dedup on
+	// reject it. (Operation-spec validation already rejects in-flight dedup on
 	// writes, so that unsafe combination cannot even be constructed.)
 	spec := operation.MustNewSpec(operation.MustParseID("orders.create"), operation.NonIdempotentWrite())
 	_, err := Bind(e, specDecl{spec}, Binding[int, int]{

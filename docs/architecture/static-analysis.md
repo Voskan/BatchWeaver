@@ -26,8 +26,8 @@ package and analysis problems are reported as diagnostics in the snapshot.
 
 ## Package boundaries
 
-All analysis code is internal (`internal/analysis`) and depends on the Prompt 02
-contracts, configuration, and diagnostics — never on the Prompt 03 runtime and
+All analysis code is internal (`internal/analysis`) and depends on the operation
+contracts, configuration, and diagnostics — never on the batching runtime and
 never on command packages. No `go/types` or SSA value is exposed as a public API.
 
 ## Immutable snapshot
@@ -57,7 +57,7 @@ type errors become `BW3000` diagnostics rather than being dropped.
 ## Declaration discovery
 
 Operations are discovered from two sources today: **typed declarations** (calls
-to the Prompt 02 `MustDeclare*`/`Declare*` helpers, found by AST inspection and
+to the `MustDeclare*`/`Declare*` helpers, found by AST inspection and
 resolved via type information — never executed) and **configuration** (the Prompt
 02 loader). Sources are merged with provenance; configuration overrides typed
 declarations, and disagreements produce conflict diagnostics.

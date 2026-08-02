@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-// TestNoGoplsInternalImports enforces the Prompt 11 architectural rule that the
+// TestNoGoplsInternalImports enforces the editor architecture rule that the
 // editor, LSP, and daemon layers must not import gopls internal packages. The
 // proxy composes gopls only over the public LSP wire protocol. See
 // docs/adr/0072-standalone-lsp-server.md.

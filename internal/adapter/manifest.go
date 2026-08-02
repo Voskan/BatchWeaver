@@ -38,7 +38,7 @@ const (
 	CapMGet                  Capability = "mget"
 	CapHMGet                 Capability = "hmget"
 
-	// Network protocol capabilities (Prompt 09).
+	// Network protocol capabilities.
 	CapGraphQLOperationScope  Capability = "graphql-operation-scope"
 	CapGraphQLResolverWave    Capability = "graphql-resolver-wave"
 	CapGraphQLSelectionNorm   Capability = "graphql-selection-normalization"

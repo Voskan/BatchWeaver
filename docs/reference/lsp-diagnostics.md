@@ -2,7 +2,7 @@
 
 Editor/LSP-layer diagnostics occupy the `BW9xxx` range, kept distinct from
 analysis (`BW3xxx`), proof (`BW5xxx`), backend adapter (`BW6xxx`), network
-adapter (`BW7xxx`), and adaptive (`BW8xxx`) codes. The Prompt 11 specification
+adapter (`BW7xxx`), and adaptive (`BW8xxx`) codes. The editor specification
 illustrated these in the `BW8xxx` range, which the adaptive layer already owns;
 they are renumbered here into `BW9xxx` to preserve the repository rule that
 diagnostic ranges are distinct per stage.

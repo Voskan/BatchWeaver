@@ -29,8 +29,8 @@ analysis and proof schema versions.
 | Field | Meaning |
 | --- | --- |
 | `id` | transformation ID (`bwtransform_…`) |
-| `candidate_id` | Prompt 04 candidate ID |
-| `certificate_id` | Prompt 05 proof certificate ID |
+| `candidate_id` | analysis candidate ID |
+| `certificate_id` | semantic proof certificate ID |
 | `strategy` | `static-loop-prefetch` |
 | `operation` | operation ID |
 | `source` | anchor (file, package, function, range, structural hash, resolution) |

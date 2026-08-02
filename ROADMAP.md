@@ -60,14 +60,14 @@ rewritten. **Completed.**
 
 Typed, reflection-free runtime bridge ABI (`bridge` package); lowering of
 certified scalar calls into `bridge.Operation.Call` for standalone, sibling, and
-existing goroutine/errgroup fan-out call sites, coalescing through the Prompt 03
+existing goroutine/errgroup fan-out call sites, coalescing through the typed
 runtime with a guaranteed scalar fallback; context/cancellation/deadline/partition
 and error preservation; explicit batching barriers; an overlay-first `-toolexec`
 driver with recursion prevention and `tool-exec doctor`/`explain`; and
 `runtime inspect`/`barrier inspect`. Runtime lowering reuses the Phase 6 IR,
 overlays, and materialization. No backend batch synthesis. **Completed.**
 
-Prompt 08 targets the provider/adapter SDK and the first production backend
+The backend-adapter phase targets the provider/adapter SDK and the first production backend
 adapters (`database/sql`/pgx, Redis), covered by the adapter phase below.
 
 ## Phase 8 — Verification engine
@@ -83,14 +83,14 @@ SQL parser with exact-key PostgreSQL read synthesis; a typed reflection-free
 pipeline mapping; and scalar/batch contract verification. Concrete pgx and
 go-redis client bindings are contract-defined but deferred (offline dependency).
 
-Prompt 09 delivered the network protocol layer: a fully implemented HTTP explicit
+The network-adapter phase delivered a fully implemented HTTP explicit
 batch adapter (net/http + typed JSON envelopes + OpenAPI x-batchweaver binding),
 GraphQL resolver-wave analysis with a real query parser and one-scope-per-operation
 semantics, an explicit gRPC batch-binding and metadata policy layer, and protocol
 contract verification. Concrete gqlgen and grpc-go client integrations are
 contract-defined but deferred (offline dependency).
 
-Prompt 10 delivered the adaptive scheduling and production tuning layer:
+The adaptive phase delivered the scheduling and production tuning layer:
 privacy-safe workload profiling, a versioned cost model, a bounded and
 explainable controller (adaptive `max_wait`, `max_batch_size`, concurrency, chunk
 size, and execution mode) with shadow/active modes, SLO guardrails, and automatic
@@ -103,13 +103,13 @@ observability exporter bindings remain a documented follow-up.
 
 ## Phase 10 — Observability and adaptive scheduling
 
-Adaptive scheduling shipped in Prompt 10. The remaining work in this phase is
+Adaptive scheduling is implemented. The remaining work in this phase is
 concrete metrics, tracing, and dashboard exporter bindings for the adaptive
 layer's already-specified, bounded-label telemetry.
 
 ## Phase 11 — IDE integration
 
-Prompt 11 delivered the editor and interactive developer-experience layer: a
+The editor phase delivered the interactive developer-experience layer: a
 standalone LSP server, an optional gopls-compatible proxy, a local workspace
 daemon, unsaved-buffer overlays, live batching diagnostics, proof-aware code
 actions and lenses, hover, transformation previews, `batchweaver editor doctor`,

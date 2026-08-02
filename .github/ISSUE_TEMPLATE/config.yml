@@ -1,11 +1,9 @@
 ---
 blank_issues_enabled: false
 contact_links:
-  - name: Question or design discussion
-    url: https://github.com/Voskan/BatchWeaver/discussions
-    about: >-
-      Ask usage or design questions in Discussions (once enabled). Please do not
-      open an issue for open-ended questions.
+  - name: Support policy
+    url: https://github.com/Voskan/BatchWeaver/blob/main/SUPPORT.md
+    about: Choose the correct public or private support channel.
   - name: Report a security vulnerability
     url: https://github.com/Voskan/BatchWeaver/security/advisories/new
     about: >-

@@ -13,7 +13,7 @@ import (
 	"github.com/Voskan/BatchWeaver/operation"
 )
 
-// declareFuncs are the Prompt 02 typed declaration helpers recognized statically.
+// declareFuncs are the typed declaration helpers recognized statically.
 var declareFuncs = map[string]struct{}{
 	"MustDeclareMethod": {}, "DeclareMethod": {},
 	"MustDeclareFunction": {}, "DeclareFunction": {},

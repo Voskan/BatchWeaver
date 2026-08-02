@@ -1,6 +1,6 @@
 # Release Readiness Report
 
-Candidate recommendation: `0.1.0-rc.1`. Source identity is the clean commit that
+Local snapshot recommendation: `0.1.0-beta.1`. Source identity is the clean commit that
 contains this report and is recorded exactly in the generated release manifest.
 No tag or publication has occurred.
 
@@ -19,7 +19,7 @@ No tag or publication has occurred.
 | Artifacts and installation smoke | PASS | Digest, layout, native version/help, SBOM, provenance, and VSIX checks |
 | Reproducibility | PASS in declared scope | Two isolated outputs compare byte-for-byte under fixed Go/Node toolchains |
 
-Recommendation: the source is suitable for an unpublished release-candidate
+Recommendation: the source is suitable for an unpublished beta
 snapshot under the declared toolchains. Public publication is not ready until an
 authorized maintainer verifies hosted branch protection, required CI checks, and
 a real VS Code Extension Host smoke; see `KNOWN-ISSUES.md`.

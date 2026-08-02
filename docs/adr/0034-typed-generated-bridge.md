@@ -5,7 +5,7 @@
 
 ## Context
 
-The generated bridge must integrate with the typed Prompt 03 runtime without reflection on the call path.
+The generated bridge must integrate with the typed runtime without reflection on the call path.
 
 ## Decision
 
