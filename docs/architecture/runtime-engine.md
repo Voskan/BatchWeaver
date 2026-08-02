@@ -1,8 +1,8 @@
 # Runtime Engine
 
 The runtime (`runtime`, imported as `batchruntime`) is BatchWeaver's explicit,
-typed request-coalescing execution layer. It is invoked through typed handles;
-it does not yet intercept scalar calls automatically.
+typed request-coalescing execution layer. Applications may invoke it through
+typed handles, and proven compiler transformations target it through `bridge`.
 
 ## Ownership
 
@@ -72,8 +72,9 @@ In-flight deduplication collapses overlapping same-key work within a partition;
 scope memoization reuses a completed read result later within a scope. They are
 separate layers. See [../concepts/deduplication.md](../concepts/deduplication.md).
 
-## Future compiler integration
+## Compiler integration
 
-Later prompts will discover eligible scalar call sites and rewrite them to call
-`BoundOperation.Do` — the same low-overhead, reflection-free path used here — so
-the runtime is the stable target for generated code.
+The compiler discovers eligible scalar call sites and rewrites proven candidates
+through a typed `bridge.Operation`. The bridge resolves the bound operation and
+uses the same reflection-free `BoundOperation.Do` path described here, with a
+direct scalar fallback when no compatible binding is available.

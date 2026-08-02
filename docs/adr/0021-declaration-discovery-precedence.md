@@ -5,7 +5,7 @@
 
 ## Context
 
-Operations can be declared through Prompt 02 typed declarations and
+Operations can be declared through typed declarations and
 configuration. Discovery must unify them deterministically, statically, and
 without executing user code.
 
@@ -13,7 +13,7 @@ without executing user code.
 
 - Typed declarations are discovered by inspecting the AST for calls to the Prompt
   02 `Declare*`/`MustDeclare*` helpers, resolving operands via type information.
-- Configuration declarations reuse the Prompt 02 loader; no second parser is
+- Configuration declarations reuse the canonical loader; no second parser is
   created.
 - Sources merge with provenance. Configuration overrides typed declarations, and
   disagreements produce conflict diagnostics rather than silent merges.

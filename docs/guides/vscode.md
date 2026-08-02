@@ -1,7 +1,7 @@
 # VS Code setup
 
-The BatchWeaver extension source lives in `editors/vscode`. It is distributed as
-source in this release (not published to the Marketplace).
+The BatchWeaver extension source lives in `editors/vscode`. The beta VSIX is a
+verified GitHub Release asset; it is not published to the Marketplace.
 
 ## Build and install
 

@@ -6,7 +6,7 @@ driver observes compile actions and delegates every tool faithfully.
 
 ## Why overlay-first
 
-The overlay is the single source of transformation truth (Prompt 06). The
+The overlay is the single source of transformation truth. The
 `-toolexec` driver does not maintain a second transformation engine; it provides
 an integration hook, recursion safety, and environment hygiene. See
 [ADR 0037](../adr/0037-toolexec-overlay-first.md).

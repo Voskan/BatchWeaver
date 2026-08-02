@@ -1,28 +1,48 @@
 # Release Policy
 
-BatchWeaver follows Semantic Versioning. Before 1.0, minor releases may contain
-reviewed breaking changes; patch releases preserve supported public APIs and
-versioned artifact decoders. Deprecations should remain for at least one minor
-release unless retaining them would create a security or semantic-safety defect.
+BatchWeaver follows Semantic Versioning and never moves, rewrites, or reuses a
+published tag. Versions below v1 are prerelease and may make reviewed breaking
+changes with migration notes. A stable v1 release begins the compatibility
+policy described in the API-freeze decision.
 
-The first recommended candidate is `0.1.0-rc.1`. No tag has been selected or
-published. The recommendation reflects the absence of prior tags and the broad
-but pre-stable feature surface. Stable 1.0 requires a proven compatibility
-window, supported concrete adapter bindings, repeated clean release runs, and
-maintainer approval.
+## Current version
 
-Go 1.26.5 is the sole supported toolchain for this candidate. Security patch
-updates within Go 1.26 require a reviewed dependency/toolchain change. Supported
+The current public beta is `v0.1.0-beta.1`. It is distributed by an immutable
+Git tag and prerelease GitHub Release, including platform archives, checksums,
+SBOMs, local provenance statements, and a VSIX. The Go module uses the same tag.
+
+Beta publication requires green mandatory workflows, verified repository
+identity and permissions, checksums, SBOMs, provenance limitations, installation
+tests, security reporting, rollback, and a factual release decision. Snapshot
+commands cannot publish; the separately confirmed publish helper uploads only
+manifest-declared assets from the exact immutable tag.
+
+## Stable release
+
+Stable `v1.0.0` requires all mandatory criteria in the
+[stable-release decision](v1.0.0/stable-release-decision.md). In particular, a
+published prerelease evidence period, supported-platform installation, migration
+tests, API-freeze approval, security reporting, and governance approval cannot
+be replaced by local test success.
+
+## Compatibility
+
+Go 1.26.5 is the sole tested toolchain for the current candidate. Supported
 platforms and integrations are exactly those in `release/compatibility.json`.
-An untested combination is never promoted to supported-and-tested.
+Untested combinations remain untested.
 
-Configuration, runtime ABI, proof, transform, daemon, LSP extension, and release
-manifest versions are compatibility surfaces. Decoders reject unknown versions
-unless a deterministic migration is explicitly documented and tested.
+Configuration, diagnostic JSON, bridge ABI, proof, transform, daemon, profile,
+adapter, editor, and release-manifest versions are independent compatibility
+surfaces. Unknown versions fail closed unless a tested migration explicitly
+supports them.
 
-Release authority belongs to the maintainer identified by CODEOWNERS. Snapshot
-commands cannot publish. Tags, GitHub Releases, Marketplace packages, and package
-manager changes require explicit approval in the release execution context.
-Security releases use GitHub Security Advisories as documented in `SECURITY.md`.
-Artifacts are retained according to the hosting channel's policy; superseded or
-bad artifacts follow the rollback plan.
+## Authority and channels
+
+Release authority belongs to the maintainer identified by CODEOWNERS and
+GOVERNANCE.md. Tags, GitHub Releases, module-proxy publication, Marketplace
+packages, Pages deployment, and package-manager metadata require explicit
+release approval and verified credentials. Security releases use the private
+advisory process in SECURITY.md.
+
+Post-v1 patch, minor, security, dependency, backport, and retention procedures
+are defined in [maintainer release procedures](../maintainers/release-procedures.md).

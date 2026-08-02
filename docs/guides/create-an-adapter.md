@@ -1,7 +1,7 @@
 # Create an adapter
 
 An adapter is described by a versioned manifest and provides a runtime batch
-provider that satisfies the Prompt 03 contract.
+provider that satisfies the typed runtime contract.
 
 1. Declare a `Manifest` with a stable adapter ID, version, runtime ABI, and only
    implemented capabilities from the closed vocabulary. Compute its digest.

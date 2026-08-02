@@ -38,6 +38,8 @@ linters:
         - fmt.Fprintln
   exclusions:
     generated: lax
+    paths:
+      - editors/vscode/node_modules
     rules:
       # Test files may omit some exported-doc requirements and are less strict.
       - path: _test\.go

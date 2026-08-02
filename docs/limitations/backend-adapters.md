@@ -1,4 +1,4 @@
-# Adapter limitations (this stage)
+# Backend Adapter Limitations
 
 This stage delivers the adapter SDK, exact-key PostgreSQL synthesis over the
 standard library, the Redis cluster slot algorithm, and contract verification —

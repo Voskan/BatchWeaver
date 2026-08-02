@@ -1,4 +1,4 @@
-# Limitations — Prompt 10 (adaptive scheduling and production tuning)
+# Adaptive Scheduling Limitations
 
 ## Implemented
 
@@ -22,7 +22,7 @@ reports; `BW8xxx` diagnostics; CLI, configuration, docs, ADRs, and tests.
 - Cross-process or distributed batching; distributed consensus; a global
   multi-datacenter scheduler; a remote SaaS control plane.
 - Automatic infrastructure scaling; a Kubernetes operator; a service mesh.
-- Arbitrary recursive program transformation without a Prompt 05 proof.
+- Arbitrary recursive program transformation without a semantic proof.
 - Automatic production activation without explicit configuration.
 
 ## Honest notes on this build

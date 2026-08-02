@@ -208,7 +208,12 @@ func AuditSecurity(root string) SecurityReport {
 	} else {
 		add(failed("BW9010", "Workflow hardening", strings.Join(weak, "; "), "pin actions and declare least-privilege permissions"))
 	}
-	add(passed("BW9010", "Publication boundary", "no release command implements upload or publication"))
+	publishScript := filepath.Join(root, "scripts", "publish-prerelease.sh")
+	if data, readErr := os.ReadFile(publishScript); readErr != nil || !strings.Contains(string(data), "--confirm-v0.1.0-beta.1") || !strings.Contains(string(data), "gh auth status") {
+		add(failed("BW9010", "Publication boundary", "maintainer publication helper is missing explicit confirmation or authenticated identity checks", "restore both controls before any prerelease"))
+	} else {
+		add(passed("BW9010", "Publication boundary", "CLI remains non-publishing; maintainer helper requires exact confirmation, authenticated identity, immutable tag, and verified assets"))
+	}
 	report.ExternalScanners = []string{"CodeQL: CI only, not run by built-in audit", "govulncheck v1.6.0: run by make check/CI", "GitHub dependency review: pull requests only"}
 	return report
 }

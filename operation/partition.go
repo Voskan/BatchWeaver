@@ -169,7 +169,7 @@ func (r ReceiverPolicy) String() string { return enumString(r, receiverPolicyNam
 func (r ReceiverPolicy) Valid() bool { return int(r) < len(receiverPolicyNames) }
 
 // MissingDimensionBehavior describes what happens when a required partition
-// dimension cannot be extracted at runtime (extraction is implemented later).
+// dimension cannot be extracted at runtime.
 type MissingDimensionBehavior uint8
 
 const (
@@ -194,8 +194,8 @@ var ErrInvalidPartitionContract = errors.New("invalid partition contract")
 
 // PartitionContract describes how callers are isolated into separate batches.
 // Its security invariants prevent semantically or security-incompatible callers
-// from sharing a batch. Extraction of dimension values and runtime enforcement
-// are implemented in later prompts.
+// from sharing a batch. Runtime bindings enforce the resulting partition
+// identity before requests enter a shared queue.
 type PartitionContract struct {
 	scope               Scope
 	required            []PartitionDimension

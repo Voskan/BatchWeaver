@@ -12,7 +12,7 @@
 - [ ] Reproduction succeeds under the declared environment.
 - [ ] Known issues and release notes are approved.
 
-## Publication (unauthorized in Prompt 12)
+## Publication (requires explicit authorization)
 
 - [ ] Maintainer explicitly authorizes the version and tag.
 - [ ] Protected release environment approves signing and provenance.

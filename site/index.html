@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="BatchWeaver is a proof-gated Go batching compiler and typed request-coalescing runtime for safe N+1 optimization.">
+  <title>BatchWeaver @@VERSION@@</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header><nav aria-label="Main"><a href="#start">Getting started</a><a href="#safety">Safety</a><a href="#compatibility">Compatibility</a><a href="#adopt">Adoption</a><a href="#community">Community</a></nav></header>
+  <main id="main">
+    <p class="eyebrow">Public beta · @@VERSION@@ · source @@COMMIT@@</p>
+    <h1>Proof-gated semantic batching for Go</h1>
+    <p class="lead">BatchWeaver finds supported scalar access patterns, proves a conservative transformation, previews the diff, and runs transformed tests through an overlay before source changes are considered.</p>
+    <aside><strong>Beta:</strong> APIs may change. Review every diff and run your full suite. Unsupported patterns remain scalar.</aside>
+
+    <section id="start"><h2>Five-minute start</h2><pre><code>go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v0.1.0-beta.1
+batchweaver version
+batchweaver doctor
+batchweaver scan ./...
+batchweaver transform plan ./...
+batchweaver test -- -race ./...</code></pre><p>The command pins the immutable beta tag. Importable package documentation and compile-tested examples are available on <a href="https://pkg.go.dev/github.com/Voskan/BatchWeaver">pkg.go.dev</a>.</p></section>
+
+    <section id="safety"><h2>Safety model</h2><div class="grid"><article><h3>Proof first</h3><p>No supported transformation proceeds without explicit proof obligations. Unknowns are rejections, not optimism.</p></article><article><h3>Preview first</h3><p>Source is unchanged by default. Plans, diffs, overlays, type checking, and transformed tests precede materialization.</p></article><article><h3>Boundaries preserved</h3><p>Ordering, errors, cancellation, deadlines, partitions, authorization, transactions, and result contracts are part of eligibility.</p></article></div></section>
+
+    <section id="compatibility"><h2>Compatibility</h2><p>Go 1.26.5 is the supported toolchain. Native evidence is strongest on macOS arm64. Linux amd64/arm64, macOS amd64, and Windows amd64 archives are cross-built and verified with the limitations recorded in the matrix.</p><p><a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/release/compatibility.md">Compatibility matrix</a> · <a href="https://github.com/Voskan/BatchWeaver/blob/main/KNOWN-ISSUES.md">Known issues</a> · <a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/architecture/overview.md">Architecture</a></p></section>
+
+    <section id="adopt"><h2>Adopt conservatively</h2><ol><li>Evaluate in a non-production clone.</li><li>Run scan and proof reports.</li><li>Add explicit providers only for verified contracts.</li><li>Preview and test through overlays.</li><li>Use shadow verification, canaries, budgets, and a rehearsed rollback.</li></ol><p><a href="https://github.com/Voskan/BatchWeaver/tree/main/docs/adoption">Adoption and migration guides</a> · <a href="https://github.com/Voskan/BatchWeaver/tree/main/examples">Runnable examples</a> · <a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/release/performance-report.md">Benchmark methodology</a></p></section>
+
+    <section id="community"><h2>Community and security</h2><p>Use structured issues for reproducible bugs, transformation safety reports, compatibility, performance, documentation, and beta feedback. Never include credentials or production data.</p><p><a href="https://github.com/Voskan/BatchWeaver/issues/new/choose">Issue forms</a> · <a href="https://github.com/Voskan/BatchWeaver/security/policy">Private security instructions</a> · <a href="https://github.com/Voskan/BatchWeaver/blob/main/CONTRIBUTING.md">Contributing</a> · <a href="https://github.com/Voskan/BatchWeaver/blob/main/SUPPORT.md">Support</a></p></section>
+  </main>
+  <footer><p>Apache-2.0 · No source upload or remote telemetry by default · <a href="https://github.com/Voskan/BatchWeaver">GitHub</a></p></footer>
+</body>
+</html>

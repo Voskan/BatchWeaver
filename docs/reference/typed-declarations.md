@@ -2,8 +2,8 @@
 
 Typed declarations connect an operation spec to concrete scalar and batch
 implementations, with full type safety and no global registration. Declaring an
-operation does not intercept or batch calls yet; it defines the contract that
-later compiler and runtime prompts will use.
+operation has no runtime side effects; the analyzer discovers the declaration
+and the compiler uses it only for call sites that pass semantic proof.
 
 ## Function types
 
@@ -46,7 +46,7 @@ var GetUserOperation = batchweaver.MustDeclareMethod(
 ```
 
 A package-level `var` assigned from `MustDeclareMethod`/`MustDeclareFunction` is
-the shape a future analyzer discovers statically. Do not wrap declarations in
+the shape the analyzer discovers statically. Do not wrap declarations in
 aliases or helpers that obscure this shape.
 
 ## Building responses

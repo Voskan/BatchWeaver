@@ -7,10 +7,10 @@
 // cancellation, caller deadlines, per-item outcomes, and deterministic lifecycle
 // behavior.
 //
-// The runtime is invoked explicitly. It does not yet intercept scalar calls
-// automatically, discover call sites, transform source, or synthesize backend
-// APIs; those belong to later compiler prompts. This package is the target that
-// generated code will eventually call without reflection.
+// Applications may invoke the runtime explicitly. BatchWeaver's compiler can
+// also discover proven call sites and lower them through the typed bridge
+// package to this runtime without reflection. The runtime does not itself scan
+// or rewrite source and never synthesizes a provider.
 //
 // # Design
 //

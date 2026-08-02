@@ -1,40 +1,26 @@
-# Future Compiler Pipeline
+# Compiler Pipeline
 
-> Status: future architecture target. None of the stages below are implemented.
-> This document records the intended design so that the foundation does not
-> preclude it.
+> This path is retained for historical links. The pipeline described here is
+> implemented; current architecture is summarized in [overview.md](overview.md).
 
-The compiler is planned as the following ordered stages. Each stage consumes the
-output of the previous one.
+The compiler executes ordered, independently testable stages:
 
-1. **Package discovery** — enumerate the Go packages in scope, using
-   `go/packages` for accurate build and type information.
-2. **Symbol indexing** — build an index of declarations, call sites, and types
-   to support later analysis.
-3. **Operation declaration loading** — load the typed declarations that pair
-   scalar operations with their batch equivalents.
-4. **SSA construction** — build a static single-assignment form of the relevant
-   functions for precise data-flow analysis.
-5. **Effect and independence analysis** — determine side effects and whether
-   iterations are independent, which governs batching safety.
-6. **Batch candidate detection** — identify call sites and loops that are
-   candidates for batching.
-7. **Semantic validation** — confirm that a candidate transformation preserves
-   observable behavior.
-8. **Optimization planning** — choose which candidates to transform and select a
-   strategy for each.
-9. **Typed transformation** — generate typed bindings and rewrite call sites (or
-   integrate with the build) to use batch operations.
-10. **Generated-code verification** — verify that generated code type-checks and
-    behaves equivalently.
-11. **Standard Go compilation** — hand the result to the standard Go toolchain,
-    preserving compatibility.
+1. package discovery and loading with `go/packages`;
+2. typed declaration and symbol indexing;
+3. SSA and conservative call-graph construction;
+4. effect summaries and structural candidate discovery;
+5. strategy-specific semantic proof obligations;
+6. deterministic proof certificates with source evidence;
+7. versioned transformation planning and source anchors;
+8. typed bridge generation and source/build overlays;
+9. type checking, transformed build/test/run, and source maps;
+10. optional atomic materialization, backup, recovery, and revert;
+11. execution through the typed runtime and explicit providers.
 
-## Design constraints these stages impose
+Unsupported shapes, incomplete call resolution, failed obligations, stale source
+anchors, or schema/ABI mismatches stop the pipeline with diagnostics. They do
+not produce partial rewrites.
 
-To keep these stages achievable, the foundation preserves the ability to use
-`go/packages`, `go/analysis`, SSA construction, source overlays, `-toolexec`
-integration, and profile-guided optimization. See
-[overview.md](overview.md) for the dependency direction and
-[package-boundaries.md](package-boundaries.md) for where this code will live
-(under `internal/`).
+Compiler implementation remains under `internal/`. Generated code depends on
+the public `bridge`, root contracts, `operation`, and `runtime` packages rather
+than AST, SSA, or transformation implementation types.

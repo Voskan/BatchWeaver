@@ -1,0 +1,19 @@
+name: Documentation issue
+description: Report an inaccurate, broken, inaccessible, or missing document
+title: "[Docs]: "
+labels: ["kind/docs"]
+body:
+  - type: input
+    id: location
+    attributes: {label: Page or file URL}
+    validations: {required: true}
+  - type: textarea
+    id: problem
+    attributes: {label: "What is inaccurate or difficult?"}
+    validations: {required: true}
+  - type: textarea
+    id: correction
+    attributes: {label: Suggested correction or acceptance criteria}
+  - type: input
+    id: version
+    attributes: {label: BatchWeaver version, if relevant}

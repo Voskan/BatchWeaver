@@ -1,8 +1,7 @@
 # Foundational Domain Model
 
-This document describes the contracts introduced in the foundational phase. They
-are data and type safety only: nothing here intercepts calls, schedules work, or
-performs batching.
+This document describes the contracts at the base of BatchWeaver. Constructing
+them is side-effect free; the compiler and runtime consume them in later layers.
 
 ## Package dependency direction
 
@@ -50,11 +49,11 @@ per-item errors. See [ADR 0005](../adr/0005-canonical-batch-request-response.md)
 
 `FunctionDeclaration` and `MethodDeclaration` connect a spec to concrete
 implementations. They perform no global registration; the canonical shape is a
-package-level `var` from `MustDeclareMethod`, which a future analyzer can
-discover statically. See [ADR 0008](../adr/0008-declarations-without-global-registration.md).
+package-level `var` from `MustDeclareMethod`, which the analyzer discovers
+statically. See [ADR 0008](../adr/0008-declarations-without-global-registration.md).
 
-## Future integration points
+## Integration points
 
-- A compiler analyzer will discover declarations and eligible call sites.
-- A runtime will consume specs to coalesce, schedule, and distribute batched work.
-- Adapters will depend on stable extension interfaces rather than internal types.
+- The compiler analyzer discovers declarations and eligible call sites.
+- The runtime consumes specs to coalesce, schedule, and distribute batched work.
+- Adapters depend on versioned contracts rather than compiler implementation types.

@@ -1,7 +1,7 @@
 schema: batchweaver.release-config/v1alpha1
 mode: snapshot
 publish: false
-version_recommendation: 0.1.0-rc.1
+version_recommendation: 0.1.0-beta.1
 toolchain: go1.26.5
 targets:
   - linux/amd64

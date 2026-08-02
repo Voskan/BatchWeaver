@@ -33,4 +33,4 @@ attacks. Overflow decisions are made serially by the coordinator.
 
 ## Compatibility
 
-Maps Prompt 02 overflow behavior to runtime policies.
+Maps operation overflow behavior to runtime policies.

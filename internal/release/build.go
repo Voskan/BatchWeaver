@@ -121,7 +121,7 @@ func Build(opts BuildOptions) (*Manifest, error) {
 			return nil, err
 		}
 		entries := append([]archiveEntry{{name: binaryName, data: binary, mode: 0o755}}, common...)
-		base := fmt.Sprintf("batchweaver_%s_%s", target.GOOS, target.GOARCH)
+		base := fmt.Sprintf("batchweaver_%s_%s_%s", opts.Version, target.GOOS, target.GOARCH)
 		archivePath := filepath.Join(out, base+".tar.gz")
 		if target.GOOS == "windows" {
 			archivePath = filepath.Join(out, base+".zip")
@@ -151,7 +151,7 @@ func Build(opts BuildOptions) (*Manifest, error) {
 	sourceArtifact.Reproducibility = "byte-reproducible-from-identical-index"
 	manifest.Artifacts = append(manifest.Artifacts, sourceArtifact)
 
-	vsixPath := filepath.Join(out, "batchweaver-vscode.vsix")
+	vsixPath := filepath.Join(out, "batchweaver-vscode-"+opts.Version+".vsix")
 	if err := buildVSIX(root, vsixPath, opts.SourceDate); err != nil {
 		return nil, fmt.Errorf("VSIX packaging: %w", err)
 	}
@@ -173,7 +173,7 @@ func Build(opts BuildOptions) (*Manifest, error) {
 		{"release/performance-budgets.json", "reports/performance.json", "performance-policy"},
 		{"docs/release/reproducibility-report.md", "reports/reproducibility.md", "reproducibility-report"},
 		{"KNOWN-ISSUES.md", "KNOWN-ISSUES.md", "known-issues"},
-		{"docs/release/release-notes-0.1.0-rc.1.md", "RELEASE-NOTES.md", "release-notes"},
+		{"docs/release/release-notes-" + opts.Version + ".md", "RELEASE-NOTES.md", "release-notes"},
 		{"docs/release/release-checklist.md", "RELEASE-CHECKLIST.md", "release-checklist"},
 	}
 	for _, report := range reports {
@@ -635,14 +635,14 @@ func writeProvenance(manifest *Manifest, path string) error {
 	return writeJSON(path, statement)
 }
 
-const completionBash = `complete -W "version config operation scan prove candidate proof assumption strategy transform build test run runtime barrier tool-exec toolexec adapter graphql grpc http openapi profile tune fairness overload wave recursive lsp daemon editor verify compatibility security release help" batchweaver
+const completionBash = `complete -W "version doctor config operation scan prove candidate proof assumption strategy transform build test run runtime barrier tool-exec toolexec adapter graphql grpc http openapi profile tune fairness overload wave recursive lsp daemon editor verify compatibility security release help" batchweaver
 `
 const completionZsh = `#compdef batchweaver
-_arguments '1:command:(version config operation scan prove candidate proof assumption strategy transform build test run runtime barrier tool-exec toolexec adapter graphql grpc http openapi profile tune fairness overload wave recursive lsp daemon editor verify compatibility security release help)'
+_arguments '1:command:(version doctor config operation scan prove candidate proof assumption strategy transform build test run runtime barrier tool-exec toolexec adapter graphql grpc http openapi profile tune fairness overload wave recursive lsp daemon editor verify compatibility security release help)'
 `
-const completionFish = `complete -c batchweaver -f -a 'version config operation scan prove candidate proof assumption strategy transform build test run runtime barrier tool-exec toolexec adapter graphql grpc http openapi profile tune fairness overload wave recursive lsp daemon editor verify compatibility security release help'
+const completionFish = `complete -c batchweaver -f -a 'version doctor config operation scan prove candidate proof assumption strategy transform build test run runtime barrier tool-exec toolexec adapter graphql grpc http openapi profile tune fairness overload wave recursive lsp daemon editor verify compatibility security release help'
 `
-const completionPowerShell = `Register-ArgumentCompleter -Native -CommandName batchweaver -ScriptBlock { param($wordToComplete) 'version','config','operation','scan','prove','candidate','proof','assumption','strategy','transform','build','test','run','runtime','barrier','tool-exec','toolexec','adapter','graphql','grpc','http','openapi','profile','tune','fairness','overload','wave','recursive','lsp','daemon','editor','verify','compatibility','security','release','help' | Where-Object { $_ -like "$wordToComplete*" } }
+const completionPowerShell = `Register-ArgumentCompleter -Native -CommandName batchweaver -ScriptBlock { param($wordToComplete) 'version','doctor','config','operation','scan','prove','candidate','proof','assumption','strategy','transform','build','test','run','runtime','barrier','tool-exec','toolexec','adapter','graphql','grpc','http','openapi','profile','tune','fairness','overload','wave','recursive','lsp','daemon','editor','verify','compatibility','security','release','help' | Where-Object { $_ -like "$wordToComplete*" } }
 `
 const manPage = `.TH BATCHWEAVER 1 "" "BatchWeaver snapshot" "User Commands"
 .SH NAME

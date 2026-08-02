@@ -12,7 +12,7 @@ objects.
 ## Decision
 
 - Define a versioned transformation IR (`batchweaver.transform/v1alpha1`) that
-  references Prompt 04 identities and Prompt 05 certificates.
+  references analysis identities and semantic proof certificates.
 - Never serialize `token.Pos`, AST nodes, SSA values, `types.Object` pointers,
   process IDs, timestamps, or absolute machine paths in deterministic artifacts.
 - Use workspace-relative slash paths and content-addressed IDs (plan,

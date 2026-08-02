@@ -1,4 +1,4 @@
-# Transformation limitations (this stage)
+# Transformation Limitations
 
 The transformation stage delivers one production-quality strategy end to end.
 This document records what it does not yet do, so results are not overinterpreted.

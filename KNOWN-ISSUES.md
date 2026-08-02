@@ -1,75 +1,74 @@
 # Known Issues
 
-This file lists verified limitations for the proposed `0.1.0-rc.1` snapshot. It
-does not imply that the candidate has been published.
+These are verified limitations for the public `v0.1.0-beta.1` beta. No stable
+release is implied.
 
 ## BW-KI-001 — Concrete framework client bindings are absent
 
-- Severity: major
+- Severity: P2
 - Affected: pgx, go-redis, gqlgen, and grpc-go integrations
-- Impact: the framework-neutral contracts and verification logic exist, but
-  users must write an explicit binding; documentation must not claim turnkey
-  client integration.
+- Impact: framework-neutral contracts and verification logic exist, but users
+  must provide an explicit binding.
 - Workaround: use the Adapter SDK, `database/sql`, or `net/http` providers.
-- Tracking: roadmap, post-RC integration milestone
-- Release blocker: no, when the release notes and support matrix remain explicit
-- Disclosure: public
+- Stable blocker: yes until the supported v1 surface deliberately includes or
+  excludes each integration.
 
-## BW-KI-002 — VS Code host end-to-end test is not automated locally
+## BW-KI-002 — VS Code distribution is VSIX-only
 
-- Severity: major
-- Affected: VS Code extension installation and activation
-- Impact: lint, typecheck, manifest consistency, and VSIX contents are tested,
-  but a real headless Extension Host session has not been demonstrated.
-- Workaround: use the standalone LSP or install the local VSIX in a disposable
-  Extension Development Host before relying on it.
-- Tracking: Prompt 13 launch prerequisites
-- Release blocker: yes for Marketplace publication; no publication is authorized
-- Disclosure: public
+- Severity: P2
+- Impact: the VSIX installs and activates in a real VS Code Extension Host, but
+  it is not listed in the Visual Studio Marketplace.
+- Workaround: install the verified VSIX from the GitHub Release assets.
+- Stable blocker: marketplace distribution is not required; broader editor
+  compatibility evidence remains required before v1.
 
 ## BW-KI-003 — Shared daemon cache is not used by CLI/LSP analysis
 
-- Severity: minor
-- Affected: repeated editor and CLI analysis
-- Impact: correct results, but avoidable repeated analysis and memory use.
+- Severity: P3
+- Impact: results remain correct, but repeated analysis can consume avoidable
+  time and memory.
 - Workaround: run commands normally; no semantic behavior is affected.
-- Tracking: roadmap
-- Release blocker: no
-- Disclosure: public
+- Stable blocker: no when documented.
 
-## BW-KI-004 — LSP transformation application remains preview-first
+## BW-KI-004 — Editor transformation application is preview-first
 
-- Severity: minor
-- Affected: editor transformation workflow
-- Impact: the editor previews a transformation and directs users to the CLI;
-  it does not apply a full version-preconditioned WorkspaceEdit.
-- Workaround: use `batchweaver transform diff` and `materialize`.
-- Tracking: roadmap
-- Release blocker: no
-- Disclosure: public
+- Severity: P3
+- Impact: the editor previews transformations and directs users to the CLI; it
+  does not apply a full version-preconditioned `WorkspaceEdit`.
+- Workaround: use `batchweaver transform diff` and explicit materialization.
+- Stable blocker: no when documented.
 
-## BW-KI-005 — Hosted branch-protection state was not authenticated
+## BW-KI-005 — Hosted provenance is unavailable
 
-- Severity: major
-- Affected: GitHub release authorization and required-check enforcement
-- Impact: CODEOWNERS, least-privilege workflows, and repository policies are
-  reviewable in Git, but the GitHub branch-protection API returned 401 without an
-  authenticated maintainer token, so hosted enforcement was not verified.
-- Workaround: an authorized maintainer must inspect main-branch rules and required
-  checks before approving publication.
-- Tracking: Prompt 13 launch checklist
-- Release blocker: yes for public publication; snapshot construction remains local
-- Disclosure: public
+- Severity: P2 for beta, P1 for a stronger stable supply-chain claim
+- Impact: release manifests contain local unsigned provenance statements, not a
+  hosted SLSA attestation.
+- Workaround: verify the immutable tag, `SHA256SUMS`, SBOMs, and reproducible
+  artifacts.
+- Stable blocker: policy decision required before v1.
 
-## BW-KI-006 — Superseded dependency update pull requests remain open
+## BW-KI-006 — Beta artifacts and tag are unsigned
 
-- Severity: informational
-- Affected: GitHub Actions dependencies
-- Impact: six Dependabot pull requests were open during the audit. Prompt 12
-  independently verified and pinned current action releases, so those branches
-  may now be stale or partially superseded.
-- Workaround: review CI results and close or rebase pull requests 1–6; do not
-  merge them mechanically over the reviewed pins.
-- Tracking: GitHub pull requests 1–6
-- Release blocker: no while current pinned checks pass without a known finding
-- Disclosure: public
+- Severity: P2 for beta
+- Impact: integrity is protected by immutable GitHub assets and SHA-256
+  checksums, but no configured signing identity exists.
+- Workaround: compare downloads with `SHA256SUMS` and verify the tag commit.
+- Stable blocker: signing policy must be explicitly resolved before v1.
+
+## BW-KI-008 — Go/toolchain compatibility is narrow
+
+- Severity: P2
+- Impact: Go 1.26.5 is the only supported toolchain for this beta; additional
+  Go and integration client versions remain untested.
+- Workaround: use the declared toolchain and compatibility matrix.
+- Stable blocker: broader approved compatibility evidence is required.
+
+## BW-KI-009 — Stable evidence period has not begun
+
+- Severity: P1 for v1 governance
+- Impact: the first published prerelease has no completed evidence period,
+  verified downstream integrations, or external compatibility reports. Absence
+  of reports is not stability evidence.
+- Workaround: collect and reproduce beta evidence, then repeat the stable-release
+  audit.
+- Stable blocker: yes.

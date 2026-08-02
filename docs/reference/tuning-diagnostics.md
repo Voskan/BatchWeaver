@@ -4,7 +4,7 @@ Adaptive scheduling diagnostics occupy the `BW8xxx` range, kept distinct from
 analysis (`BW3xxx`), transform (`BW34xx`-`BW38xx`), runtime (`BW4xxx`), proof
 (`BW5xxx`), backend adapter (`BW6xxx`), and network adapter (`BW7xxx`) codes.
 
-The Prompt 10 specification illustrated these diagnostics in the `BW7xxx` range,
+The adaptive-scheduling design illustrated these diagnostics in the `BW7xxx` range,
 which network adapters already own. To preserve the repository rule that
 diagnostic ranges are distinct per stage, this implementation renumbers them into
 `BW8xxx`; the semantic meaning is unchanged.

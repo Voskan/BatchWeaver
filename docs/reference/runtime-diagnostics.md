@@ -1,6 +1,6 @@
 # Runtime-lowering diagnostics
 
-Prompt 07 reserves the `BW4xxx` range for runtime lowering, distinct from
+Runtime lowering reserves the `BW4xxx` range, distinct from
 analysis (`BW3000`, `BW31xx`), transformation (`BW34xx`–`BW38xx`), and proof
 (`BW5xxx`).
 

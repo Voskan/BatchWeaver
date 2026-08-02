@@ -13,4 +13,4 @@ Transformed execution must integrate with standard Go tooling without maintainin
 
 ## Consequences
 
- transformations are applied through a Go -overlay; the -toolexec driver observes tool actions and delegates faithfully.\n- The driver prevents recursive -toolexec invocation with a private environment marker and preserves each tool's exit code without a shell.\n- There is one transformation engine (Prompt 06 overlays), not a parallel tool-exec generator.:Standard go build/test/run work unchanged, recursion is prevented, and there is a single source of transformation truth.
+ transformations are applied through a Go -overlay; the -toolexec driver observes tool actions and delegates faithfully.\n- The driver prevents recursive -toolexec invocation with a private environment marker and preserves each tool's exit code without a shell.\n- There is one overlay transformation engine, not a parallel tool-exec generator.:Standard go build/test/run work unchanged, recursion is prevented, and there is a single source of transformation truth.

@@ -1,6 +1,6 @@
 // Package diagnostics defines the stable, dependency-free data model for
 // diagnostics produced across BatchWeaver: configuration loading, the operation
-// model, and future analyzers, compiler passes, and verification tooling.
+// model, analyzers, compiler passes, runtime adapters, and verification tooling.
 //
 // The types here are plain values with deterministic formatting and no
 // dependency on any other BatchWeaver package, the Go tooling AST, SSA values,

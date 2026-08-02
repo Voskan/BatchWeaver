@@ -36,7 +36,7 @@ getUser, err := batchruntime.Bind(engine, users.GetUserOperation, batchruntime.B
 ```
 
 The declaration (`users.GetUserOperation`) supplies the operation ID, semantics,
-and policies from Prompt 02; the `Binding` supplies the runtime provider and
+and operation policies; the `Binding` supplies the runtime provider and
 strategies. This differs from a variadic-option sketch because a config struct
 keeps type inference clean while keys are unconstrained.
 
@@ -71,6 +71,8 @@ scope.Drain(ctx) // completion barrier
 
 ## Limitations
 
-The runtime is explicit. It does **not** provide automatic scalar-call
-interception, source transformation, adaptive scheduling, backend adapters,
-persistent caching, or telemetry exporters. See the roadmap.
+The runtime package is explicit: importing or binding it does not scan or mutate
+source. The separate compiler can lower proven scalar call sites through the
+typed bridge, and the adaptive layer can apply settings within binding hard
+bounds when explicitly enabled. Providers and telemetry exporters remain
+application-wired; there is no hidden global registration or remote telemetry.

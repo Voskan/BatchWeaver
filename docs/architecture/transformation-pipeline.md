@@ -1,6 +1,6 @@
 # Transformation pipeline
 
-The transformation stage (`internal/transform`) consumes Prompt 05 proof
+The transformation stage (`internal/transform`) consumes semantic proof
 certificates and produces deterministic, source-preserving rewrite plans. It
 never transforms a candidate without a current, valid, strategy-specific
 certificate, and it never modifies the source tree in the default mode.

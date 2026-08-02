@@ -1,6 +1,7 @@
 package documents
 
 import (
+	"path/filepath"
 	"testing"
 
 	"github.com/Voskan/BatchWeaver/internal/lsp/protocol"
@@ -40,7 +41,7 @@ func TestMapperCRLF(t *testing.T) {
 
 func TestStoreIncrementalChangeAndVersion(t *testing.T) {
 	s := NewStore()
-	uri := "file:///tmp/x.go"
+	uri := PathToURI(filepath.Join(t.TempDir(), "x.go"))
 	if _, err := s.Open(protocol.TextDocumentItem{URI: uri, Version: 1, Text: "hello world"}); err != nil {
 		t.Fatal(err)
 	}
@@ -62,7 +63,7 @@ func TestStoreIncrementalChangeAndVersion(t *testing.T) {
 
 func TestStoreOverlay(t *testing.T) {
 	s := NewStore()
-	uri := "file:///tmp/y.go"
+	uri := PathToURI(filepath.Join(t.TempDir(), "y.go"))
 	if _, err := s.Open(protocol.TextDocumentItem{URI: uri, Version: 1, Text: "package p"}); err != nil {
 		t.Fatal(err)
 	}
@@ -82,13 +83,14 @@ func TestStoreOverlay(t *testing.T) {
 }
 
 func TestURIRoundTrip(t *testing.T) {
-	uri := PathToURI("/tmp/a b/c.go")
+	want := filepath.Join(t.TempDir(), "a b", "c.go")
+	uri := PathToURI(want)
 	path, err := URIToPath(uri)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if path != "/tmp/a b/c.go" {
-		t.Errorf("round trip = %q", path)
+	if path != want {
+		t.Errorf("round trip = %q, want %q", path, want)
 	}
 	if _, err := URIToPath("http://example.com"); err == nil {
 		t.Error("non-file URI should be rejected")

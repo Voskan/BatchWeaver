@@ -33,6 +33,6 @@ environment, and generated code as sensitive, and constrain their behavior.
 
 ## Paths
 
-- The driver and materialization use the Prompt 06 path policy: writes are
+- The driver and materialization use the transformation path policy: writes are
   confined to the workspace state directory and, on explicit materialization, to
   files inside writable workspace modules.

@@ -1,30 +1,28 @@
-# Support
+# Beta Support
 
-BatchWeaver is in a pre-release stage of development. There is no guaranteed or
-private support channel. The following public channels are available.
+BatchWeaver is prerelease software maintained on a best-effort basis. There is
+no guaranteed SLA. Maintainers aim to elevate transformation-safety and P0
+reports promptly and triage ordinary beta reports during regular maintenance.
 
-## Questions and design discussion
+Use structured GitHub Issues for reproducible bugs, compatibility reports,
+performance regressions, documentation defects, and beta feedback. Use
+Discussions only if repository governance later enables it. Open-ended support
+questions are not guaranteed a response.
 
-Use **GitHub Discussions** for usage questions and design conversations once
-Discussions are enabled for the repository. Until then, exploratory questions may
-be raised as issues clearly labeled as questions.
+Run `batchweaver doctor` or create an allowlist-only bundle with:
 
-## Bugs and feature requests
+```bash
+batchweaver doctor --bundle doctor.tar.gz
+```
 
-Use **GitHub Issues** for:
+Inspect every bundle before sharing. It excludes source, configuration and
+environment values, credentials, request data, SQL, GraphQL variables, headers,
+metadata, tenant identifiers, logs, usernames, and local paths by design.
 
-- confirmed, reproducible bugs;
-- concrete, actionable feature requests.
+For suspected vulnerabilities, tenant/authorization leakage, or an exploitable
+transformation correctness issue, do not open a public issue. Follow
+[SECURITY.md](SECURITY.md).
 
-Please use the provided issue templates and include the requested details.
-
-## Security vulnerabilities
-
-Do **not** use public issues or discussions for security reports. Follow the
-private process described in [SECURITY.md](SECURITY.md).
-
-## Expectations
-
-Because the project is pre-release and maintained on a best-effort basis,
-response times are not guaranteed. Well-scoped issues with clear reproduction
-steps are the most likely to receive timely attention.
+Only the latest non-withdrawn beta is actively supported. Older prereleases may
+receive migration guidance but not fixes. Never include credentials or
+production data in a public report.

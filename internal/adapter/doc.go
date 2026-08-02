@@ -13,5 +13,5 @@
 // into SQL, and rejects every query outside the explicitly supported subset with
 // an exact diagnostic. Concrete client bindings for pgx and go-redis are declared
 // in the manifest and are wired through the same contracts; see
-// docs/limitations/prompt-08.md for their status.
+// docs/limitations/backend-adapters.md for their status.
 package adapter

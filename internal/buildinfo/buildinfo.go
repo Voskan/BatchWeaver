@@ -42,6 +42,8 @@ const (
 type Info struct {
 	// Version is the semantic version, or "dev" before the first release.
 	Version string `json:"version"`
+	// ReleaseChannel is development, beta, release-candidate, or stable.
+	ReleaseChannel string `json:"release_channel"`
 	// Commit is the source revision the binary was built from, if known.
 	Commit string `json:"commit"`
 	// BuildDate is the build timestamp, if known.
@@ -73,6 +75,7 @@ type Info struct {
 func Get() Info {
 	return Info{
 		Version:              version,
+		ReleaseChannel:       channel(version),
 		Commit:               commit,
 		BuildDate:            buildDate,
 		Dirty:                false,
@@ -84,6 +87,19 @@ func Get() Info {
 		ArtifactSchemas:      []string{"batchweaver.analysis/v1alpha1", "batchweaver.proof/v1alpha1", "batchweaver.release/v1alpha1", "batchweaver.transform/v1alpha1"},
 		Features:             []string{"adaptive", "adapters", "analysis", "daemon", "lsp", "proof", "runtime", "transform"},
 		ReproducibleMetadata: "build date omitted (unknown); trimpath required for release artifacts",
+	}
+}
+
+func channel(version string) string {
+	switch {
+	case strings.Contains(version, "-beta."):
+		return "beta"
+	case strings.Contains(version, "-rc."):
+		return "release-candidate"
+	case version == defaultVersion:
+		return "development"
+	default:
+		return "stable"
 	}
 }
 
@@ -102,7 +118,15 @@ func (i Info) String() string {
 	}
 
 	var b strings.Builder
+	releaseChannel := i.ReleaseChannel
+	if releaseChannel == "" {
+		releaseChannel = channel(i.Version)
+	}
 	fmt.Fprintf(&b, "BatchWeaver %s\n", version)
+	fmt.Fprintf(&b, "Channel: %s\n", releaseChannel)
+	if releaseChannel == "beta" || releaseChannel == "release-candidate" {
+		fmt.Fprintln(&b, "This is a prerelease. Review transformation diffs and run your full test suite before materializing changes.")
+	}
 	fmt.Fprintf(&b, "Go: %s\n", i.GoVersion)
 	fmt.Fprintf(&b, "Platform: %s\n", i.Platform())
 	fmt.Fprintf(&b, "Commit: %s\n", i.Commit)

@@ -1,7 +1,7 @@
 # Generated bridge ABI
 
 The public `bridge` package is the stable, typed application binary interface
-between BatchWeaver-generated code and the Prompt 03 runtime. Its version is
+between BatchWeaver-generated code and the typed runtime. Its version is
 `batchweaver.bridge/v1alpha1`.
 
 ## Shape

@@ -20,4 +20,4 @@ responsible for routing and MOVED/ASK handling.
 
 The client-agnostic slot and mapping logic is implemented and tested. The concrete
 go-redis client binding is deferred in this build (offline dependency); see
-[limitations](../limitations/prompt-08.md).
+[limitations](../limitations/backend-adapters.md).

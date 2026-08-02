@@ -24,8 +24,7 @@ export function activate(context: vscode.ExtensionContext): void {
   status.text = "BatchWeaver";
   status.command = "batchweaver.doctor";
   context.subscriptions.push(output, status);
-
-  registerCommands(context);
+  registerLocalCommands(context);
 
   if (!vscode.workspace.isTrusted) {
     status.text = "BatchWeaver: restricted (untrusted)";
@@ -66,6 +65,17 @@ async function startClient(context: vscode.ExtensionContext): Promise<void> {
     // BatchWeaver diagnostics use the "batchweaver" source and never clear
     // gopls diagnostics.
     diagnosticCollectionName: "batchweaver",
+    middleware: {
+      // vscode-languageclient registers the command IDs advertised by the
+      // server. Registering the same IDs directly in this extension prevents
+      // the client from completing initialization, so render the server result
+      // in middleware instead of installing a second command handler.
+      executeCommand: async (command, args, next) => {
+        const result = await next(command, args);
+        await showCommandResult(command, result);
+        return result;
+      },
+    },
   };
 
   client = new LanguageClient("batchweaver", "BatchWeaver", serverOptions, clientOptions);
@@ -81,45 +91,25 @@ async function startClient(context: vscode.ExtensionContext): Promise<void> {
   }
 }
 
-function registerCommands(context: vscode.ExtensionContext): void {
-  const run = (command: string, args: unknown[] = []) =>
-    client?.sendRequest("workspace/executeCommand", { command, arguments: args });
-
-  const showResult = async (title: string, promise: Promise<unknown> | undefined) => {
-    if (!promise) {
-      vscode.window.showWarningMessage("BatchWeaver server is not running.");
-      return;
-    }
-    const result = await promise;
-    const doc = await vscode.workspace.openTextDocument({
-      content: typeof result === "string" ? result : JSON.stringify(result, null, 2),
-      language: title.includes("Graph") ? "dot" : "plaintext",
-    });
-    await vscode.window.showTextDocument(doc, { preview: true });
-  };
-
+function registerLocalCommands(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
-    vscode.commands.registerCommand("batchweaver.scanWorkspace", () =>
-      showResult("Scan", run("batchweaver.scanWorkspace"))
-    ),
-    vscode.commands.registerCommand("batchweaver.previewTransformation", (id?: string) =>
-      showResult("Preview", run("batchweaver.previewTransformation", id ? [id] : []))
-    ),
-    vscode.commands.registerCommand("batchweaver.proveCandidate", (id?: string) =>
-      showResult("Prove", run("batchweaver.proveCandidate", id ? [id] : []))
-    ),
-    vscode.commands.registerCommand("batchweaver.showOperationGraph", (id?: string) =>
-      showResult("Graph", run("batchweaver.showOperationGraph", id ? [id] : []))
-    ),
-    vscode.commands.registerCommand("batchweaver.doctor", () =>
-      showResult("Doctor", run("batchweaver.doctor"))
-    ),
     vscode.commands.registerCommand("batchweaver.openLogs", () => output.show()),
     vscode.commands.registerCommand("batchweaver.restartServer", async () => {
       await client?.stop();
       await startClient(context);
     })
   );
+}
+
+async function showCommandResult(command: string, result: unknown): Promise<void> {
+  if (result === undefined || result === null) {
+    return;
+  }
+  const doc = await vscode.workspace.openTextDocument({
+    content: typeof result === "string" ? result : JSON.stringify(result, null, 2),
+    language: command === "batchweaver.showOperationGraph" ? "dot" : "plaintext",
+  });
+  await vscode.window.showTextDocument(doc, { preview: true });
 }
 
 export async function deactivate(): Promise<void> {

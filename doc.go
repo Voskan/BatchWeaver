@@ -1,14 +1,23 @@
-// Package batchweaver is the user-facing root of BatchWeaver's foundational
-// contracts. It provides the canonical generic batch request and response
-// types, the typed scalar and batch function contracts, and the typed
-// declarations that connect an operation spec to concrete implementations.
+// Package batchweaver defines the public, typed contracts used to declare and
+// implement semantically safe Go batch operations.
 //
-// Everything here is data and type safety. Declaring an operation does not yet
-// cause any call to be intercepted, batched, scheduled, or deduplicated; those
-// behaviors arrive in later runtime and compiler prompts. Declarations are
-// plain package-level values with no global registration, which keeps them
-// statically discoverable by a future analyzer.
+// The package provides generic request and response types, per-item outcomes,
+// scalar and batch function signatures, and declarations that connect an
+// [operation.Spec] to concrete implementations. Declarations have no global
+// registration side effects and can be discovered statically by the
+// BatchWeaver analyzer.
 //
-// Dependency direction: this package may import operation and the standard
-// library. It must not import config, the CLI, or compiler packages.
+// A batch provider must return exactly one outcome for every request ID unless
+// it returns a global error. Helpers such as [OrderedOutcomes], [KeyedOutcomes],
+// and [SparseOutcomes] preserve request identity and validate result shape.
+// See the package examples for a complete typed declaration.
+//
+// Request coalescing is implemented by the runtime package, normally imported
+// with an alias:
+//
+//	import batchruntime "github.com/Voskan/BatchWeaver/runtime"
+//
+// Static analysis, proof-gated transformation, overlays, and materialization
+// are exposed through the batchweaver command. Source is never changed merely
+// by importing this package or declaring an operation.
 package batchweaver

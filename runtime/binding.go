@@ -14,7 +14,7 @@ import (
 // must be non-negative; the default weight is one.
 type WeightFunc[K any] func(K) int64
 
-// Declaration is any Prompt 02 operation declaration or spec source. Both
+// Declaration is any operation declaration or spec source. Both
 // FunctionDeclaration and MethodDeclaration satisfy it.
 type Declaration interface {
 	Spec() operation.Spec

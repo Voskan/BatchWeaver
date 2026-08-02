@@ -32,4 +32,4 @@ request or per idle partition.
 
 ## Compatibility
 
-Uses Prompt 02 scheduler policy types.
+Uses the scheduler policy types.

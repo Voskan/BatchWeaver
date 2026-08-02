@@ -1,0 +1,27 @@
+- {name: "kind/bug", color: "d73a4a", description: "Reproducible defect"}
+- {name: "kind/safety", color: "b60205", description: "Transformation correctness or isolation report"}
+- {name: "kind/performance", color: "fbca04", description: "Reproducible performance regression"}
+- {name: "kind/docs", color: "0075ca", description: "Documentation"}
+- {name: "kind/feature", color: "a2eeef", description: "Feature proposal"}
+- {name: "kind/feedback", color: "7057ff", description: "Observed beta feedback"}
+- {name: "area/compiler", color: "c5def5", description: "Analysis or transformation"}
+- {name: "area/proof", color: "c5def5", description: "Semantic proof"}
+- {name: "area/runtime", color: "c5def5", description: "Runtime engine"}
+- {name: "area/adapter", color: "c5def5", description: "Adapter or protocol"}
+- {name: "area/lsp", color: "c5def5", description: "Editor, daemon, or LSP"}
+- {name: "area/release", color: "c5def5", description: "Packaging or release"}
+- {name: "priority/p0", color: "b60205", description: "Data, security, isolation, or correctness emergency"}
+- {name: "priority/p1", color: "d93f0b", description: "Major supported workflow broken"}
+- {name: "priority/p2", color: "fbca04", description: "Important defect with workaround"}
+- {name: "priority/p3", color: "0e8a16", description: "Minor issue"}
+- {name: "status/needs-repro", color: "ededed", description: "Needs sanitized reproduction"}
+- {name: "status/needs-triage", color: "ededed", description: "Awaiting classification"}
+- {name: "status/confirmed", color: "0e8a16", description: "Maintainer reproduced"}
+- {name: "status/blocked", color: "b60205", description: "Cannot proceed without a dependency or decision"}
+- {name: "compat/go", color: "1d76db", description: "Go version compatibility"}
+- {name: "compat/windows", color: "1d76db", description: "Windows compatibility"}
+- {name: "compat/macos", color: "1d76db", description: "macOS compatibility"}
+- {name: "compat/linux", color: "1d76db", description: "Linux compatibility"}
+- {name: "release/blocker", color: "b60205", description: "Blocks an immutable release"}
+- {name: "good-first-issue", color: "7057ff", description: "Bounded issue with explicit acceptance criteria"}
+- {name: "help-wanted", color: "008672", description: "Maintainer requests focused help"}

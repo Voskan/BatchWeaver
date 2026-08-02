@@ -55,6 +55,7 @@ func TestStringPopulated(t *testing.T) {
 	got := info.String()
 	want := strings.Join([]string{
 		"BatchWeaver v1.2.3",
+		"Channel: stable",
 		"Go: go1.26.5",
 		"Platform: linux/amd64",
 		"Commit: abc1234",
