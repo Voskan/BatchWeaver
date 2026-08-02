@@ -19,10 +19,7 @@ for line in Path('.github/labels.yml').read_text().splitlines():
     print(*match.groups(), sep='\t')
 PY
 while IFS=$'\t' read -r name color description; do
-  if gh label list --repo Voskan/BatchWeaver --limit 100 --json name --jq '.[].name' | grep -Fxq "$name"; then
-    gh label edit "$name" --repo Voskan/BatchWeaver --color "$color" --description "$description"
-  else
-    gh label create "$name" --repo Voskan/BatchWeaver --color "$color" --description "$description"
-  fi
+  gh label create "$name" --repo Voskan/BatchWeaver --color "$color" \
+    --description "$description" --force
 done < "$LABELS_TMP"
 printf 'Labels configured; Discussions and private security reporting are enabled.\n'
