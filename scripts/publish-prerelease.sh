@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-EXPECTED_VERSION="v0.1.0-beta.1"
+VERSION="$(tr -d '[:space:]' < release/VERSION)"
+EXPECTED_VERSION="v$VERSION"
 EXPECTED_REPO="Voskan/BatchWeaver"
+EXPECTED_CONFIRM="--confirm-$EXPECTED_VERSION"
+GATES="release/gates-$EXPECTED_VERSION.json"
 CONFIRM="${1:-}"
 DIST="${2:-dist}"
 
-if [ "$CONFIRM" != "--confirm-v0.1.0-beta.1" ]; then
-  printf 'Refusing publication. Pass --confirm-v0.1.0-beta.1 after every gate is reviewed.\n' >&2
+if [ "$CONFIRM" != "$EXPECTED_CONFIRM" ]; then
+  printf 'Refusing publication. Pass %s after every gate is reviewed.\n' "$EXPECTED_CONFIRM" >&2
   exit 2
 fi
 
@@ -16,8 +19,8 @@ gh auth status >/dev/null
 scripts/verify-github-release-gates.sh --publish
 test "$(git describe --exact-match --tags HEAD)" = "$EXPECTED_VERSION"
 test -f "$DIST/release-manifest.json"
-test "$(jq -r .decision release/gates-v0.1.0-beta.1.json)" = "ready"
-test "$(jq '[.gates[] | select(.required and (.status == "blocked" or .status == "fail"))] | length' release/gates-v0.1.0-beta.1.json)" -eq 0
+test "$(jq -r .decision "$GATES")" = "ready"
+test "$(jq '[.gates[] | select(.required and (.status == "blocked" or .status == "fail"))] | length' "$GATES")" -eq 0
 go run ./cmd/batchweaver release verify "$DIST/release-manifest.json"
 
 if gh release view "$EXPECTED_VERSION" --repo "$EXPECTED_REPO" >/dev/null 2>&1; then
@@ -37,8 +40,8 @@ done < <(python3 -c 'import json,sys; print(*[x["path"] for x in json.load(open(
 
 gh release create "$EXPECTED_VERSION" "${ASSETS[@]}" \
   --repo "$EXPECTED_REPO" \
-  --title "BatchWeaver v0.1.0-beta.1" \
-  --notes-file docs/release/release-notes-0.1.0-beta.1.md \
+  --title "BatchWeaver $EXPECTED_VERSION" \
+  --notes-file "docs/release/release-notes-$VERSION.md" \
   --prerelease \
   --verify-tag
 

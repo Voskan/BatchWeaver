@@ -4,8 +4,8 @@
 
 **BLOCKED — do not tag or publish `v1.0.0`.**
 
-The selected and published version is the `v0.1.0-beta.1` public beta. Its
-successful release gates begin—rather than complete—the installation,
+The selected and published version is the `v0.1.0-beta.2` public beta; beta.1
+remains immutable historical evidence. The successful prerelease gates begin—rather than complete—the installation,
 migration, compatibility, feedback, and governance evidence period required for
 stable v1.
 
@@ -18,7 +18,7 @@ stable v1.
 | Mandatory mutations killed | pass locally | 12/12 modeled critical mutations; final rerun required |
 | Compatibility matrix | partial | Linux, macOS, and Windows hosted jobs pass; only Go 1.26.5 and limited integrations are tested |
 | Upgrade from supported prereleases | blocked | migration from this beta to a future v1 candidate cannot yet be exercised |
-| Installation | pass for beta | public Go proxy, release archives, and VSIX are post-publication-verified; v1 installation remains future work |
+| Installation | pass for current beta | beta.2 public Go proxy, version metadata, release archives, and VSIX are post-publication-verified; v1 installation remains future work |
 | Race, fuzz, and security suites | partial | race, bounded fuzz, CodeQL, vulnerability, secret, and Dependency Review evidence exists; final extended campaigns remain |
 | Artifacts verifiable | partial | public beta assets, checksums, SBOMs, local provenance, and reproducibility verify; hosted attestation/signatures remain absent |
 | Documentation complete | partial | beta site and source audit exist; user-feedback validation is unavailable |

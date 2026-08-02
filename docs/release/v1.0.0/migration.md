@@ -1,8 +1,10 @@
 # Prerelease-to-v1 Migration Plan
 
-The supported prerelease baseline is `v0.1.0-beta.1`. An upgrade to v1 cannot be
-executed until a future v1 candidate exists. This plan defines the migration
-contract that must pass before stable publication.
+The supported prerelease baselines are `v0.1.0-beta.1` and
+`v0.1.0-beta.2`. The beta.1-to-beta.2 upgrade changes no schema or ABI; it fixes
+installed CLI version discovery. An upgrade to v1 cannot be executed until a
+future v1 candidate exists. This plan defines the migration contract that must
+pass before stable publication.
 
 ## Required migration sequence
 

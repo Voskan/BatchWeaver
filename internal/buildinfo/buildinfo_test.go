@@ -2,6 +2,7 @@ package buildinfo
 
 import (
 	"runtime"
+	"runtime/debug"
 	"strings"
 	"testing"
 )
@@ -28,6 +29,38 @@ func TestGetDefaults(t *testing.T) {
 	}
 	if got.GOARCH != runtime.GOARCH {
 		t.Errorf("GOARCH = %q, want %q", got.GOARCH, runtime.GOARCH)
+	}
+}
+
+func TestResolveModuleMetadata(t *testing.T) {
+	t.Parallel()
+
+	info := &debug.BuildInfo{
+		Main: debug.Module{Path: modulePath, Version: "v0.1.0-beta.2"},
+		Settings: []debug.BuildSetting{
+			{Key: "vcs.revision", Value: strings.Repeat("a", 40)},
+		},
+	}
+	version, commit := resolveModuleMetadata(defaultVersion, defaultUnknown, info)
+	if version != "0.1.0-beta.2" {
+		t.Fatalf("version = %q", version)
+	}
+	if commit != strings.Repeat("a", 40) {
+		t.Fatalf("commit = %q", commit)
+	}
+
+	explicitVersion, explicitCommit := resolveModuleMetadata("1.2.3", "release", info)
+	if explicitVersion != "1.2.3" || explicitCommit != "release" {
+		t.Fatalf("explicit metadata was overridden: %q %q", explicitVersion, explicitCommit)
+	}
+
+	local := &debug.BuildInfo{
+		Main:     debug.Module{Path: modulePath, Version: "(devel)"},
+		Settings: info.Settings,
+	}
+	localVersion, localCommit := resolveModuleMetadata(defaultVersion, defaultUnknown, local)
+	if localVersion != defaultVersion || localCommit != defaultUnknown {
+		t.Fatalf("local metadata was promoted to a release: %q %q", localVersion, localCommit)
 	}
 }
 

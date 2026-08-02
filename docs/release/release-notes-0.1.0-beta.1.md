@@ -3,6 +3,10 @@
 Status: public beta prerelease. This is not a stable-v1 or production-readiness
 claim.
 
+> Superseded for new installations by `v0.1.0-beta.2`: beta.1 binaries built
+> through `go install` report `dev`. Beta.1 release archives have correct
+> injected version metadata, and its immutable tag and assets are preserved.
+
 ## Summary
 
 BatchWeaver is a proof-gated Go compiler/runtime toolkit that turns supported

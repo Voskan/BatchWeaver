@@ -1,7 +1,17 @@
 # Known Issues
 
-These are verified limitations for the public `v0.1.0-beta.1` beta. No stable
+These are verified limitations for the public `v0.1.0-beta.2` beta. No stable
 release is implied.
+
+## BW-KI-010 — beta.1 `go install` reports a development version
+
+- Severity: P1 for `v0.1.0-beta.1`; fixed in `v0.1.0-beta.2`
+- Affected: binaries built with `go install ...@v0.1.0-beta.1`
+- Impact: the module installs correctly, but `batchweaver version` reports
+  `dev` because beta.1 did not derive version metadata from Go build info.
+- Workaround: install `v0.1.0-beta.2` or use a beta.1 release archive, whose
+  release builder injected the correct metadata.
+- Stable blocker: resolved; regression coverage is required.
 
 ## BW-KI-001 — Concrete framework client bindings are absent
 

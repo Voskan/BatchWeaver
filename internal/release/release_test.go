@@ -190,7 +190,7 @@ func TestDocumentation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, required := range []string{"docs/release/release-policy.md", "docs/release/readiness-report.md", "docs/release/compatibility.md", "docs/release/security-report.md", "docs/release/performance-report.md", "docs/release/reproducibility-report.md", "docs/release/release-checklist.md", "docs/release/rollback.md", "docs/release/0.1.0-beta.1/launch-decision.md", "docs/release/0.1.0-beta.1/publication-blockers.md", "docs/release/beta-exit-criteria.md", "docs/privacy.md", "docs/maintainers/beta-operations.md", "site/index.html", "KNOWN-ISSUES.md"} {
+	for _, required := range []string{"docs/release/release-policy.md", "docs/release/readiness-report.md", "docs/release/compatibility.md", "docs/release/security-report.md", "docs/release/performance-report.md", "docs/release/reproducibility-report.md", "docs/release/release-checklist.md", "docs/release/rollback.md", "docs/release/0.1.0-beta.1/launch-decision.md", "docs/release/0.1.0-beta.1/publication-blockers.md", "docs/release/0.1.0-beta.2/launch-decision.md", "docs/release/0.1.0-beta.2/publication-blockers.md", "docs/release/release-notes-0.1.0-beta.2.md", "docs/release/beta-exit-criteria.md", "docs/privacy.md", "docs/maintainers/beta-operations.md", "site/index.html", "KNOWN-ISSUES.md"} {
 		if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(required))); err != nil {
 			t.Errorf("required release document %s: %v", required, err)
 		}
@@ -243,7 +243,12 @@ func TestStableDecisionRemainsBlockedWithoutEvidence(t *testing.T) {
 
 func TestLaunchGateReportDecisionMatchesRequiredGateState(t *testing.T) {
 	root := testRoot(t)
-	data, err := os.ReadFile(filepath.Join(root, "release", "gates-v0.1.0-beta.1.json"))
+	versionData, err := os.ReadFile(filepath.Join(root, "release", "VERSION"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	gateName := "gates-v" + strings.TrimSpace(string(versionData)) + ".json"
+	data, err := os.ReadFile(filepath.Join(root, "release", gateName))
 	if err != nil {
 		t.Fatal(err)
 	}

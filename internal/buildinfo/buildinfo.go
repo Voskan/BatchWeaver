@@ -11,6 +11,7 @@ package buildinfo
 import (
 	"fmt"
 	"runtime"
+	"runtime/debug"
 	"strings"
 )
 
@@ -30,17 +31,19 @@ var (
 )
 
 const (
-	// defaultVersion is the version reported before the first tagged release.
+	// defaultVersion is reported when neither linker nor Go module metadata
+	// identifies a release.
 	defaultVersion = "dev"
 	// defaultUnknown is the placeholder used when build metadata is absent.
 	defaultUnknown = "unknown"
+	modulePath     = "github.com/Voskan/BatchWeaver"
 )
 
 // Info is an immutable snapshot of build and platform identification.
 //
 // Values are captured once via Get; construct additional values only in tests.
 type Info struct {
-	// Version is the semantic version, or "dev" before the first release.
+	// Version is the semantic version, or "dev" for an unversioned build.
 	Version string `json:"version"`
 	// ReleaseChannel is development, beta, release-candidate, or stable.
 	ReleaseChannel string `json:"release_channel"`
@@ -73,10 +76,14 @@ type Info struct {
 // date reflect any link-time overrides; the toolchain and platform fields are
 // read from the runtime and are therefore always populated.
 func Get() Info {
+	resolvedVersion, resolvedCommit := version, commit
+	if info, ok := debug.ReadBuildInfo(); ok {
+		resolvedVersion, resolvedCommit = resolveModuleMetadata(resolvedVersion, resolvedCommit, info)
+	}
 	return Info{
-		Version:              version,
-		ReleaseChannel:       channel(version),
-		Commit:               commit,
+		Version:              resolvedVersion,
+		ReleaseChannel:       channel(resolvedVersion),
+		Commit:               resolvedCommit,
 		BuildDate:            buildDate,
 		Dirty:                false,
 		GoVersion:            runtime.Version(),
@@ -88,6 +95,25 @@ func Get() Info {
 		Features:             []string{"adaptive", "adapters", "analysis", "daemon", "lsp", "proof", "runtime", "transform"},
 		ReproducibleMetadata: "build date omitted (unknown); trimpath required for release artifacts",
 	}
+}
+
+func resolveModuleMetadata(version, commit string, info *debug.BuildInfo) (string, string) {
+	if info == nil || info.Main.Path != modulePath {
+		return version, commit
+	}
+	releasedModule := info.Main.Version != "" && info.Main.Version != "(devel)"
+	if version == defaultVersion && releasedModule {
+		version = strings.TrimPrefix(info.Main.Version, "v")
+	}
+	if commit == defaultUnknown && releasedModule {
+		for _, setting := range info.Settings {
+			if setting.Key == "vcs.revision" && setting.Value != "" {
+				commit = setting.Value
+				break
+			}
+		}
+	}
+	return version, commit
 }
 
 func channel(version string) string {

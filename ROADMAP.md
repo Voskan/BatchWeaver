@@ -6,7 +6,8 @@ experimental features into support commitments.
 
 ## Current: observe and harden the first beta
 
-- keep `v0.1.0-beta.1` immutable and preserve its verified public assets;
+- keep every published prerelease immutable and preserve its verified public
+  assets; `v0.1.0-beta.2` supersedes beta.1 for new installations;
 - monitor the Go module proxy, pkg.go.dev, release assets, documentation, and
   security-reporting paths;
 - collect reproducible correctness, compatibility, installation, editor,
