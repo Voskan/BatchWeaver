@@ -74,6 +74,9 @@ func daemonStatus(app *App, root string, args []string) error {
 	default:
 		fmt.Fprintf(w, "daemon: running\n  pid:      %d\n  protocol: %s\n  uptime:   %ds\n  socket:   %s\n",
 			health.PID, health.ProtocolVersion, health.UptimeSeconds, info.Socket)
+		fmt.Fprintf(w, "  cache:    hits=%d misses=%d disk=%d evictions=%d corruptions=%d entries=%d bytes=%d\n",
+			health.Cache.Hits, health.Cache.Misses, health.Cache.DiskHits, health.Cache.Evictions,
+			health.Cache.Corruptions, health.Cache.Entries, health.Cache.Bytes)
 	}
 	return nil
 }

@@ -43,6 +43,7 @@ The public documentation portal provides curated entry points for
 - [Generated bridge ABI](architecture/generated-bridge-abi.md)
 - [Adapter SDK](architecture/adapter-sdk.md)
 - [Editor service](architecture/editor-service.md)
+- [Workspace daemon and shared cache](architecture/workspace-daemon.md)
 - [Adaptive scheduler](architecture/adaptive-scheduler.md)
 
 The [ADR index](adr/README.md) records significant design decisions and their
@@ -89,6 +90,7 @@ tradeoffs.
 - [Proof schema](reference/proof-schema.md)
 - [Transformation schema](reference/transformation-schema.md)
 - [Daemon protocol](reference/daemon-protocol.md)
+- [Analysis cache schema](reference/analysis-cache.md)
 - [Editor support matrix](reference/editor-support-matrix.md)
 
 ## Limitations

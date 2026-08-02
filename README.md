@@ -181,7 +181,8 @@ Read the [architecture overview](docs/architecture/overview.md),
   default branch, with pgxmock, miniredis, public-extension, and bufconn tests;
 - privacy-safe adaptive analysis, fairness, overload control, recursive waves,
   and bounded shadow/active tuning;
-- standalone LSP, optional gopls proxy, workspace daemon, and VS Code extension;
+- standalone LSP, optional gopls proxy, VS Code extension, and a secure
+  workspace daemon with bounded shared analysis caching for CLI/editor requests;
 - deterministic release archives, checksums, SPDX/CycloneDX SBOMs, local
   provenance, compatibility reports, and non-publishing release verification.
 

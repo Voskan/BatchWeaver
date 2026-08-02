@@ -16,7 +16,7 @@ func newScanCommand() *Command {
 	return &Command{
 		Name:    "scan",
 		Summary: "Statically analyze Go packages for batching structure",
-		Usage:   "scan [--format text|json] [--reproducible] [--tests] [--goos os] [--goarch arch] [--tags t1,t2] [--fail-on error|warning|never] [packages]",
+		Usage:   "scan [--format text|json] [--reproducible] [--cache-status] [--tests] [--goos os] [--goarch arch] [--tags t1,t2] [--fail-on error|warning|never] [packages]",
 		Run:     runScan,
 	}
 }
@@ -32,6 +32,7 @@ func runScan(ctx context.Context, app *App, args []string) error {
 	tags := fs.String("tags", "", "comma-separated build tags")
 	cgo := fs.Bool("cgo", false, "enable cgo")
 	failOn := fs.String("fail-on", "error", "nonzero exit on: error, warning, or never")
+	cacheStatus := fs.Bool("cache-status", false, "print privacy-safe daemon cache hit/miss status to stderr")
 	if err := fs.Parse(args); err != nil {
 		return &CommandError{Code: ExitUsage}
 	}
@@ -47,7 +48,7 @@ func runScan(ctx context.Context, app *App, args []string) error {
 		patterns = []string{"./..."}
 	}
 
-	snap, err := analysis.Analyze(ctx, analysis.Request{
+	snap, cacheResult, err := sharedAnalyze(ctx, analysis.Request{
 		Patterns:     patterns,
 		Reproducible: *reproducible,
 		ToolVersion:  buildinfo.Get().Version,
@@ -58,6 +59,9 @@ func runScan(ctx context.Context, app *App, args []string) error {
 	})
 	if err != nil {
 		return &CommandError{Code: ExitError, Message: err.Error()}
+	}
+	if *cacheStatus {
+		fmt.Fprintf(app.Stderr(), "analysis cache: source=%s hit=%t\n", cacheResult.Source, cacheResult.Hit)
 	}
 
 	switch *format {

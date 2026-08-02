@@ -11,7 +11,7 @@ analysis; an editor service producing deterministic diagnostics (including the
 optional gopls proxy that launches gopls, forwards traffic with automatic ID
 namespacing, merges `initialize` capabilities and hover/code-action/code-lens
 results, and keeps diagnostics separated by source; a local workspace daemon
-(protocol, discovery, health, lifecycle) and `daemon` CLI; `batchweaver lsp`,
+(protocol, discovery, health, lifecycle, shared analysis cache) and `daemon` CLI; `batchweaver lsp`,
 `batchweaver editor doctor`, and `daemon` commands; a VS Code extension source
 tree (sidecar/proxy, commands, settings, status bar, output channel, workspace
 trust); editor setup guides for VS Code, Neovim, Emacs/Eglot, Helix, and Zed; an
@@ -30,9 +30,10 @@ import ban) including race and fuzz coverage.
 
 ## Honest notes on this build
 
-- **Analysis runs in-process** in the LSP server and CLI; routing analysis
-  through the workspace daemon's shared cache is a documented follow-up. The
-  daemon protocol, discovery, health, and lifecycle are real and tested.
+- **Analysis cache is opt-in by process:** when a compatible workspace daemon is
+  running, CLI and LSP requests share its bounded memory/disk cache. Without a
+  daemon they fall back to correct in-process analysis. No daemon is started
+  implicitly, and no source, overlay, cache key, or telemetry is exported.
 - **Transformation preview** shows the operation binding, structural context, and
   candidate evidence, and points to `batchweaver prove` / `transform diff` for the
   exact deterministic diff and proof certificate; wiring the full diff and

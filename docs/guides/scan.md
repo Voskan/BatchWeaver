@@ -51,12 +51,30 @@ byte-identical across runs on the same inputs.
 | ---- | ------- |
 | `--format text\|json` | Output format (default text). |
 | `--reproducible` | Omit volatile fields for byte-stable output. |
+| `--cache-status` | Print local/daemon cache source and hit status to stderr. |
 | `--tests` | Include test package variants. |
 | `--goos`, `--goarch`, `--tags`, `--cgo` | Build context overrides (reported explicitly). |
 | `--fail-on error\|warning\|never` | Nonzero exit threshold (default error). |
 
-Only implemented flags are exposed; SARIF, DOT, and cache flags are intentionally
+Only implemented flags are exposed; SARIF and DOT output are intentionally
 absent until those features exist.
+
+## Shared analysis cache
+
+Run `batchweaver daemon start` in a separate terminal to share immutable
+analysis snapshots with later CLI and LSP requests for the same workspace. The
+daemon is optional; without it, scan uses the same correct in-process analysis.
+
+```bash
+batchweaver scan --cache-status ./...
+# stderr: analysis cache: source=compute hit=false
+batchweaver scan --cache-status ./...
+# stderr: analysis cache: source=memory hit=true
+```
+
+`daemon status` reports privacy-safe counters and occupancy. Source/config,
+build context, toolchain, package pattern, schema, or unsaved-overlay changes
+produce a new key. See the [cache policy](../reference/analysis-cache.md).
 
 ## Inspect one operation
 

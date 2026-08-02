@@ -54,7 +54,7 @@ func runOperationInspect(ctx context.Context, app *App, args []string) error {
 	if len(patterns) == 0 {
 		patterns = []string{"./..."}
 	}
-	snap, err := analysis.Analyze(ctx, analysis.Request{Patterns: patterns, ToolVersion: buildinfo.Get().Version})
+	snap, _, err := sharedAnalyze(ctx, analysis.Request{Patterns: patterns, ToolVersion: buildinfo.Get().Version})
 	if err != nil {
 		return &CommandError{Code: ExitError, Message: err.Error()}
 	}
