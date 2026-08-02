@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 The Tier 1 public API is frozen for the `v1` series; `bridge` and `adapters/*`
 are experimental and may change in a minor release.
 
+## [1.0.1]
+
+Patch release. The Go module, CLI, and public API are unchanged from `1.0.0`.
+See [release notes](docs/release/release-notes-1.0.1.md).
+
+### Fixed
+
+- The VS Code extension failed a clean source build because `package.json`
+  declared `1.0.0` while `package-lock.json` still recorded `0.1.0-beta.3`, and
+  `npm ci` rejects that mismatch (`BW-KI-014`). The lockfile is synchronized.
+- The extension test derived its expected version from a hard-coded string, so
+  every release bump broke it after the fact. It now reads `release/VERSION` and
+  asserts that the manifest, the lockfile, and the lockfile root package agree.
+
 ## [1.0.0]
 
 First stable release. See
