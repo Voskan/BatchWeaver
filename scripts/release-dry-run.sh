@@ -20,9 +20,15 @@ cd "$RUN_DIR/source"
 go generate ./...
 git diff --exit-code
 make check
-go run ./cmd/batchweaver release build --snapshot --output "$RUN_DIR/dist-first"
-go run ./cmd/batchweaver release verify "$RUN_DIR/dist-first/release-manifest.json"
-go run ./cmd/batchweaver release reproduce --manifest "$RUN_DIR/dist-first/release-manifest.json"
+
+RELEASE_PATH="$PATH"
+if (( "$(node -p 'Number(process.versions.node.split(".")[0])')" < 22 )); then
+  NODE22_BIN="$(npm exec --yes --package=node@22 -- node -p 'process.execPath')"
+  RELEASE_PATH="$(dirname "$NODE22_BIN"):$PATH"
+fi
+PATH="$RELEASE_PATH" go run ./cmd/batchweaver release build --snapshot --output "$RUN_DIR/dist-first"
+PATH="$RELEASE_PATH" go run ./cmd/batchweaver release verify "$RUN_DIR/dist-first/release-manifest.json"
+PATH="$RELEASE_PATH" go run ./cmd/batchweaver release reproduce --manifest "$RUN_DIR/dist-first/release-manifest.json"
 
 mkdir -p "$SOURCE_ROOT/dist"
 cp -R "$RUN_DIR/dist-first/." "$SOURCE_ROOT/dist/"
