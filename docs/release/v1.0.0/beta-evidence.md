@@ -7,7 +7,7 @@
 - Default branch: `main`
 - Candidate branch: `release/v0.1.0-beta.1`
 - Candidate pull request: #7
-- Published prerelease: `v0.1.0-beta.1`
+- Published prereleases: `v0.1.0-beta.1`, `v0.1.0-beta.2`
 
 ## Public state verified
 
@@ -16,6 +16,11 @@ Protected-main checks, private vulnerability reporting, Dependency Graph,
 Dependabot security updates, Discussions, labels, Pages, and release authority
 were authenticated and configured. The immutable beta tag, prerelease assets,
 documentation site, and Go proxy path are verified after publication.
+
+Public verification of beta.1 found that a CLI built through `go install`
+reported `dev`; release archives were unaffected because they used injected
+metadata. The immutable beta.1 tag was preserved. Beta.2 derives the version
+from Go module build information and adds regression coverage.
 
 ## CI evidence
 

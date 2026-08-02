@@ -11,9 +11,9 @@ query shapes—proves their safety conditions, previews deterministic changes,
 and executes compatible calls in bounded batches without silently crossing
 request, tenant, authorization, transaction, or session boundaries.
 
-> **Release status:** `v0.1.0-beta.1` is the current public beta. Its APIs may
+> **Release status:** `v0.1.0-beta.2` is the current public beta. Its APIs may
 > change before v1, and the project does not yet make a stable-production claim.
-> See the [release notes](docs/release/release-notes-0.1.0-beta.1.md) and the
+> See the [release notes](docs/release/release-notes-0.1.0-beta.2.md) and the
 > [stable-release decision](docs/release/v1.0.0/stable-release-decision.md).
 
 ## Why BatchWeaver?
@@ -46,8 +46,8 @@ Go 1.26.5 is the currently tested toolchain.
 Install the CLI or add the typed library at the immutable beta version:
 
 ```bash
-go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v0.1.0-beta.1
-go get github.com/Voskan/BatchWeaver@v0.1.0-beta.1
+go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v0.1.0-beta.2
+go get github.com/Voskan/BatchWeaver@v0.1.0-beta.2
 ```
 
 For a source checkout at the same version:
@@ -55,7 +55,7 @@ For a source checkout at the same version:
 ```bash
 git clone https://github.com/Voskan/BatchWeaver.git
 cd BatchWeaver
-git checkout v0.1.0-beta.1
+git checkout v0.1.0-beta.2
 make build
 ./bin/batchweaver version
 ./bin/batchweaver doctor

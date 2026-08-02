@@ -7,7 +7,7 @@ policy described in the API-freeze decision.
 
 ## Current version
 
-The current public beta is `v0.1.0-beta.1`. It is distributed by an immutable
+The current public beta is `v0.1.0-beta.2`. It is distributed by an immutable
 Git tag and prerelease GitHub Release, including platform archives, checksums,
 SBOMs, local provenance statements, and a VSIX. The Go module uses the same tag.
 

@@ -3,7 +3,7 @@ set -euo pipefail
 
 EXPECTED_REPO="Voskan/BatchWeaver"
 EXPECTED_REMOTE="https://github.com/Voskan/BatchWeaver"
-EXPECTED_TAG="v0.1.0-beta.1"
+EXPECTED_TAG="v$(tr -d '[:space:]' < release/VERSION)"
 MODE="${1:---pre-tag}"
 
 command -v gh >/dev/null

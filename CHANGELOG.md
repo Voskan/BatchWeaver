@@ -10,6 +10,18 @@ The public API may evolve before the 1.0 release.
 
 No changes yet.
 
+## [0.1.0-beta.2] - 2026-08-02
+
+### Fixed
+
+- Derive CLI version and source revision from Go module build information when
+  link-time release metadata is absent, so `go install ...@v0.1.0-beta.2`
+  reports the installed beta instead of `dev`.
+- Correct the GitHub Pages checkout action pin and deploy the documentation site
+  through the protected workflow.
+- Make prerelease publication helpers derive their immutable tag, confirmation,
+  gate report, title, and notes from `release/VERSION`.
+
 ## [0.1.0-beta.1] - 2026-08-02
 
 ### Added
