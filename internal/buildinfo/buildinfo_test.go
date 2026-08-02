@@ -36,13 +36,13 @@ func TestResolveModuleMetadata(t *testing.T) {
 	t.Parallel()
 
 	info := &debug.BuildInfo{
-		Main: debug.Module{Path: modulePath, Version: "v0.1.0-beta.2"},
+		Main: debug.Module{Path: modulePath, Version: "v0.1.0-beta.3"},
 		Settings: []debug.BuildSetting{
 			{Key: "vcs.revision", Value: strings.Repeat("a", 40)},
 		},
 	}
 	version, commit := resolveModuleMetadata(defaultVersion, defaultUnknown, info)
-	if version != "0.1.0-beta.2" {
+	if version != "0.1.0-beta.3" {
 		t.Fatalf("version = %q", version)
 	}
 	if commit != strings.Repeat("a", 40) {

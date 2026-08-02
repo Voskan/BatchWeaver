@@ -6,7 +6,7 @@ const manifest = JSON.parse(await readFile(new URL("package.json", root), "utf8"
 const source = await readFile(new URL("src/extension.ts", root), "utf8");
 
 assert.equal(manifest.private, true, "the beta extension must remain non-publishing");
-assert.equal(manifest.version, "0.1.0-beta.2");
+assert.equal(manifest.version, "0.1.0-beta.3");
 assert.equal(manifest.license, "Apache-2.0");
 assert.match(manifest.engines.vscode, /^\^1\.85\.0$/);
 assert.equal(manifest.engines.node, ">=22");

@@ -1,7 +1,18 @@
 # Known Issues
 
-These are verified limitations for the public `v0.1.0-beta.2` beta. No stable
+These are verified limitations for the public `v0.1.0-beta.3` beta. No stable
 release is implied.
+
+## BW-KI-011 — beta.2 downloaded checksum set uses unavailable report paths
+
+- Severity: P1 for `v0.1.0-beta.2`; fixed in `v0.1.0-beta.3`
+- Affected: complete asset sets downloaded from the beta.2 GitHub Release
+- Impact: GitHub flattened five `reports/...` assets to their base names while
+  the published `SHA256SUMS` retained the directory prefixes, so whole-set
+  checksum verification reports those five paths missing.
+- Workaround: install `v0.1.0-beta.3`. Individual beta.2 file digests remain
+  available from GitHub, but beta.2 is not recommended for new installations.
+- Stable blocker: resolved by a flat, unique asset layout enforced by tests.
 
 ## BW-KI-010 — beta.1 `go install` reports a development version
 
@@ -9,7 +20,7 @@ release is implied.
 - Affected: binaries built with `go install ...@v0.1.0-beta.1`
 - Impact: the module installs correctly, but `batchweaver version` reports
   `dev` because beta.1 did not derive version metadata from Go build info.
-- Workaround: install `v0.1.0-beta.2` or use a beta.1 release archive, whose
+- Workaround: install `v0.1.0-beta.3` or use a beta.1 release archive, whose
   release builder injected the correct metadata.
 - Stable blocker: resolved; regression coverage is required.
 

@@ -79,9 +79,9 @@ func Build(opts BuildOptions) (*Manifest, error) {
 		Signing:         "disabled-for-unsigned-snapshot",
 		ProvenanceModel: "local-build-statement; not a hosted-builder attestation",
 		References: References{
-			Compatibility: "reports/compatibility.json",
-			Security:      "reports/security.md",
-			Performance:   "reports/performance.json",
+			Compatibility: "compatibility.json",
+			Security:      "security.md",
+			Performance:   "performance.json",
 			KnownIssues:   "KNOWN-ISSUES.md",
 		},
 	}
@@ -162,16 +162,12 @@ func Build(opts BuildOptions) (*Manifest, error) {
 	vsixArtifact.Reproducibility = "byte-reproducible-under-declared-node-and-lockfile"
 	manifest.Artifacts = append(manifest.Artifacts, vsixArtifact)
 
-	reportDir := filepath.Join(out, "reports")
-	if err := os.MkdirAll(reportDir, 0o755); err != nil {
-		return nil, err
-	}
 	reports := []struct{ src, dst, kind string }{
-		{"release/compatibility.json", "reports/compatibility.json", "compatibility-report"},
-		{"docs/release/readiness-report.md", "reports/readiness.md", "readiness-report"},
-		{"docs/release/security-report.md", "reports/security.md", "security-report"},
-		{"release/performance-budgets.json", "reports/performance.json", "performance-policy"},
-		{"docs/release/reproducibility-report.md", "reports/reproducibility.md", "reproducibility-report"},
+		{"release/compatibility.json", "compatibility.json", "compatibility-report"},
+		{"docs/release/readiness-report.md", "readiness.md", "readiness-report"},
+		{"docs/release/security-report.md", "security.md", "security-report"},
+		{"release/performance-budgets.json", "performance.json", "performance-policy"},
+		{"docs/release/reproducibility-report.md", "reproducibility.md", "reproducibility-report"},
 		{"KNOWN-ISSUES.md", "KNOWN-ISSUES.md", "known-issues"},
 		{"docs/release/release-notes-" + opts.Version + ".md", "RELEASE-NOTES.md", "release-notes"},
 		{"docs/release/release-checklist.md", "RELEASE-CHECKLIST.md", "release-checklist"},
@@ -211,6 +207,9 @@ func Build(opts BuildOptions) (*Manifest, error) {
 		manifest.Artifacts = append(manifest.Artifacts, a)
 	}
 	sort.Slice(manifest.Artifacts, func(i, j int) bool { return manifest.Artifacts[i].Path < manifest.Artifacts[j].Path })
+	if err := validateGitHubReleaseLayout(manifest); err != nil {
+		return nil, err
+	}
 	manifestPath := filepath.Join(out, "release-manifest.json")
 	if err := writeJSON(manifestPath, manifest); err != nil {
 		return nil, err
@@ -219,6 +218,23 @@ func Build(opts BuildOptions) (*Manifest, error) {
 		return nil, err
 	}
 	return manifest, nil
+}
+
+func validateGitHubReleaseLayout(manifest *Manifest) error {
+	if manifest == nil {
+		return fmt.Errorf("nil release manifest")
+	}
+	seen := make(map[string]struct{}, len(manifest.Artifacts))
+	for _, artifact := range manifest.Artifacts {
+		if artifact.Path == "" || strings.ContainsAny(artifact.Path, `/\`) || filepath.Base(artifact.Path) != artifact.Path {
+			return fmt.Errorf("artifact %q is not a flat GitHub Release asset name", artifact.Path)
+		}
+		if _, exists := seen[artifact.Path]; exists {
+			return fmt.Errorf("duplicate GitHub Release asset name %q", artifact.Path)
+		}
+		seen[artifact.Path] = struct{}{}
+	}
+	return nil
 }
 
 func validateTarget(target Target) error {

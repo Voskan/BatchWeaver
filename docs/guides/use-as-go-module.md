@@ -9,16 +9,16 @@ github.com/Voskan/BatchWeaver
 
 ## Install the beta
 
-The current public prerelease is `v0.1.0-beta.2`. Install the library with:
+The current public prerelease is `v0.1.0-beta.3`. Install the library with:
 
 ```bash
-go get github.com/Voskan/BatchWeaver@v0.1.0-beta.2
+go get github.com/Voskan/BatchWeaver@v0.1.0-beta.3
 ```
 
 Install the command separately with:
 
 ```bash
-go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v0.1.0-beta.2
+go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v0.1.0-beta.3
 ```
 
 Then browse these package pages:

@@ -7,7 +7,7 @@
 - Default branch: `main`
 - Candidate branch: `release/v0.1.0-beta.1`
 - Candidate pull request: #7
-- Published prereleases: `v0.1.0-beta.1`, `v0.1.0-beta.2`
+- Prerelease sequence: `v0.1.0-beta.1`, `v0.1.0-beta.2`, `v0.1.0-beta.3`
 
 ## Public state verified
 
@@ -20,7 +20,10 @@ documentation site, and Go proxy path are verified after publication.
 Public verification of beta.1 found that a CLI built through `go install`
 reported `dev`; release archives were unaffected because they used injected
 metadata. The immutable beta.1 tag was preserved. Beta.2 derives the version
-from Go module build information and adds regression coverage.
+from Go module build information and adds regression coverage. Public download
+verification then found that GitHub flattened beta.2 report assets while its
+checksum file retained directory prefixes. Beta.3 uses and enforces a flat,
+unique public asset layout; earlier tags and releases remain immutable.
 
 ## CI evidence
 
