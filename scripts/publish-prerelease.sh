@@ -21,11 +21,15 @@ if gh release view "$EXPECTED_VERSION" --repo "$EXPECTED_REPO" >/dev/null 2>&1; 
   exit 3
 fi
 
-ASSETS=()
-for asset in "$DIST"/* "$DIST"/reports/*; do
-  if [ -f "$asset" ]; then ASSETS+=("$asset"); fi
-done
-test "${#ASSETS[@]}" -gt 0
+ASSETS=("$DIST/release-manifest.json" "$DIST/SHA256SUMS")
+while IFS= read -r relative; do
+  asset="$DIST/$relative"
+  if [ ! -f "$asset" ]; then
+    printf 'Manifest-declared asset is missing: %s\n' "$relative" >&2
+    exit 4
+  fi
+  ASSETS+=("$asset")
+done < <(python3 -c 'import json,sys; print(*[x["path"] for x in json.load(open(sys.argv[1]))["artifacts"]], sep="\n")' "$DIST/release-manifest.json")
 
 gh release create "$EXPECTED_VERSION" "${ASSETS[@]}" \
   --repo "$EXPECTED_REPO" \

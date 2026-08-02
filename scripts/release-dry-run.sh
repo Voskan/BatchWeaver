@@ -30,6 +30,14 @@ PATH="$RELEASE_PATH" go run ./cmd/batchweaver release build --snapshot --output 
 PATH="$RELEASE_PATH" go run ./cmd/batchweaver release verify "$RUN_DIR/dist-first/release-manifest.json"
 PATH="$RELEASE_PATH" go run ./cmd/batchweaver release reproduce --manifest "$RUN_DIR/dist-first/release-manifest.json"
 
-mkdir -p "$SOURCE_ROOT/dist"
+DIST_DEST="$SOURCE_ROOT/dist"
+case "$DIST_DEST" in
+  "$SOURCE_ROOT/dist") ;;
+  *) printf 'refusing unsafe release destination: %s\n' "$DIST_DEST" >&2; exit 1 ;;
+esac
+if [ -e "$DIST_DEST" ]; then
+  rm -rf -- "$DIST_DEST"
+fi
+mkdir -p "$DIST_DEST"
 cp -R "$RUN_DIR/dist-first/." "$SOURCE_ROOT/dist/"
 printf 'Clean-checkout unpublished release dry run passed at %s\n' "$SOURCE_COMMIT"

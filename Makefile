@@ -118,8 +118,12 @@ docs-check: ## Lint Markdown and YAML (skips a linter if it is not installed)
 site: ## Build the deterministic documentation site under _site/
 	scripts/build-docs-site.sh _site
 
+.PHONY: release-script-tests
+release-script-tests: ## Verify publication helpers fail closed
+	scripts/release-script-tests.sh
+
 .PHONY: check
-check: fmt-check vet test test-race assurance build lint vulncheck docs-check site ## Run all mandatory local gates
+check: fmt-check vet test test-race assurance build lint vulncheck docs-check site release-script-tests ## Run all mandatory local gates
 
 .PHONY: clean
 clean: ## Remove build and coverage output
