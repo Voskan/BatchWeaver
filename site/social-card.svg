@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">BatchWeaver</title>
+  <desc id="desc">Proof-gated automatic batching for Go</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07101d"/><stop offset="1" stop-color="#102541"/></linearGradient>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#63e6be"/><stop offset="1" stop-color="#6ea8fe"/></linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1060" cy="-20" r="310" fill="#6ea8fe" opacity=".08"/>
+  <circle cx="40" cy="610" r="260" fill="#63e6be" opacity=".07"/>
+  <rect x="76" y="70" width="74" height="74" rx="20" fill="url(#mark)"/>
+  <text x="113" y="118" text-anchor="middle" fill="#06101a" font-family="system-ui,sans-serif" font-size="25" font-weight="800">BW</text>
+  <text x="170" y="120" fill="#f2f7ff" font-family="system-ui,sans-serif" font-size="34" font-weight="800">BatchWeaver</text>
+  <text x="76" y="270" fill="#f2f7ff" font-family="system-ui,sans-serif" font-size="68" font-weight="800" letter-spacing="-2">Proof-gated automatic</text>
+  <text x="76" y="350" fill="#f2f7ff" font-family="system-ui,sans-serif" font-size="68" font-weight="800" letter-spacing="-2">batching for Go</text>
+  <text x="78" y="424" fill="#a9bad0" font-family="system-ui,sans-serif" font-size="27">Static analysis · semantic proofs · overlays · typed runtime</text>
+  <rect x="76" y="495" width="360" height="52" rx="26" fill="#63e6be" opacity=".12" stroke="#63e6be"/>
+  <text x="256" y="529" text-anchor="middle" fill="#63e6be" font-family="system-ui,sans-serif" font-size="21" font-weight="700">voskan.github.io/BatchWeaver</text>
+</svg>

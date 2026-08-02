@@ -1,8 +1,9 @@
 # Examples
 
-Runnable, compile-tested examples of BatchWeaver's foundational contracts. These
-demonstrate the data and type contracts only — no automatic batching, scheduling,
-or transformation is performed yet.
+Runnable, compile-tested examples of BatchWeaver's public contracts, runtime,
+proof-gated transformations, adaptive controls, and editor integration. Each
+example states whether it executes batching, previews a transformation, or only
+demonstrates a declarative contract.
 
 - [declarations](declarations) — declaring operations with typed scalar and batch
   contracts.

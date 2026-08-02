@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BatchWeaver Go API and CLI reference</title>
+  <meta name="description" content="Developer guide to BatchWeaver's typed Go packages, operation declarations, request-coalescing runtime, bridge ABI, configuration, diagnostics, and CLI commands.">
+  <meta name="theme-color" content="#08111f"><link rel="canonical" href="https://voskan.github.io/BatchWeaver/api.html"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="BatchWeaver"><meta property="og:title" content="BatchWeaver Go API and CLI"><meta property="og:description" content="Typed declarations, runtime coalescing, compiler bridge, configuration, diagnostics, and command-line workflows."><meta property="og:url" content="https://voskan.github.io/BatchWeaver/api.html"><meta property="og:image" content="https://voskan.github.io/BatchWeaver/social-card.png"><meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"BatchWeaver Go API and CLI reference","about":{"@type":"SoftwareSourceCode","name":"BatchWeaver","programmingLanguage":"Go","version":"@@VERSION@@"},"dateModified":"@@BUILD_DATE@@","url":"https://voskan.github.io/BatchWeaver/api.html"}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header"><nav class="nav" aria-label="Primary navigation"><a class="brand" href="./"><span class="brand-mark">BW</span><span>BatchWeaver</span></a><div class="nav-links"><a href="docs.html">Documentation</a><a href="examples.html">Examples</a><a aria-current="page" href="api.html">Go API</a><a href="status.html">Project status</a><a href="https://github.com/Voskan/BatchWeaver">GitHub</a></div></nav></header>
+  <main id="main" class="page">
+    <header class="page-hero"><p class="eyebrow">Developer API · v@@VERSION@@</p><h1>Typed Go contracts and explicit runtime integration</h1><p class="lead">BatchWeaver exposes six public packages. Declarations have no global registration side effects; runtime batching is opt-in and reflection-free; compiler and adapter implementation details remain behind Go's internal boundary.</p><div class="actions"><a class="button primary" href="https://pkg.go.dev/github.com/Voskan/BatchWeaver@v@@VERSION@@">Open pkg.go.dev</a><a class="button" href="examples.html">See runnable examples</a></div></header>
+
+    <section class="section compact"><div class="section-heading"><p class="kicker">Install</p><h2>Pin the CLI and library to one immutable version</h2></div><div class="code-panel"><pre><code>go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v@@VERSION@@
+go get github.com/Voskan/BatchWeaver@v@@VERSION@@</code></pre></div></section>
+
+    <section class="section compact"><div class="section-heading"><p class="kicker">Package map</p><h2>Six documented public packages</h2></div><div class="package-table" role="table" aria-label="Public Go packages">
+      <a role="row" href="https://pkg.go.dev/github.com/Voskan/BatchWeaver@v@@VERSION@@"><code>github.com/Voskan/BatchWeaver</code><span>Generic batch requests, outcomes, scalar/batch functions, and typed declarations.</span></a>
+      <a role="row" href="https://pkg.go.dev/github.com/Voskan/BatchWeaver/operation@v@@VERSION@@"><code>/operation</code><span>Operation identity, semantics, contracts, policies, symbols, and catalogs.</span></a>
+      <a role="row" href="https://pkg.go.dev/github.com/Voskan/BatchWeaver/runtime@v@@VERSION@@"><code>/runtime</code><span>Instance-scoped engine, scopes, bindings, queues, cancellation, and coalescing.</span></a>
+      <a role="row" href="https://pkg.go.dev/github.com/Voskan/BatchWeaver/bridge@v@@VERSION@@"><code>/bridge</code><span>Typed reflection-free ABI between generated code and the runtime.</span></a>
+      <a role="row" href="https://pkg.go.dev/github.com/Voskan/BatchWeaver/config@v@@VERSION@@"><code>/config</code><span>Strict YAML/JSON loading, includes, validation, normalization, and semantic digest.</span></a>
+      <a role="row" href="https://pkg.go.dev/github.com/Voskan/BatchWeaver/diagnostics@v@@VERSION@@"><code>/diagnostics</code><span>Stable diagnostic values, source ranges, fixes, collections, and renderers.</span></a>
+    </div></section>
+
+    <section id="declarations" class="section compact"><div class="section-heading"><p class="kicker">Typed declaration</p><h2>Connect scalar and batch implementations</h2><p>This complete pattern is statically discoverable and performs no implicit registration or I/O.</p></div><div class="code-panel"><pre><code>package users
+
+import (
+    "context"
+
+    batchweaver "github.com/Voskan/BatchWeaver"
+    "github.com/Voskan/BatchWeaver/operation"
+)
+
+type User struct { ID int; Name string }
+
+func loadUser(ctx context.Context, id int) (User, error) {
+    return User{ID: id}, nil
+}
+
+func loadUsers(
+    ctx context.Context,
+    req batchweaver.BatchRequest[int],
+) (batchweaver.BatchResponse[User], error) {
+    values := make([]User, req.Len())
+    for i, item := range req.Items() {
+        values[i] = User{ID: item.Key}
+    }
+    return batchweaver.OrderedOutcomes(req, values)
+}
+
+var GetUser = batchweaver.MustDeclareFunction(
+    operation.MustNewSpec(
+        operation.MustParseID("users.get"),
+        operation.ReadOnly(),
+        operation.WithOrderedResults(),
+        operation.WithRequestScope(),
+    ),
+    loadUser,
+    loadUsers,
+)</code></pre></div><div class="inline-links"><a href="https://github.com/Voskan/BatchWeaver/tree/main/examples/declarations/basic">Compile-tested source</a><a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/reference/typed-declarations.md">Declaration reference</a><a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/reference/provider-contract.md">Provider contract</a></div></section>
+
+    <section id="runtime" class="section compact"><div class="section-heading"><p class="kicker">Runtime</p><h2>Coalesce only inside an explicit scope</h2><p>Bind an operation to an engine, enter a scope, and call the typed bound operation. Partition identity and queue limits remain explicit in the binding.</p></div><div class="api-flow"><div><strong>1. Engine</strong><p>Own lifecycle, defaults, hooks, and operation coordinators.</p></div><div><strong>2. Binding</strong><p>Connect a declaration, key strategy, provider, partition, and limits.</p></div><div><strong>3. Scope</strong><p>Define the request boundary carried through context.</p></div><div><strong>4. Do</strong><p>Submit a typed key and receive one independently cancellable outcome.</p></div></div><div class="inline-links"><a href="https://pkg.go.dev/github.com/Voskan/BatchWeaver/runtime@v@@VERSION@@">Runtime package</a><a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/guides/runtime-api.md">Runtime guide</a><a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/reference/cancellation-and-deadlines.md">Cancellation semantics</a></div></section>
+
+    <section id="cli" class="section compact"><div class="section-heading"><p class="kicker">Command line</p><h2>Compiler, runtime, adapters, operations, and release assurance</h2></div><div class="command-groups">
+      <div><h3>Analyze and prove</h3><code>scan</code><code>operation</code><code>candidate</code><code>prove</code><code>proof</code><code>assumption</code><code>strategy</code><code>barrier</code></div>
+      <div><h3>Transform and execute</h3><code>transform</code><code>build</code><code>run</code><code>test</code><code>runtime</code><code>tool-exec</code></div>
+      <div><h3>Adapters</h3><code>adapter</code><code>http</code><code>openapi</code><code>graphql</code><code>grpc</code></div>
+      <div><h3>Adaptive operations</h3><code>profile</code><code>tune</code><code>fairness</code><code>overload</code><code>wave</code><code>recursive</code></div>
+      <div><h3>Editor and daemon</h3><code>lsp</code><code>editor</code><code>daemon</code></div>
+      <div><h3>Assurance</h3><code>doctor</code><code>security</code><code>compatibility</code><code>verify</code><code>release</code><code>version</code></div>
+    </div><div class="code-panel short"><pre><code>batchweaver help
+batchweaver help &lt;command&gt;</code></pre></div><div class="inline-links"><a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/reference/exit-codes.md">Exit codes</a><a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/reference/diagnostic-codes.md">Diagnostic codes</a><a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/reference/configuration.md">Configuration</a></div></section>
+
+    <section class="section compact"><div class="section-heading"><p class="kicker">Compatibility contract</p><h2>What v@@VERSION@@ does and does not promise</h2></div><div class="status-columns"><article class="status-ready"><h3>Supported surface</h3><ul><li>Go 1.26.5</li><li>Public packages listed above</li><li>database/sql and net/http providers</li><li>Verified release archives and VSIX</li><li>Documented schema and ABI rejection behavior</li></ul></article><article class="status-development"><h3>Not part of the supported stable surface</h3><ul><li>Concrete pgx, go-redis, gqlgen, and grpc-go bindings</li><li>Arbitrary SQL or network request fusion</li><li>Implicit source mutation</li><li>Stable v1 compatibility promise</li><li>Hosted attestation or cryptographic signatures</li></ul></article></div><p><a href="status.html">Read the full implementation and development report →</a></p></section>
+  </main>
+  <footer class="footer"><div><strong>BatchWeaver API</strong><p>Typed, explicit, and fail-closed.</p></div><div><strong>Navigate</strong><a href="./">Home</a><a href="docs.html">Documentation</a><a href="examples.html">Examples</a></div><div><strong>Developer links</strong><a href="https://pkg.go.dev/github.com/Voskan/BatchWeaver@v@@VERSION@@">pkg.go.dev</a><a href="https://github.com/Voskan/BatchWeaver">Source</a></div><p class="footer-meta">Version v@@VERSION@@ · source <code>@@COMMIT@@</code> · updated @@BUILD_DATE@@</p></footer>
+</body>
+</html>

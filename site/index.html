@@ -3,35 +3,195 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="BatchWeaver is a proof-gated Go batching compiler and typed request-coalescing runtime for safe N+1 optimization.">
-  <title>BatchWeaver @@VERSION@@</title>
+  <title>BatchWeaver — Proof-gated automatic batching for Go</title>
+  <meta name="description" content="BatchWeaver is an open-source Go compiler and typed runtime for proof-gated N+1 optimization, request coalescing, safe batching previews, adapters, and editor tooling.">
+  <meta name="keywords" content="Go batching, Golang N+1, request coalescing, static analysis, compiler, dataloader, database batching, LSP">
+  <meta name="author" content="BatchWeaver contributors">
+  <meta name="theme-color" content="#08111f">
+  <meta name="color-scheme" content="dark light">
+  <link rel="canonical" href="https://voskan.github.io/BatchWeaver/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="stylesheet" href="styles.css">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BatchWeaver">
+  <meta property="og:title" content="BatchWeaver — Proof-gated automatic batching for Go">
+  <meta property="og:description" content="Find supported N+1 patterns, prove safety conditions, preview deterministic changes, and coalesce compatible Go calls without crossing isolation boundaries.">
+  <meta property="og:url" content="https://voskan.github.io/BatchWeaver/">
+  <meta property="og:image" content="https://voskan.github.io/BatchWeaver/social-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BatchWeaver — Safe semantic batching for Go">
+  <meta name="twitter:description" content="A proof-gated compiler, typed runtime, adapters, and editor tools for conservative Go batching.">
+  <meta name="twitter:image" content="https://voskan.github.io/BatchWeaver/social-card.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "BatchWeaver",
+    "description": "Proof-gated automatic batching compiler and typed request-coalescing runtime for Go.",
+    "codeRepository": "https://github.com/Voskan/BatchWeaver",
+    "url": "https://voskan.github.io/BatchWeaver/",
+    "programmingLanguage": "Go",
+    "runtimePlatform": "Go 1.26.5",
+    "license": "https://www.apache.org/licenses/LICENSE-2.0",
+    "version": "@@VERSION@@",
+    "dateModified": "@@BUILD_DATE@@",
+    "downloadUrl": "https://github.com/Voskan/BatchWeaver/releases/tag/v@@VERSION@@"
+  }
+  </script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header><nav aria-label="Main"><a href="#start">Getting started</a><a href="#safety">Safety</a><a href="#compatibility">Compatibility</a><a href="#adopt">Adoption</a><a href="#community">Community</a></nav></header>
-  <main id="main">
-    <p class="eyebrow">Public beta · @@VERSION@@ · source @@COMMIT@@</p>
-    <h1>Proof-gated semantic batching for Go</h1>
-    <p class="lead">BatchWeaver finds supported scalar access patterns, proves a conservative transformation, previews the diff, and runs transformed tests through an overlay before source changes are considered.</p>
-    <aside><strong>Beta:</strong> APIs may change. Review every diff and run your full suite. Unsupported patterns remain scalar.</aside>
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="./" aria-label="BatchWeaver home"><span class="brand-mark">BW</span><span>BatchWeaver</span></a>
+      <div class="nav-links">
+        <a href="docs.html">Documentation</a>
+        <a href="examples.html">Examples</a>
+        <a href="api.html">Go API</a>
+        <a href="status.html">Project status</a>
+        <a href="https://github.com/Voskan/BatchWeaver">GitHub</a>
+      </div>
+    </nav>
+  </header>
 
-    <section id="start"><h2>Five-minute start</h2><pre><code>go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v0.1.0-beta.3
+  <main id="main">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Public beta · v@@VERSION@@ · Go 1.26.5</p>
+        <h1>Proof-gated automatic batching for Go</h1>
+        <p class="lead">BatchWeaver finds supported scalar access patterns—including common N+1 shapes—proves their safety conditions, previews deterministic changes, and coalesces compatible requests without silently crossing tenant, authorization, transaction, session, cancellation, or ordering boundaries.</p>
+        <div class="actions">
+          <a class="button primary" href="#quickstart">Start in five minutes</a>
+          <a class="button" href="docs.html">Explore documentation</a>
+          <a class="button" href="https://pkg.go.dev/github.com/Voskan/BatchWeaver@v@@VERSION@@">View Go packages</a>
+        </div>
+        <p class="micro">Apache-2.0 · No remote telemetry · Overlay-first · Unsupported patterns fail closed</p>
+      </div>
+      <div class="terminal" aria-label="BatchWeaver command example">
+        <div class="terminal-bar"><span></span><span></span><span></span><strong>terminal</strong></div>
+        <pre><code><span class="prompt">$</span> batchweaver scan ./...
+<span class="good">BW1001</span> candidate users.GetUser
+
+<span class="prompt">$</span> batchweaver prove ./...
+<span class="good">PROVEN</span> static-loop-prefetch
+  ordering      preserved
+  cancellation  preserved
+  partition     request-scoped
+
+<span class="prompt">$</span> batchweaver transform diff ./...
+<span class="muted">review-only overlay; source unchanged</span></code></pre>
+      </div>
+    </section>
+
+    <aside class="release-banner">
+      <div><strong>Current status: public beta.</strong> v@@VERSION@@ is verified and installable, but the stable v1 evidence gates are not complete.</div>
+      <a href="status.html">See exactly what is ready and what remains</a>
+    </aside>
+
+    <section id="quickstart" class="section">
+      <div class="section-heading">
+        <p class="kicker">Quick start</p>
+        <h2>Evaluate without changing source</h2>
+        <p>Install an immutable version, validate the environment, scan, prove, preview, and run transformed tests through a Go overlay.</p>
+      </div>
+      <div class="code-panel">
+        <pre><code>go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v@@VERSION@@
+
 batchweaver version
 batchweaver doctor
+batchweaver config validate --file examples/configuration/batchweaver.yaml
 batchweaver scan ./...
+batchweaver prove ./...
 batchweaver transform plan ./...
-batchweaver test -- -race ./...</code></pre><p>The command pins the immutable beta tag. Importable package documentation and compile-tested examples are available on <a href="https://pkg.go.dev/github.com/Voskan/BatchWeaver">pkg.go.dev</a>.</p></section>
+batchweaver transform diff ./...
+batchweaver test -- -race ./...</code></pre>
+      </div>
+      <div class="inline-links">
+        <a href="docs.html#getting-started">Evaluation guide</a>
+        <a href="examples.html">Runnable examples</a>
+        <a href="https://github.com/Voskan/BatchWeaver/releases/tag/v@@VERSION@@">Downloads and checksums</a>
+      </div>
+    </section>
 
-    <section id="safety"><h2>Safety model</h2><div class="grid"><article><h3>Proof first</h3><p>No supported transformation proceeds without explicit proof obligations. Unknowns are rejections, not optimism.</p></article><article><h3>Preview first</h3><p>Source is unchanged by default. Plans, diffs, overlays, type checking, and transformed tests precede materialization.</p></article><article><h3>Boundaries preserved</h3><p>Ordering, errors, cancellation, deadlines, partitions, authorization, transactions, and result contracts are part of eligibility.</p></article></div></section>
+    <section class="section">
+      <div class="section-heading">
+        <p class="kicker">Complete pipeline</p>
+        <h2>One conservative path from source to batch</h2>
+      </div>
+      <ol class="pipeline" aria-label="BatchWeaver processing pipeline">
+        <li><span>01</span><strong>Discover</strong><p>Load packages, declarations, config, SSA, call graph, and effects.</p></li>
+        <li><span>02</span><strong>Prove</strong><p>Evaluate named semantic obligations. Unknown means reject.</p></li>
+        <li><span>03</span><strong>Plan</strong><p>Create content-addressed, source-anchored transformation plans.</p></li>
+        <li><span>04</span><strong>Preview</strong><p>Render deterministic diffs and compile through overlays.</p></li>
+        <li><span>05</span><strong>Test</strong><p>Run the transformed application suite, including race checks.</p></li>
+        <li><span>06</span><strong>Adopt</strong><p>Materialize only with explicit approval, backup, revert, and rollback.</p></li>
+      </ol>
+    </section>
 
-    <section id="compatibility"><h2>Compatibility</h2><p>Go 1.26.5 is the supported toolchain. Native evidence is strongest on macOS arm64. Linux amd64/arm64, macOS amd64, and Windows amd64 archives are cross-built and verified with the limitations recorded in the matrix.</p><p><a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/release/compatibility.md">Compatibility matrix</a> · <a href="https://github.com/Voskan/BatchWeaver/blob/main/KNOWN-ISSUES.md">Known issues</a> · <a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/architecture/overview.md">Architecture</a></p></section>
+    <section class="section">
+      <div class="section-heading">
+        <p class="kicker">Implemented today</p>
+        <h2>Compiler, runtime, adapters, controls, and editor tooling</h2>
+      </div>
+      <div class="card-grid">
+        <article><div class="icon">01</div><h3>Static analysis</h3><p>Go package loading, SSA, conservative call graph and effects, declaration discovery, candidate reports, and deterministic diagnostics.</p><a href="docs.html#architecture">Analysis architecture</a></article>
+        <article><div class="icon">02</div><h3>Semantic proofs</h3><p>Strategy-specific obligations, explicit assumptions, rejection witnesses, versioned certificates, and no optimistic fallback.</p><a href="docs.html#concepts">Proof model</a></article>
+        <article><div class="icon">03</div><h3>Transformations</h3><p>Static prefetch and runtime lowering, build overlays, typed bridges, deterministic diffs, atomic materialization, recovery, and revert.</p><a href="docs.html#guides">Transformation guides</a></article>
+        <article><div class="icon">04</div><h3>Typed runtime</h3><p>Request-scoped coalescing, bounded queues, partitioning, deadlines, cancellation, deduplication, memoization, and result validation.</p><a href="api.html#runtime">Runtime API</a></article>
+        <article><div class="icon">05</div><h3>Adapters</h3><p>Adapter SDK, database/sql and HTTP providers, exact-key PostgreSQL synthesis, Redis mapping, OpenAPI contracts, GraphQL waves, and gRPC policies.</p><a href="docs.html#adapters">Adapter documentation</a></article>
+        <article><div class="icon">06</div><h3>Operations and editors</h3><p>Adaptive analysis, fairness, overload control, waves, recursive batching, standalone LSP, gopls proxy, daemon, and VS Code extension.</p><a href="docs.html#editors">Editor and operations guides</a></article>
+      </div>
+    </section>
 
-    <section id="adopt"><h2>Adopt conservatively</h2><ol><li>Evaluate in a non-production clone.</li><li>Run scan and proof reports.</li><li>Add explicit providers only for verified contracts.</li><li>Preview and test through overlays.</li><li>Use shadow verification, canaries, budgets, and a rehearsed rollback.</li></ol><p><a href="https://github.com/Voskan/BatchWeaver/tree/main/docs/adoption">Adoption and migration guides</a> · <a href="https://github.com/Voskan/BatchWeaver/tree/main/examples">Runnable examples</a> · <a href="https://github.com/Voskan/BatchWeaver/blob/main/docs/release/performance-report.md">Benchmark methodology</a></p></section>
+    <section class="section split">
+      <div>
+        <p class="kicker">Safety model</p>
+        <h2>Semantic boundaries are eligibility conditions</h2>
+        <p class="lead-small">Batching is refused when BatchWeaver cannot establish the required equivalence. Supported optimizations preserve the contract that matters to callers.</p>
+      </div>
+      <ul class="check-list">
+        <li>Evaluation and observable effect ordering</li>
+        <li>Per-item values, errors, missing results, and duplicates</li>
+        <li>Cancellation, deadlines, panic isolation, and fallback</li>
+        <li>Request, tenant, authorization, session, and transaction partitions</li>
+        <li>Queue, concurrency, memory, fairness, and overload bounds</li>
+        <li>Source anchors, schema versions, ABI versions, and cache invalidation</li>
+      </ul>
+    </section>
 
-    <section id="community"><h2>Community and security</h2><p>Use structured issues for reproducible bugs, transformation safety reports, compatibility, performance, documentation, and beta feedback. Never include credentials or production data.</p><p><a href="https://github.com/Voskan/BatchWeaver/issues/new/choose">Issue forms</a> · <a href="https://github.com/Voskan/BatchWeaver/security/policy">Private security instructions</a> · <a href="https://github.com/Voskan/BatchWeaver/blob/main/CONTRIBUTING.md">Contributing</a> · <a href="https://github.com/Voskan/BatchWeaver/blob/main/SUPPORT.md">Support</a></p></section>
+    <section class="section">
+      <div class="section-heading">
+        <p class="kicker">Developer surfaces</p>
+        <h2>Use the CLI, import typed packages, or integrate an editor</h2>
+      </div>
+      <div class="feature-row">
+        <article><h3>Command line</h3><p>Scan, prove, transform, test, inspect adapters, collect profiles, run the LSP, and verify releases.</p><a href="api.html#cli">CLI command index →</a></article>
+        <article><h3>Go packages</h3><p>Declare operations and embed the reflection-free runtime in applications through six documented public packages.</p><a href="api.html">Go API guide →</a></article>
+        <article><h3>Editor workflow</h3><p>Get live diagnostics, hovers, code lenses, previews, and optional gopls composition without implicit source writes.</p><a href="docs.html#editors">Editor setup →</a></article>
+      </div>
+    </section>
+
+    <section class="section cta">
+      <p class="kicker">Documentation portal</p>
+      <h2>From first evaluation to release operations</h2>
+      <p>Browse tutorials, concepts, architecture, task guides, exact reference contracts, limitations, security threat models, adoption guidance, ADRs, and every runnable example.</p>
+      <div class="actions centered">
+        <a class="button primary" href="docs.html">Browse all documentation</a>
+        <a class="button" href="examples.html">Run examples</a>
+        <a class="button" href="status.html">Read project status</a>
+      </div>
+    </section>
   </main>
-  <footer><p>Apache-2.0 · No source upload or remote telemetry by default · <a href="https://github.com/Voskan/BatchWeaver">GitHub</a></p></footer>
+
+  <footer class="footer">
+    <div><strong>BatchWeaver</strong><p>Proof-gated semantic batching for Go.</p></div>
+    <div><strong>Project</strong><a href="https://github.com/Voskan/BatchWeaver">Source</a><a href="https://github.com/Voskan/BatchWeaver/releases">Releases</a><a href="status.html">Status</a></div>
+    <div><strong>Developers</strong><a href="docs.html">Documentation</a><a href="api.html">Go API</a><a href="examples.html">Examples</a></div>
+    <div><strong>Policies</strong><a href="https://github.com/Voskan/BatchWeaver/security/policy">Security</a><a href="https://github.com/Voskan/BatchWeaver/blob/main/CONTRIBUTING.md">Contributing</a><a href="https://github.com/Voskan/BatchWeaver/blob/main/LICENSE">Apache-2.0</a></div>
+    <p class="footer-meta">Version v@@VERSION@@ · source <code>@@COMMIT@@</code> · updated @@BUILD_DATE@@</p>
+  </footer>
 </body>
 </html>

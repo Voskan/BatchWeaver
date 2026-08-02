@@ -4,6 +4,12 @@ Use this index to find the right level of detail. Start with a tutorial if you
 are evaluating BatchWeaver, use a guide for a specific task, and use reference
 pages when you need exact contracts or compatibility details.
 
+The public documentation portal provides curated entry points for
+[all documentation](https://voskan.github.io/BatchWeaver/docs.html),
+[runnable examples](https://voskan.github.io/BatchWeaver/examples.html), the
+[Go API and CLI](https://voskan.github.io/BatchWeaver/api.html), and the current
+[implementation and stable-release status](https://voskan.github.io/BatchWeaver/status.html).
+
 ## Start here
 
 - [Verified batching tutorial](tutorials/verified-batching.md) — evaluate the

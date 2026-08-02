@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BatchWeaver examples — Go declarations, transformations, runtime, and editors</title>
+  <meta name="description" content="Runnable BatchWeaver examples for typed Go declarations, configuration, static prefetch, adaptive runtime, fairness, overload control, recursive batching, operation waves, and editor diagnostics.">
+  <meta name="theme-color" content="#08111f"><link rel="canonical" href="https://voskan.github.io/BatchWeaver/examples.html"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="BatchWeaver"><meta property="og:title" content="Runnable BatchWeaver examples"><meta property="og:description" content="Compile-tested examples for the BatchWeaver compiler, typed runtime, adapters, adaptive controls, and editor integration."><meta property="og:url" content="https://voskan.github.io/BatchWeaver/examples.html"><meta property="og:image" content="https://voskan.github.io/BatchWeaver/social-card.png"><meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"BatchWeaver examples","url":"https://voskan.github.io/BatchWeaver/examples.html","about":{"@type":"SoftwareSourceCode","name":"BatchWeaver","programmingLanguage":"Go"},"dateModified":"@@BUILD_DATE@@"}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header"><nav class="nav" aria-label="Primary navigation"><a class="brand" href="./"><span class="brand-mark">BW</span><span>BatchWeaver</span></a><div class="nav-links"><a href="docs.html">Documentation</a><a aria-current="page" href="examples.html">Examples</a><a href="api.html">Go API</a><a href="status.html">Project status</a><a href="https://github.com/Voskan/BatchWeaver">GitHub</a></div></nav></header>
+  <main id="main" class="page">
+    <header class="page-hero"><p class="eyebrow">Compile-tested examples · v@@VERSION@@</p><h1>See each BatchWeaver layer in runnable Go</h1><p class="lead">The repository examples cover declarative contracts, compiler transformations, adaptive controls, fairness, overload handling, recursive batching, operation waves, and editor workflows. The Go examples run in the mandatory test suite.</p><div class="actions"><a class="button primary" href="https://github.com/Voskan/BatchWeaver/tree/main/examples">Browse source</a><a class="button" href="#run-all">Run all Go examples</a></div></header>
+
+    <section id="run-all" class="section compact"><div class="section-heading"><p class="kicker">Run locally</p><h2>Clone and test the complete example suite</h2></div><div class="code-panel"><pre><code>git clone https://github.com/Voskan/BatchWeaver.git
+cd BatchWeaver
+git checkout v@@VERSION@@
+go test ./examples/... -count=1</code></pre></div><p class="notice">The three editor fixtures are standalone modules and are exercised through editor/LSP checks rather than the root module test command.</p></section>
+
+    <section class="section compact"><div class="section-heading"><p class="kicker">Foundations</p><h2>Declarations and configuration</h2></div><div class="example-grid">
+      <article><span class="tag">Public API</span><h3>Typed declarations</h3><p>Connect a scalar method and native batch method through an immutable, statically discoverable declaration.</p><pre><code>go test ./examples/declarations/basic</code></pre><a href="https://github.com/Voskan/BatchWeaver/tree/main/examples/declarations/basic">Open declaration example →</a></article>
+      <article><span class="tag">Configuration</span><h3>Equivalent YAML and JSON</h3><p>Validate two strict configuration documents that produce the same semantic digest and operation catalog.</p><pre><code>batchweaver config validate --file \
+  examples/configuration/batchweaver.yaml</code></pre><a href="https://github.com/Voskan/BatchWeaver/tree/main/examples/configuration">Open configuration examples →</a></article>
+    </div></section>
+
+    <section class="section compact"><div class="section-heading"><p class="kicker">Compiler</p><h2>Proof-gated static prefetch</h2></div><div class="example-feature"><div><h3>Transform an N+1 loop without mutating source</h3><p>The fixture contains a scalar repository call in a loop, a compatible batch provider, equivalence tests, and the expected static prefetch behavior.</p><ul class="check-list small"><li>Preserves result order and duplicates</li><li>Uses a proven transformation strategy</li><li>Builds and tests through an overlay</li><li>Keeps materialization separate and explicit</li></ul><a href="https://github.com/Voskan/BatchWeaver/tree/main/examples/static-prefetch">Open static-prefetch example →</a></div><pre><code>batchweaver scan ./examples/static-prefetch/...
+batchweaver prove ./examples/static-prefetch/...
+batchweaver transform diff ./examples/static-prefetch/...
+batchweaver test -- -race ./examples/static-prefetch/...</code></pre></div></section>
+
+    <section class="section compact"><div class="section-heading"><p class="kicker">Adaptive runtime</p><h2>Profiles, decisions, fairness, and overload</h2></div><div class="example-grid three">
+      <article><span class="tag">Tuning</span><h3>Adaptive runtime</h3><p>Profile a synthetic workload and produce a bounded shadow-mode tuning recommendation.</p><pre><code>go test ./examples/adaptive-runtime</code></pre><a href="https://github.com/Voskan/BatchWeaver/tree/main/examples/adaptive-runtime">Open example →</a></article>
+      <article><span class="tag">Scheduling</span><h3>Fairness and overload</h3><p>Exercise weighted fair scheduling across anonymized classes and explicit overload admission decisions.</p><pre><code>go test ./examples/fairness-overload</code></pre><a href="https://github.com/Voskan/BatchWeaver/tree/main/examples/fairness-overload">Open example →</a></article>
+      <article><span class="tag">Orchestration</span><h3>Multi-operation waves</h3><p>Build a dependency DAG, co-schedule independent operations, and identify the critical path.</p><pre><code>go test ./examples/multi-operation-wave</code></pre><a href="https://github.com/Voskan/BatchWeaver/tree/main/examples/multi-operation-wave">Open example →</a></article>
+      <article><span class="tag">Graphs</span><h3>Recursive batching</h3><p>Load a tree breadth-first, issuing one proven batched call per frontier with explicit cycle and limit policies.</p><pre><code>go test ./examples/recursive-batching</code></pre><a href="https://github.com/Voskan/BatchWeaver/tree/main/examples/recursive-batching">Open example →</a></article>
+    </div></section>
+
+    <section class="section compact"><div class="section-heading"><p class="kicker">Editors</p><h2>Diagnostics, previews, and gopls composition</h2></div><div class="example-grid three">
+      <article><span class="tag">LSP</span><h3>Live diagnostics</h3><p>Open a standalone Go module containing an N+1 loop and inspect the live opportunity diagnostic and code lens.</p><a href="https://github.com/Voskan/BatchWeaver/tree/main/examples/editor-diagnostics">Open editor-diagnostics →</a></article>
+      <article><span class="tag">Preview</span><h3>Transformation preview</h3><p>Open a read-only virtual diff from the editor. Applying changes remains a separate explicit CLI operation.</p><a href="https://github.com/Voskan/BatchWeaver/tree/main/examples/editor-transform-preview">Open editor-transform-preview →</a></article>
+      <article><span class="tag">Proxy</span><h3>gopls proxy</h3><p>Run BatchWeaver as the language server while delegating standard Go language features to the user's gopls.</p><pre><code>batchweaver lsp --stdio --proxy-gopls</code></pre><a href="https://github.com/Voskan/BatchWeaver/tree/main/examples/editor-proxy">Open editor-proxy →</a></article>
+    </div></section>
+
+    <section class="section compact cta"><p class="kicker">Next step</p><h2>Move from examples to your own workspace</h2><p>Start with a non-production clone, declare explicit providers, review every proof and diff, and retain scalar rollback.</p><div class="actions centered"><a class="button primary" href="docs.html#getting-started">Follow the tutorial</a><a class="button" href="api.html">Use the Go packages</a><a class="button" href="status.html">Review limitations</a></div></section>
+  </main>
+  <footer class="footer"><div><strong>BatchWeaver examples</strong><p>Runnable evidence, not performance promises.</p></div><div><strong>Navigate</strong><a href="./">Home</a><a href="docs.html">Documentation</a><a href="api.html">Go API</a></div><div><strong>Project</strong><a href="status.html">Status</a><a href="https://github.com/Voskan/BatchWeaver/tree/main/examples">Example source</a></div><p class="footer-meta">Version v@@VERSION@@ · source <code>@@COMMIT@@</code> · updated @@BUILD_DATE@@</p></footer>
+</body>
+</html>

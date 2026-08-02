@@ -6,6 +6,8 @@ contracts.
 - [basic](basic) — a `Repository` with a scalar `GetUser` method and a native
   `GetUsersBatch` method, connected by a `MustDeclareMethod` declaration.
 
-**Declaration is implemented today. Automatic interception of scalar calls is
-not.** These examples demonstrate the data and type contracts only; later
-compiler prompts will discover eligible call sites and transform them.
+Declarations are implemented and statically discoverable today. Importing this
+package or constructing a declaration has no global side effects. The compiler
+can discover eligible call sites, prove a supported strategy, preview the
+transformation, and test it through an overlay; this declaration example itself
+does not invoke those compiler stages.

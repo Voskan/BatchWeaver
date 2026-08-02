@@ -1,0 +1,10 @@
+{
+  "name": "BatchWeaver Documentation",
+  "short_name": "BatchWeaver",
+  "description": "Proof-gated automatic batching compiler and typed runtime for Go.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#07101d",
+  "theme_color": "#08111f",
+  "icons": [{"src":"favicon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]
+}
