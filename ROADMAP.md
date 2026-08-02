@@ -109,11 +109,21 @@ layer's already-specified, bounded-label telemetry.
 
 ## Phase 11 — IDE integration
 
-Editor tooling to surface batching opportunities and diagnostics.
+Prompt 11 delivered the editor and interactive developer-experience layer: a
+standalone LSP server, an optional gopls-compatible proxy, a local workspace
+daemon, unsaved-buffer overlays, live batching diagnostics, proof-aware code
+actions and lenses, hover, transformation previews, `batchweaver editor doctor`,
+a VS Code extension source tree, and standard-LSP setup for other editors. No
+gopls internals are imported and no source is written implicitly. Remaining
+increments: routing analysis through the shared daemon cache, the full versioned
+`WorkspaceEdit` apply flow, and CI-gated real-gopls and VS Code E2E matrices.
 
-## Phase 12 — Security hardening
+## Phase 12 — Advanced correctness and release-candidate hardening
 
-A focused security review and hardening pass across the compiler and runtime.
+Compatibility matrix across Go/gopls/platforms; mutation and differential
+testing; extensive fuzz and soak coverage; security and supply-chain hardening;
+reproducible builds; SBOM and provenance; CLI/SDK API review; documentation
+completeness; packaging; and release-candidate preparation.
 
 ## Phase 13 — Public beta
 

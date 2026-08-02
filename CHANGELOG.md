@@ -10,6 +10,24 @@ The public API may evolve before the 1.0 release.
 
 ### Added
 
+- Editor and interactive developer-experience layer: a standalone `batchweaver
+  lsp` language server (LSP 3.17 over a small internal JSON-RPC implementation
+  with hand-written protocol types and no gopls internal imports), an optional
+  `--proxy-gopls` mode that launches and composes the user's gopls (forwarding
+  standard Go traffic with automatic request-ID namespacing, merging initialize
+  capabilities and hover/code-action/code-lens results, and keeping diagnostics
+  separated by source), and a local workspace daemon (`batchweaver daemon
+  start|status|stop|clean`) with a versioned Unix-socket protocol, discovery,
+  health, and lifecycle. Open editor buffers are authoritative: BatchWeaver
+  analyzes unsaved bytes through a `go/packages` overlay and publishes live,
+  debounced, snapshot-consistent diagnostics (including the `BW1001` batching
+  opportunity), hover, code lenses, and preview code actions, using a single
+  canonical UTF-16/byte position mapper. Adds `batchweaver editor doctor`, a VS
+  Code extension source tree (sidecar/proxy modes, commands, settings, status
+  bar, output channel, and workspace-trust handling), editor setup guides for
+  Neovim, Emacs/Eglot, Helix, and Zed, an editor support matrix, and LSP/editor
+  diagnostics in the `BW9xxx` range. No source is ever written implicitly and no
+  remote telemetry is collected. ADRs 0072–0081. No new Go module dependencies.
 - Adaptive scheduling and production tuning layer (`internal/adaptive`) and the
   `batchweaver profile`, `tune`, `fairness`, `overload`, `wave`, and `recursive`
   commands. Privacy-safe, versioned workload profiles

@@ -18,3 +18,12 @@ or transformation is performed yet.
   batched call per frontier level.
 - [fairness-overload](fairness-overload) — weighted fair scheduling across
   anonymized classes and overload admission decisions.
+- [editor-diagnostics](editor-diagnostics) — an N+1 loop that the BatchWeaver
+  language server flags live in an editor.
+- [editor-transform-preview](editor-transform-preview) — the read-only
+  transformation-preview flow in an editor.
+- [editor-proxy](editor-proxy) — running BatchWeaver in proxy mode alongside
+  gopls.
+
+The `editor-*` fixtures are standalone Go modules; open them in an editor with
+the BatchWeaver language server running.

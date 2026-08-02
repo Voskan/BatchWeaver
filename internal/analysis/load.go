@@ -66,7 +66,7 @@ type loaded struct {
 // loadPackages loads the packages matching patterns under the given build
 // context and working directory. It surfaces load and type errors as
 // diagnostics rather than dropping packages silently.
-func loadPackages(ctx context.Context, patterns []string, bc BuildContext, dir string) (*loaded, []Diag, error) {
+func loadPackages(ctx context.Context, patterns []string, bc BuildContext, dir string, overlay map[string][]byte) (*loaded, []Diag, error) {
 	bc = bc.withDefaults()
 
 	env := os.Environ()
@@ -84,8 +84,9 @@ func loadPackages(ctx context.Context, patterns []string, bc BuildContext, dir s
 			packages.NeedImports | packages.NeedDeps | packages.NeedTypes |
 			packages.NeedTypesInfo | packages.NeedSyntax | packages.NeedModule |
 			packages.NeedTypesSizes,
-		Tests: bc.Tests,
-		Env:   env,
+		Tests:   bc.Tests,
+		Env:     env,
+		Overlay: overlay,
 	}
 	if len(bc.Tags) > 0 {
 		cfg.BuildFlags = []string{"-tags=" + strings.Join(bc.Tags, ",")}

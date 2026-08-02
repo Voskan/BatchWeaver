@@ -23,6 +23,10 @@ type Request struct {
 	// Dir is the working directory used to resolve patterns; empty means the
 	// process working directory.
 	Dir string
+	// Overlay maps absolute file paths to in-memory contents, used to analyze
+	// unsaved editor buffers without writing them to disk. It is passed through to
+	// go/packages unchanged; a nil map analyzes on-disk content.
+	Overlay map[string][]byte
 }
 
 // Analyze loads the requested packages, discovers operations, builds SSA and a
@@ -36,7 +40,7 @@ func Analyze(ctx context.Context, req Request) (*Snapshot, error) {
 	if len(patterns) == 0 {
 		patterns = []string{"./..."}
 	}
-	l, loadDiags, err := loadPackages(ctx, patterns, req.BuildContext, req.Dir)
+	l, loadDiags, err := loadPackages(ctx, patterns, req.BuildContext, req.Dir, req.Overlay)
 	if err != nil {
 		return nil, err
 	}

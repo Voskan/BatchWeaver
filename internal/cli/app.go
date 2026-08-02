@@ -65,6 +65,9 @@ func New(stdout, stderr io.Writer) *App {
 	a.register(newOverloadCommand())
 	a.register(newWaveCommand())
 	a.register(newRecursiveCommand())
+	a.register(newLSPCommand())
+	a.register(newDaemonCommand())
+	a.register(newEditorCommand())
 	a.register(newHelpCommand())
 	return a
 }

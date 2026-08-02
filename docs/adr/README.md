@@ -94,6 +94,16 @@ shaped the way it is.
 - [ADR 0069 — Fairness algorithm](0069-fairness-algorithm.md)
 - [ADR 0070 — Overload detection, admission control, and load shedding](0070-overload-admission-shedding.md)
 - [ADR 0071 — Deterministic offline replay](0071-deterministic-offline-replay.md)
+- [ADR 0072 — Standalone LSP server, not a gopls internal plugin](0072-standalone-lsp-server.md)
+- [ADR 0073 — Optional gopls-compatible proxy](0073-optional-lsp-proxy.md)
+- [ADR 0074 — Shared workspace daemon](0074-shared-workspace-daemon.md)
+- [ADR 0075 — Editor buffers are authoritative snapshots](0075-editor-buffers-authoritative.md)
+- [ADR 0076 — Tiered, debounced incremental analysis](0076-tiered-incremental-analysis.md)
+- [ADR 0077 — Versioned WorkspaceEdit preconditions](0077-versioned-workspace-edit.md)
+- [ADR 0078 — Virtual documents for proof/diff/graph/report views](0078-virtual-documents.md)
+- [ADR 0079 — No automatic mutating actions](0079-no-automatic-mutation.md)
+- [ADR 0080 — VS Code extension plus standard LSP portability](0080-vscode-plus-standard-lsp.md)
+- [ADR 0081 — No remote telemetry](0081-no-remote-telemetry.md)
 
 ## Process
 

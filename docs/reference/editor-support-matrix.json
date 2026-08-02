@@ -1,0 +1,10 @@
+{
+  "schema": "batchweaver.editor-support/v1alpha1",
+  "editors": [
+    {"editor": "vscode", "sidecar": true, "proxy": true, "diagnostics": true, "codeActions": true, "codeLens": true, "hover": true, "commands": true, "extensionFeatures": true, "support": "extension"},
+    {"editor": "neovim", "sidecar": true, "proxy": true, "diagnostics": true, "codeActions": true, "codeLens": true, "hover": true, "commands": true, "extensionFeatures": false, "support": "community"},
+    {"editor": "emacs-eglot", "sidecar": "multi-server", "proxy": true, "diagnostics": true, "codeActions": true, "codeLens": true, "hover": true, "commands": true, "extensionFeatures": false, "support": "community"},
+    {"editor": "helix", "sidecar": "config", "proxy": true, "diagnostics": true, "codeActions": true, "codeLens": true, "hover": true, "commands": true, "extensionFeatures": false, "support": "community"},
+    {"editor": "zed", "sidecar": "community", "proxy": "community", "diagnostics": true, "codeActions": true, "codeLens": true, "hover": true, "commands": true, "extensionFeatures": false, "support": "community"}
+  ]
+}

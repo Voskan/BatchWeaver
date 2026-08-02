@@ -76,3 +76,9 @@ CODEX.md
 
 # Workload profiles (may summarize production traffic)
 *.bwp
+
+# Editor integration build output
+editors/vscode/node_modules/
+editors/vscode/out/
+editors/vscode/*.vsix
+*.vsix

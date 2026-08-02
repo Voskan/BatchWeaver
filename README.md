@@ -69,7 +69,16 @@ foundational semantic layer:
   quotas, and reserved capacity; overload detection, admission control, and
   non-silent load shedding; and deterministic offline replay, simulation, and
   tuning reports. Adaptive tuning can never bypass a semantic proof, exceed a
-  configured bound, or guarantee a universal performance improvement.
+  configured bound, or guarantee a universal performance improvement;
+- an **editor and developer-experience layer**: a standalone `batchweaver lsp`
+  language server (LSP 3.17, no gopls internal imports) with an optional
+  `--proxy-gopls` mode that launches and composes the user's gopls, a local
+  workspace daemon (`batchweaver daemon`), and `batchweaver editor doctor`.
+  BatchWeaver analyzes unsaved editor buffers through overlays and publishes live
+  batching diagnostics, hover, code lenses, and preview code actions, with a VS
+  Code extension (source) and standard-LSP setup for Neovim, Emacs/Eglot, Helix,
+  and Zed. It never writes source implicitly, never collects telemetry, and is
+  not a gopls plugin.
 
 **Arbitrary SQL transformation, automatic write synthesis, GraphQL/gRPC fusion,
 and universal performance improvements are not implemented.** Only a narrow,
@@ -84,8 +93,9 @@ arbitrary HTTP request fusion are not implemented. See
 [docs/guides/configure-database-sql.md](docs/guides/configure-database-sql.md),
 [docs/reference/sql-support-matrix.md](docs/reference/sql-support-matrix.md),
 [docs/limitations/prompt-08.md](docs/limitations/prompt-08.md),
-[docs/limitations/prompt-09.md](docs/limitations/prompt-09.md), and
-[docs/limitations/prompt-10.md](docs/limitations/prompt-10.md).
+[docs/limitations/prompt-09.md](docs/limitations/prompt-09.md),
+[docs/limitations/prompt-10.md](docs/limitations/prompt-10.md), and
+[docs/limitations/prompt-11.md](docs/limitations/prompt-11.md).
 
 ## The idea
 
