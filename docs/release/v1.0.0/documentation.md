@@ -23,8 +23,8 @@ the complete sitemap, robots discovery, and the social preview asset.
 
 ## Remaining gaps
 
-- the expanded Pages portal must be verified after deployment from the protected
-  default branch;
+- stable-version metadata, downloads, and migration links cannot be finalized
+  until an actual v1 candidate exists;
 - no independent documentation feedback from downstream prerelease users;
 - stable commands cannot truthfully use `@v1.0.0`;
 - beta-to-v1 migration examples cannot be finalized until a real v1 candidate
@@ -32,8 +32,10 @@ the complete sitemap, robots discovery, and the social preview asset.
 
 The current `v0.1.0-beta.3` release, module-proxy version, pkg.go.dev package
 documentation, Pages site, release assets, and verification instructions are
-public. Those facts improve evaluation documentation but do not substitute for
-stable API approval or downstream adoption evidence.
+public. The expanded Pages portal has also been built and deployed from the
+protected default branch and verified at its production URLs. Those facts
+improve evaluation documentation but do not substitute for stable API approval
+or downstream adoption evidence.
 
 Outcome: **beta documentation complete for current claims; stable completeness
 blocked by v1-specific evidence**.
