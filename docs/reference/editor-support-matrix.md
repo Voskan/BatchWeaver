@@ -14,3 +14,9 @@ integrations. A machine-readable copy is in `editor-support-matrix.json`.
 
 All rows depend on client support for the specific LSP feature; BatchWeaver only
 advertises what it implements.
+
+The official extension runs real headless activation/command-registration tests
+on the minimum VS Code 1.85.2 host and the current pinned 1.131.0 host. gopls
+proxy compatibility uses a real v0.21.1 process. Neovim, Eglot, Helix, and Zed
+remain community protocol configurations and are not represented as maintained
+host-UI test results.

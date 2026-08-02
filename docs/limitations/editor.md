@@ -44,7 +44,8 @@ import ban) including race and fuzz coverage.
 - **VS Code extension** is delivered as source. `npm ci`, lint, typecheck,
   compile, and packaging require network access and are run in CI; the
   `package-lock.json` is generated there rather than committed in this phase.
-- **Real-gopls compatibility matrix and VS Code headless E2E** are CI-gated; this
-  build verifies proxy capability merge with deterministic unit tests and a manual
-  gopls launch smoke test. Inlay hints are intentionally minimal/disabled by
-  default to avoid noise.
+- **Pinned host compatibility:** CI runs a real gopls v0.21.1 proxy process and
+  real minimum/current VS Code Extension Hosts. Other gopls and VS Code versions
+  are not claimed until added to the blocking matrix. Community editor UIs remain
+  protocol-supported rather than host-E2E-tested. Inlay hints are intentionally
+  minimal/disabled by default to avoid noise.

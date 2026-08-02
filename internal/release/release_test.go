@@ -170,7 +170,7 @@ func TestDocumentation(t *testing.T) {
 		if err != nil {
 			return err
 		}
-		if entry.IsDir() && (entry.Name() == ".git" || entry.Name() == ".agent" || entry.Name() == "node_modules") {
+		if entry.IsDir() && (entry.Name() == ".git" || entry.Name() == ".agent" || entry.Name() == "node_modules" || entry.Name() == "vendor") {
 			return filepath.SkipDir
 		}
 		if entry.IsDir() || filepath.Ext(path) != ".md" {

@@ -1,0 +1,348 @@
+---
+name: Compatibility Matrix
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "41 3 * * 4"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: compatibility-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  GO_CURRENT: "1.26.5"
+
+jobs:
+  go-toolchain:
+    name: Go ${{ matrix.go }} (${{ matrix.level }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {go: "1.26.0", level: minimum}
+          - {go: "1.26.5", level: current}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ matrix.go }}
+          check-latest: false
+      - name: Test with selected toolchain only
+        env:
+          GOTOOLCHAIN: local
+        run: go test ./...
+      - name: Build CLI
+        env:
+          GOTOOLCHAIN: local
+        run: go build ./cmd/batchweaver
+      - name: Record evidence
+        if: always()
+        shell: bash
+        env:
+          GOTOOLCHAIN: local
+        run: >-
+          go run .github/scripts/compatibility-evidence.go
+          -output compatibility-evidence/go-${{ matrix.level }}.json
+          -dimension go -value go${{ matrix.go }}
+          -command 'GOTOOLCHAIN=local go test ./... && go build ./cmd/batchweaver'
+          -status '${{ job.status }}'
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: compatibility-go-${{ matrix.level }}
+          path: compatibility-evidence
+          if-no-files-found: error
+          retention-days: 30
+
+  native-platform:
+    name: Native ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_CURRENT }}
+          check-latest: false
+      - name: Native integration subset
+        run: go test ./runtime ./adapters/... ./internal/daemon ./internal/lsp/...
+      - name: Build CLI
+        run: go build ./cmd/batchweaver
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: >-
+          go run .github/scripts/compatibility-evidence.go
+          -output compatibility-evidence/native-${{ runner.os }}-${{ runner.arch }}.json
+          -dimension native-platform -value '${{ runner.os }}/${{ runner.arch }}'
+          -command 'go test ./runtime ./adapters/... ./internal/daemon ./internal/lsp/... && go build ./cmd/batchweaver'
+          -status '${{ job.status }}'
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: compatibility-native-${{ matrix.os }}
+          path: compatibility-evidence
+          if-no-files-found: error
+          retention-days: 30
+
+  release-target:
+    name: Target ${{ matrix.goos }}/${{ matrix.goarch }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {goos: linux, goarch: amd64}
+          - {goos: linux, goarch: arm64}
+          - {goos: darwin, goarch: amd64}
+          - {goos: darwin, goarch: arm64}
+          - {goos: windows, goarch: amd64}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_CURRENT }}
+          check-latest: false
+      - name: Cross-build all packages
+        env:
+          CGO_ENABLED: "0"
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: go build ./...
+      - name: Record evidence
+        if: always()
+        run: >-
+          go run .github/scripts/compatibility-evidence.go
+          -output compatibility-evidence/target-${{ matrix.goos }}-${{ matrix.goarch }}.json
+          -dimension release-target -value '${{ matrix.goos }}/${{ matrix.goarch }}'
+          -command 'CGO_ENABLED=0 GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build ./...'
+          -status '${{ job.status }}'
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: compatibility-target-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: compatibility-evidence
+          if-no-files-found: error
+          retention-days: 30
+
+  build-mode:
+    name: Build mode ${{ matrix.mode }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [module, vendor, go-work, cgo]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_CURRENT }}
+          check-latest: false
+      - name: Exercise build mode
+        env:
+          BW_MODE: ${{ matrix.mode }}
+          GOTOOLCHAIN: local
+        run: |
+          case "$BW_MODE" in
+            module) CGO_ENABLED=0 go test -mod=readonly ./... ;;
+            vendor) go mod vendor; CGO_ENABLED=0 go test -mod=vendor ./... ;;
+            go-work)
+              go work init .
+              GOWORK="$PWD/go.work" go list ./...
+              GOWORK="$PWD/go.work" CGO_ENABLED=0 go build ./...
+              GOWORK="$PWD/go.work" CGO_ENABLED=0 go test ./runtime ./operation ./adapters/...
+              ;;
+            cgo) CGO_ENABLED=1 go test ./... ;;
+            *) exit 2 ;;
+          esac
+      - name: Record evidence
+        if: always()
+        run: >-
+          go run .github/scripts/compatibility-evidence.go
+          -output compatibility-evidence/mode-${{ matrix.mode }}.json
+          -dimension build-mode -value '${{ matrix.mode }}'
+          -command 'compatibility build-mode suite'
+          -status '${{ job.status }}'
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: compatibility-mode-${{ matrix.mode }}
+          path: compatibility-evidence
+          if-no-files-found: error
+          retention-days: 30
+
+  clients:
+    name: Pinned client integrations
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_CURRENT }}
+          check-latest: false
+      - name: Public API integration fixtures
+        run: >-
+          go test ./adapters/pgxv5 ./adapters/redisv9 ./adapters/gqlgen
+          ./adapters/grpcgo ./examples/client-bindings -count=1
+      - name: Record evidence
+        if: always()
+        run: >-
+          go run .github/scripts/compatibility-evidence.go
+          -output compatibility-evidence/clients-pinned.json
+          -dimension clients -value 'pgx-v5.10.0,redis-v9.21.0,gqlgen-v0.17.94,grpc-go-v1.83.0'
+          -command 'go test pinned public client integrations'
+          -status '${{ job.status }}'
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: compatibility-clients-pinned
+          path: compatibility-evidence
+          if-no-files-found: error
+          retention-days: 30
+
+  gopls:
+    name: gopls v0.21.1 proxy
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_CURRENT }}
+          check-latest: false
+      - name: Install pinned gopls
+        run: go install golang.org/x/tools/gopls@v0.21.1
+      - name: Real process proxy integration
+        run: >-
+          BATCHWEAVER_TEST_GOPLS="$(go env GOPATH)/bin/gopls"
+          go test ./internal/lsp/proxy
+          -run '^TestRealGoplsCompatibility$' -count=1
+      - name: Record evidence
+        if: always()
+        run: >-
+          go run .github/scripts/compatibility-evidence.go
+          -output compatibility-evidence/gopls-v0.21.1.json
+          -dimension gopls -value v0.21.1
+          -command 'real gopls proxy initialize/shutdown integration'
+          -status '${{ job.status }}'
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: compatibility-gopls-v0.21.1
+          path: compatibility-evidence
+          if-no-files-found: error
+          retention-days: 30
+
+  vscode-host:
+    name: VS Code ${{ matrix.vscode }} host
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        vscode: ["1.85.2", "1.131.0"]
+    defaults:
+      run:
+        working-directory: editors/vscode
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: editors/vscode/package-lock.json
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_CURRENT }}
+          check-latest: false
+      - name: Build extension
+        run: npm ci && npm run compile
+      - name: Real Extension Host activation
+        run: xvfb-run -a npm run test:host -- --version ${{ matrix.vscode }}
+      - name: Record evidence
+        if: always()
+        working-directory: .
+        run: >-
+          go run .github/scripts/compatibility-evidence.go
+          -output compatibility-evidence/vscode-${{ matrix.vscode }}.json
+          -dimension vscode -value '${{ matrix.vscode }}'
+          -command 'real VS Code Extension Host activation and command registration'
+          -status '${{ job.status }}'
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: compatibility-vscode-${{ matrix.vscode }}
+          path: compatibility-evidence
+          if-no-files-found: error
+          retention-days: 30
+
+  policy:
+    name: Compatibility policy
+    if: always()
+    needs: [go-toolchain, native-platform, release-target, build-mode, clients, gopls, vscode-host]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Download matrix evidence
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: compatibility-*
+          path: compatibility-evidence
+          merge-multiple: true
+      - name: Require every matrix job and evidence row
+        env:
+          BW_GO: ${{ needs.go-toolchain.result }}
+          BW_NATIVE: ${{ needs.native-platform.result }}
+          BW_TARGET: ${{ needs.release-target.result }}
+          BW_MODE: ${{ needs.build-mode.result }}
+          BW_CLIENTS: ${{ needs.clients.result }}
+          BW_GOPLS: ${{ needs.gopls.result }}
+          BW_VSCODE: ${{ needs.vscode-host.result }}
+        run: |
+          for result in "$BW_GO" "$BW_NATIVE" "$BW_TARGET" "$BW_MODE" "$BW_CLIENTS" "$BW_GOPLS" "$BW_VSCODE"; do
+            test "$result" = "success"
+          done
+          test "$(find compatibility-evidence -name '*.json' -type f | wc -l)" -eq 18
+          jq -e --arg commit "$GITHUB_SHA" -s '
+            all(.[];
+              .schema == "batchweaver.compatibility-evidence/v1alpha1" and
+              .commit == $commit and .status == "success" and
+              (.run_url | startswith("https://github.com/Voskan/BatchWeaver/actions/runs/"))
+            )
+          ' compatibility-evidence/*.json
+          jq -s '{schema:"batchweaver.compatibility-run/v1alpha1", results:.}' \
+            compatibility-evidence/*.json > compatibility-run.json
+      - name: Validate declared compatibility policy
+        run: go test ./internal/release -run '^TestCompatibilityPolicy$' -count=1
+      - name: Upload combined hosted evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: compatibility-run-${{ github.sha }}
+          path: compatibility-run.json
+          if-no-files-found: error
+          retention-days: 90
