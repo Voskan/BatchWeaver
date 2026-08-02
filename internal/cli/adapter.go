@@ -5,31 +5,35 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
+	"strings"
 	"text/tabwriter"
 
 	batchweaver "github.com/Voskan/BatchWeaver"
 	"github.com/Voskan/BatchWeaver/internal/adapter"
+	"github.com/Voskan/BatchWeaver/internal/transform"
 )
 
 // newAdapterCommand returns the "adapter" command.
 func newAdapterCommand() *Command {
 	return &Command{
 		Name:    "adapter",
-		Summary: "Inspect backend adapters and exact-key SQL synthesis",
-		Usage:   "adapter list | inspect --sql=... --key-type=... | explain --sql=... | verify | doctor",
+		Summary: "Inspect backend adapters and proof-gated SQL synthesis",
+		Usage:   "adapter list | inspect --sql=... | plan-sql --sql=... --package-name=... --package-path=... --output=... --constant=... --operation=... | explain --sql=... | verify | doctor",
 		Run:     runAdapter,
 	}
 }
 
 func runAdapter(ctx context.Context, app *App, args []string) error {
 	if len(args) == 0 {
-		return &CommandError{Code: ExitUsage, Message: "adapter requires a subcommand: list, inspect, explain, verify, doctor"}
+		return &CommandError{Code: ExitUsage, Message: "adapter requires a subcommand: list, inspect, plan-sql, explain, verify, doctor"}
 	}
 	switch args[0] {
 	case "list":
 		return adapterList(app, args[1:])
 	case "inspect":
 		return adapterInspect(app, args[1:])
+	case "plan-sql":
+		return adapterPlanSQL(ctx, app, args[1:])
 	case "explain":
 		return adapterExplain(app, args[1:])
 	case "verify":
@@ -39,6 +43,51 @@ func runAdapter(ctx context.Context, app *App, args []string) error {
 	default:
 		return &CommandError{Code: ExitUsage, Message: fmt.Sprintf("unknown adapter subcommand %q", args[0])}
 	}
+}
+
+func adapterPlanSQL(ctx context.Context, app *App, args []string) error {
+	fs := flag.NewFlagSet("adapter plan-sql", flag.ContinueOnError)
+	fs.SetOutput(app.Stderr())
+	sqlText := fs.String("sql", "", "scalar SELECT query to synthesize")
+	keyType := fs.String("key-type", "bigint", "SQL type of one key")
+	keyTypes := fs.String("key-types", "", "comma-separated SQL types for a composite key")
+	joinCardinality := fs.String("join-cardinality", "", "join proof contract: at-most-one")
+	packageName := fs.String("package-name", "", "target Go package name")
+	packagePath := fs.String("package-path", "", "target Go import path")
+	output := fs.String("output", "", "workspace-relative generated .go file")
+	constant := fs.String("constant", "", "generated Go query constant")
+	operation := fs.String("operation", "", "operation identity recorded in the plan")
+	if err := fs.Parse(args); err != nil {
+		return &CommandError{Code: ExitUsage}
+	}
+	if *sqlText == "" || *packageName == "" || *packagePath == "" || *output == "" || *constant == "" || *operation == "" {
+		return &CommandError{Code: ExitUsage, Message: "adapter plan-sql requires --sql, --package-name, --package-path, --output, --constant, and --operation"}
+	}
+	synthesis, rejection := synthesizeCLI(*sqlText, *keyType, *keyTypes, *joinCardinality)
+	if rejection != nil {
+		printRejection(app, rejection)
+		return nil
+	}
+	root, err := transform.ModuleRoot(cwd())
+	if err != nil {
+		return err
+	}
+	plan, err := transform.BuildSQLSynthesisPlan(ctx, transform.SQLPlanRequest{
+		Workspace: root, PackageName: *packageName, PackagePath: *packagePath,
+		Output: *output, Constant: *constant, Operation: *operation, Synthesis: synthesis,
+	})
+	if err != nil {
+		return err
+	}
+	overlay, count, err := transform.EnsureSavedOverlay(root, plan)
+	if err != nil {
+		return err
+	}
+	fmt.Fprintln(app.Stdout(), "SQL synthesis transformation planned")
+	fmt.Fprintf(app.Stdout(), "\nPlan:\n  %s\nStrategy:\n  %s\nGenerated file:\n  %s\nOverlay:\n  %s (%d file)\n",
+		plan.ID, plan.Transformations[0].Strategy, *output, overlay, count)
+	fmt.Fprintln(app.Stdout(), "\nNo workspace source file was written. Use transform inspect/diff/verify/materialize with the saved plan.")
+	return nil
 }
 
 func adapterList(app *App, args []string) error {
@@ -78,25 +127,22 @@ func adapterInspect(app *App, args []string) error {
 	fs := flag.NewFlagSet("adapter inspect", flag.ContinueOnError)
 	fs.SetOutput(app.Stderr())
 	sqlText := fs.String("sql", "", "scalar SELECT query to synthesize")
-	keyType := fs.String("key-type", "bigint", "SQL type of the key (for array synthesis)")
+	keyType := fs.String("key-type", "bigint", "SQL type of one key (for array synthesis)")
+	keyTypes := fs.String("key-types", "", "comma-separated SQL types for a composite key")
+	joinCardinality := fs.String("join-cardinality", "", "join proof contract: at-most-one")
 	if err := fs.Parse(args); err != nil {
 		return &CommandError{Code: ExitUsage}
 	}
 	if *sqlText == "" {
 		return &CommandError{Code: ExitUsage, Message: "adapter inspect requires --sql"}
 	}
-	q, rej := adapter.ParseExactKeySelect(*sqlText)
-	if rej != nil {
-		printRejection(app, rej)
-		return nil
-	}
-	plan, srej := adapter.SynthesizeExactKey(adapter.SynthInput{Query: q, KeyType: *keyType})
+	plan, srej := synthesizeCLI(*sqlText, *keyType, *keyTypes, *joinCardinality)
 	if srej != nil {
 		printRejection(app, srej)
 		return nil
 	}
 	w := app.Stdout()
-	fmt.Fprint(w, "Binding mode:\n  synthesized exact-key read\n\n")
+	fmt.Fprint(w, "Binding mode:\n  synthesized exact/composite-key read\n\n")
 	fmt.Fprintln(w, "Scalar query:")
 	fmt.Fprintf(w, "  %s\n\n", *sqlText)
 	fmt.Fprintln(w, "Generated batch query:")
@@ -106,6 +152,23 @@ func adapterInspect(app *App, args []string) error {
 	fmt.Fprintf(w, "\nResult contract:\n  %s\n", plan.Contract)
 	fmt.Fprintf(w, "Missing behavior:\n  %s\n", plan.MissingError)
 	return nil
+}
+
+func synthesizeCLI(sqlText, keyType, keyTypes, joinCardinality string) (adapter.SynthPlan, *adapter.Rejection) {
+	q, rejection := adapter.ParseExactKeySelect(sqlText)
+	if rejection != nil {
+		return adapter.SynthPlan{}, rejection
+	}
+	types := []string(nil)
+	if keyTypes != "" {
+		for _, value := range strings.Split(keyTypes, ",") {
+			types = append(types, strings.TrimSpace(value))
+		}
+	}
+	return adapter.SynthesizeExactKey(adapter.SynthInput{
+		Query: q, KeyType: keyType, KeyTypes: types,
+		JoinCardinality: adapter.JoinCardinality(joinCardinality),
+	})
 }
 
 func adapterExplain(app *App, args []string) error {
@@ -118,9 +181,13 @@ func adapterExplain(app *App, args []string) error {
 	if *sqlText == "" {
 		return &CommandError{Code: ExitUsage, Message: "adapter explain requires --sql"}
 	}
-	_, rej := adapter.ParseExactKeySelect(*sqlText)
+	parsed, rej := adapter.ParseExactKeySelect(*sqlText)
 	if rej == nil {
-		fmt.Fprintln(app.Stdout(), "Automatic exact-key SQL batch synthesis is available for this query.")
+		if parsed.Join != nil {
+			fmt.Fprintln(app.Stdout(), "The SQL shape is supported; synthesis requires --join-cardinality=at-most-one evidence.")
+			return nil
+		}
+		fmt.Fprintln(app.Stdout(), "Automatic exact/composite-key SQL batch synthesis is available for this query.")
 		return nil
 	}
 	printRejection(app, rej)

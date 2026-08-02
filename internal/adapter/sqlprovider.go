@@ -28,6 +28,10 @@ type SQLProvider[K any, V any] struct {
 	// KeyArg builds the single array parameter ($1) from the ordered keys,
 	// wrapping them in a driver-appropriate array value.
 	KeyArg func([]K) any
+	// KeyArgs builds one array argument per composite-key component. Arguments
+	// must be returned in PostgreSQL placeholder order ($1, $2, ...). It takes
+	// precedence over KeyArg and is required for composite keys.
+	KeyArgs func([]K) []any
 	// Decode reads one result row and returns its 1-based ordinal within the batch
 	// and the decoded value. It must scan the leading bw_ord column first, then the
 	// projection columns.
@@ -37,18 +41,28 @@ type SQLProvider[K any, V any] struct {
 	Missing func() error
 	// Limits bounds one batch; larger batches are chunked deterministically.
 	Limits ParameterLimits
+	// EstimatePayload optionally returns the encoded key payload size in bytes.
+	// When provided, MaxPayloadKB is enforced before any database I/O.
+	EstimatePayload func([]K) int
 }
 
 // Execute runs the batch query (chunked as needed) and returns one outcome per
 // request item in order, preserving duplicates and the declared missing outcome.
 // A query error is a global failure for the affected chunk's items.
 func (p SQLProvider[K, V]) Execute(ctx context.Context, req batchweaver.BatchRequest[K]) (batchweaver.BatchResponse[V], error) {
+	if p.DB == nil || p.Plan.Query == "" || p.Decode == nil {
+		return batchweaver.BatchResponse[V]{}, ErrProviderMisconfigured
+	}
+	if err := p.Plan.Validate(); err != nil {
+		return batchweaver.BatchResponse[V]{}, fmt.Errorf("%w: %w", ErrProviderMisconfigured, err)
+	}
 	items := req.Items()
 	n := len(items)
 	limits := p.Limits
-	if limits.MaxItems <= 0 {
-		limits = DefaultLimits()
+	if limits == (ParameterLimits{}) {
+		limits = p.Plan.Limits
 	}
+	limits = normalizedLimits(limits)
 	missing := p.Missing
 	if missing == nil {
 		missing = func() error { return sql.ErrNoRows }
@@ -57,7 +71,7 @@ func (p SQLProvider[K, V]) Execute(ctx context.Context, req batchweaver.BatchReq
 	outcomes := make([]batchweaver.Outcome[V], 0, n)
 	for _, rng := range Chunks(n, limits) {
 		chunk := items[rng[0]:rng[1]]
-		chunkOutcomes, err := p.executeChunk(ctx, chunk, missing)
+		chunkOutcomes, err := p.executeChunk(ctx, chunk, missing, limits)
 		if err != nil {
 			return batchweaver.BatchResponse[V]{}, err
 		}
@@ -67,16 +81,31 @@ func (p SQLProvider[K, V]) Execute(ctx context.Context, req batchweaver.BatchReq
 }
 
 // executeChunk runs one chunk and maps rows to outcomes by ordinal.
-func (p SQLProvider[K, V]) executeChunk(ctx context.Context, chunk []batchweaver.BatchItem[K], missing func() error) ([]batchweaver.Outcome[V], error) {
+func (p SQLProvider[K, V]) executeChunk(ctx context.Context, chunk []batchweaver.BatchItem[K], missing func() error, limits ParameterLimits) ([]batchweaver.Outcome[V], error) {
 	keys := make([]K, len(chunk))
 	for i, it := range chunk {
 		keys[i] = it.Key
 	}
-	arg := any(keys)
-	if p.KeyArg != nil {
-		arg = p.KeyArg(keys)
+	args := []any{keys}
+	if p.KeyArgs != nil {
+		args = p.KeyArgs(keys)
+	} else if p.KeyArg != nil {
+		args[0] = p.KeyArg(keys)
 	}
-	rows, err := p.DB.QueryContext(ctx, p.Plan.Query, arg)
+	wantArgs := len(p.Plan.KeyParams)
+	if wantArgs == 0 {
+		wantArgs = 1
+	}
+	if len(args) != wantArgs {
+		return nil, fmt.Errorf("%w: plan requires %d key arguments, builder returned %d", ErrProviderMisconfigured, wantArgs, len(args))
+	}
+	if wantArgs > limits.MaxParameters {
+		return nil, fmt.Errorf("%s: batch requires %d parameters, limit is %d", CodeParamLimitExceeded, wantArgs, limits.MaxParameters)
+	}
+	if p.EstimatePayload != nil && p.EstimatePayload(keys) > limits.MaxPayloadKB*1024 {
+		return nil, fmt.Errorf("%s: encoded key payload exceeds %d KiB", CodeParamLimitExceeded, limits.MaxPayloadKB)
+	}
+	rows, err := p.DB.QueryContext(ctx, p.Plan.Query, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -88,9 +117,13 @@ func (p SQLProvider[K, V]) executeChunk(ctx context.Context, chunk []batchweaver
 		if derr != nil {
 			return nil, fmt.Errorf("row decode: %w", derr)
 		}
-		if ord >= 1 && int(ord) <= len(chunk) {
-			values[ord] = v
+		if ord < 1 || int(ord) > len(chunk) {
+			return nil, fmt.Errorf("row decode: ordinal %d outside chunk [1,%d]", ord, len(chunk))
 		}
+		if _, duplicate := values[ord]; duplicate {
+			return nil, fmt.Errorf("row decode: duplicate ordinal %d violates scalar cardinality", ord)
+		}
+		values[ord] = v
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -109,3 +142,9 @@ func (p SQLProvider[K, V]) executeChunk(ctx context.Context, chunk []batchweaver
 
 // ErrProviderMisconfigured is returned when a provider lacks a required field.
 var ErrProviderMisconfigured = errors.New("adapter: SQL provider is misconfigured")
+
+var (
+	_ Queryer = (*sql.DB)(nil)
+	_ Queryer = (*sql.Tx)(nil)
+	_ Queryer = (*sql.Conn)(nil)
+)

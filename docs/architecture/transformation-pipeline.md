@@ -27,6 +27,19 @@ deterministic plan (IDs, digests, edits, source map)
 overlay build/test/run  |  diff/inspect  |  materialize/revert
 ```
 
+SQL generation enters through a parallel, narrower evidence path:
+
+```text
+static SQL → strict parser → key/join obligations → synthesis digest
+          → generated Go binding → format/type-check overlay
+          → transformation plan + sql-synthesis source map
+```
+
+The SQL path exposes `exact-key-sql-synthesis`,
+`composite-key-sql-synthesis`, and `bounded-join-sql-synthesis`. A join plan is
+impossible without the explicit `at-most-one` contract; dynamic fragments and
+unsupported syntax never reach source generation.
+
 The strategy consumes a typed, validated `Certificate`, not raw proof JSON. It
 locates the certified candidate by re-loading the packages with full syntax and
 type information and matching the scalar call by source line and resolved symbol,

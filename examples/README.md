@@ -11,6 +11,8 @@ demonstrates a declarative contract.
   equivalent.
 - [client-bindings](client-bindings) — compile-tested pgx v5, go-redis v9,
   gqlgen, and grpc-go integration surface with runnable adapter suites.
+- [composite-join-sql](composite-join-sql) — composite-key PostgreSQL synthesis,
+  explicit at-most-one join evidence, integrity validation, and overlay planning.
 - [static-prefetch](static-prefetch) — the static-loop-prefetch transformation,
   proven equivalent to the original N+1 loop.
 - [adaptive-runtime](adaptive-runtime) — profiling a synthetic workload and

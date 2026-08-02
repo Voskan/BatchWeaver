@@ -16,6 +16,7 @@ const (
 	CodeParamAmbiguous         = "BW6104"
 	CodeProjectionAmbiguous    = "BW6105"
 	CodeCardinalityUnsupported = "BW6106"
+	CodeJoinUnsupported        = "BW6107"
 	CodeTxnUnavailable         = "BW6201"
 	CodeParamLimitExceeded     = "BW6202"
 	CodeRedisUnbatchable       = "BW6401"
@@ -48,13 +49,43 @@ type Relation struct {
 	Alias string
 }
 
+// KeyPredicate is one component of an exact key. Param is the 1-based
+// PostgreSQL placeholder number used by the scalar query.
+type KeyPredicate struct {
+	Column Column
+	Param  int
+}
+
+// JoinKind is one of the deliberately bounded read-only join forms.
+type JoinKind string
+
+const (
+	// JoinInner is an inner equality join.
+	JoinInner JoinKind = "inner"
+	// JoinLeft is a left equality join.
+	JoinLeft JoinKind = "left"
+)
+
+// Join describes one equality join between the base and joined relation.
+// Cardinality is not guessed from SQL; callers must declare it during synthesis.
+type Join struct {
+	Kind     JoinKind
+	Relation Relation
+	Left     Column
+	Right    Column
+}
+
 // ParsedQuery is a validated exact-key SELECT within the supported subset.
 type ParsedQuery struct {
 	Projection []Column
 	Relation   Relation
-	KeyColumn  Column
-	KeyParam   int
-	Extra      []string
+	Join       *Join
+	Keys       []KeyPredicate
+	// KeyColumn and KeyParam mirror the first Keys entry for compatibility with
+	// callers that only handle scalar exact keys.
+	KeyColumn Column
+	KeyParam  int
+	Extra     []string
 }
 
 // tokenKind classifies a SQL token.
@@ -84,7 +115,7 @@ var keywords = map[string]bool{
 	"SELECT": true, "FROM": true, "WHERE": true, "AND": true, "AS": true,
 	"IS": true, "NOT": true, "NULL": true,
 	// Unsupported (recognized to reject precisely):
-	"JOIN": true, "INNER": true, "LEFT": true, "RIGHT": true, "FULL": true,
+	"JOIN": true, "INNER": true, "LEFT": true, "OUTER": true, "RIGHT": true, "FULL": true,
 	"CROSS": true, "GROUP": true, "ORDER": true, "BY": true, "LIMIT": true,
 	"OFFSET": true, "UNION": true, "INTERSECT": true, "EXCEPT": true,
 	"HAVING": true, "WINDOW": true, "DISTINCT": true, "FOR": true, "WITH": true,
@@ -94,14 +125,13 @@ var keywords = map[string]bool{
 
 // unsupportedKeywords trigger an immediate rejection wherever they appear.
 var unsupportedKeywords = map[string]string{
-	"JOIN": "joins", "INNER": "joins", "LEFT": "joins", "RIGHT": "joins",
-	"FULL": "joins", "CROSS": "joins", "GROUP": "GROUP BY", "ORDER": "ORDER BY",
+	"RIGHT": "right joins", "FULL": "full joins", "CROSS": "cross joins", "GROUP": "GROUP BY", "ORDER": "ORDER BY",
 	"LIMIT": "LIMIT", "OFFSET": "OFFSET", "UNION": "set operations",
 	"INTERSECT": "set operations", "EXCEPT": "set operations", "HAVING": "HAVING",
 	"WINDOW": "window functions", "DISTINCT": "DISTINCT", "FOR": "locking clauses",
 	"WITH": "CTEs", "OR": "OR predicates", "IN": "IN predicates",
 	"INSERT": "writes", "UPDATE": "writes", "DELETE": "writes", "MERGE": "writes",
-	"USING": "joins", "LATERAL": "lateral joins", "RETURNING": "RETURNING",
+	"USING": "USING joins", "LATERAL": "lateral joins", "RETURNING": "RETURNING",
 }
 
 // tokenize splits SQL into tokens, skipping comments. It never panics.
@@ -258,56 +288,83 @@ func (p *parser) parseSelect() (ParsedQuery, *Rejection) {
 	if p.cur().kind == tPunct && p.cur().text == "," {
 		return q, &Rejection{Code: CodeSQLUnsupported, Reason: "multiple relations are not supported", Node: ",", Offset: p.cur().off}
 	}
+	baseRef := q.Relation.Name
+	if q.Relation.Alias != "" {
+		baseRef = q.Relation.Alias
+	}
+
+	// At most one INNER/LEFT equality join. The parser validates shape and
+	// relation identity; synthesis separately requires an at-most-one contract.
+	if p.cur().up == "JOIN" || p.cur().up == "INNER" || p.cur().up == "LEFT" {
+		join, jrej := p.parseJoin(baseRef)
+		if jrej != nil {
+			return q, jrej
+		}
+		q.Join = &join
+	}
 
 	if p.cur().up != "WHERE" {
 		return q, &Rejection{Code: CodeSQLUnsupported, Reason: "an exact-key WHERE clause is required", Node: p.cur().text, Offset: p.cur().off}
 	}
 	p.next()
 
-	// Key predicate: colref '=' $N.
-	keyCol, rej := p.parseColumn(false)
-	if rej != nil {
-		return q, rej
-	}
-	if p.cur().kind != tPunct || p.cur().text != "=" {
-		return q, &Rejection{Code: CodeSQLUnsupported, Reason: "the key predicate must be an equality", Node: p.cur().text, Offset: p.cur().off}
-	}
-	p.next()
-	if p.cur().kind != tParam {
-		return q, &Rejection{Code: CodeParamAmbiguous, Reason: "the key must compare to a single bound parameter", Node: p.cur().text, Offset: p.cur().off}
-	}
-	param := p.next()
-	q.KeyColumn = keyCol
-	q.KeyParam = paramNumber(param.text)
-
-	// Optional key-independent AND predicates (col IS [NOT] NULL only).
-	for p.cur().up == "AND" {
-		andOff := p.cur().off
-		p.next()
+	// One or more parameter equalities form the exact (possibly composite) key.
+	// Key-independent IS [NOT] NULL filters may be interleaved with them.
+	for {
+		predOff := p.cur().off
 		ec, rej := p.parseColumn(false)
 		if rej != nil {
 			return q, rej
 		}
-		if p.cur().up != "IS" {
-			return q, &Rejection{Code: CodeSQLUnsupported, Reason: "only key-independent 'IS [NOT] NULL' predicates are supported after the key", Node: p.cur().text, Offset: andOff}
-		}
-		p.next()
-		neg := false
-		if p.cur().up == "NOT" {
-			neg = true
+		if p.cur().kind == tPunct && p.cur().text == "=" {
 			p.next()
+			if p.cur().kind != tParam {
+				return q, &Rejection{Code: CodeParamAmbiguous, Reason: "each key component must compare to a bound parameter", Node: p.cur().text, Offset: p.cur().off}
+			}
+			param := p.next()
+			q.Keys = append(q.Keys, KeyPredicate{Column: ec, Param: paramNumber(param.text)})
+		} else {
+			if q.Join != nil && ec.Table == "" {
+				return q, &Rejection{Code: CodeProjectionAmbiguous, Reason: "joined filters must qualify every column", Node: ec.Name, Offset: predOff}
+			}
+			if q.Join != nil && !queryRelationRef(q, ec.Table) {
+				return q, &Rejection{Code: CodeJoinUnsupported, Reason: "filter references a relation outside the bounded join", Node: columnSQL(ec), Offset: predOff}
+			}
+			if p.cur().up != "IS" {
+				return q, &Rejection{Code: CodeSQLUnsupported, Reason: "predicates must be key equalities or 'IS [NOT] NULL' filters", Node: p.cur().text, Offset: predOff}
+			}
+			p.next()
+			neg := false
+			if p.cur().up == "NOT" {
+				neg = true
+				p.next()
+			}
+			if p.cur().up != "NULL" {
+				return q, &Rejection{Code: CodeSQLUnsupported, Reason: "expected NULL", Node: p.cur().text, Offset: p.cur().off}
+			}
+			p.next()
+			pred := columnSQL(ec) + " IS "
+			if neg {
+				pred += "NOT "
+			}
+			pred += "NULL"
+			q.Extra = append(q.Extra, pred)
 		}
-		if p.cur().up != "NULL" {
-			return q, &Rejection{Code: CodeSQLUnsupported, Reason: "expected NULL", Node: p.cur().text, Offset: p.cur().off}
+		if p.cur().up != "AND" {
+			break
 		}
 		p.next()
-		pred := columnSQL(ec) + " IS "
-		if neg {
-			pred += "NOT "
-		}
-		pred += "NULL"
-		q.Extra = append(q.Extra, pred)
 	}
+	if len(q.Keys) == 0 {
+		return q, &Rejection{Code: CodeParamAmbiguous, Reason: "at least one parameterized key equality is required", Node: "WHERE"}
+	}
+	if rej := validateKeyPredicates(&q, baseRef); rej != nil {
+		return q, rej
+	}
+	if rej := validateProjection(q); rej != nil {
+		return q, rej
+	}
+	q.KeyColumn, q.KeyParam = q.Keys[0].Column, q.Keys[0].Param
 
 	// Optional single trailing ';' then EOF.
 	if p.cur().kind == tPunct && p.cur().text == ";" {
@@ -317,6 +374,122 @@ func (p *parser) parseSelect() (ParsedQuery, *Rejection) {
 		return q, &Rejection{Code: CodeSQLUnsupported, Reason: "unexpected trailing tokens or multiple statements", Node: p.cur().text, Offset: p.cur().off}
 	}
 	return q, nil
+}
+
+func queryRelationRef(q ParsedQuery, ref string) bool {
+	baseRef := q.Relation.Name
+	if q.Relation.Alias != "" {
+		baseRef = q.Relation.Alias
+	}
+	if ref == baseRef {
+		return true
+	}
+	if q.Join == nil {
+		return false
+	}
+	joinRef := q.Join.Relation.Name
+	if q.Join.Relation.Alias != "" {
+		joinRef = q.Join.Relation.Alias
+	}
+	return ref == joinRef
+}
+
+func (p *parser) parseJoin(baseRef string) (Join, *Rejection) {
+	join := Join{Kind: JoinInner}
+	if p.cur().up == "LEFT" {
+		join.Kind = JoinLeft
+		p.next()
+		if p.cur().up == "OUTER" {
+			p.next()
+		}
+		if p.cur().up != "JOIN" {
+			return join, &Rejection{Code: CodeJoinUnsupported, Reason: "LEFT must be followed by JOIN", Node: p.cur().text, Offset: p.cur().off}
+		}
+		p.next()
+	} else {
+		if p.cur().up == "INNER" {
+			p.next()
+		}
+		if p.cur().up != "JOIN" {
+			return join, &Rejection{Code: CodeJoinUnsupported, Reason: "INNER must be followed by JOIN", Node: p.cur().text, Offset: p.cur().off}
+		}
+		p.next()
+	}
+	if p.cur().kind != tIdent {
+		return join, &Rejection{Code: CodeJoinUnsupported, Reason: "expected joined relation", Node: p.cur().text, Offset: p.cur().off}
+	}
+	join.Relation.Name = p.next().text
+	if p.cur().up == "AS" {
+		p.next()
+	}
+	if p.cur().kind == tIdent {
+		join.Relation.Alias = p.next().text
+	}
+	joinRef := join.Relation.Name
+	if join.Relation.Alias != "" {
+		joinRef = join.Relation.Alias
+	}
+	if joinRef == baseRef {
+		return join, &Rejection{Code: CodeJoinUnsupported, Reason: "base and joined relation references must be distinct", Node: joinRef}
+	}
+	if p.cur().up != "ON" {
+		return join, &Rejection{Code: CodeJoinUnsupported, Reason: "join requires one ON equality", Node: p.cur().text, Offset: p.cur().off}
+	}
+	p.next()
+	left, rej := p.parseColumn(false)
+	if rej != nil {
+		return join, rej
+	}
+	if p.cur().kind != tPunct || p.cur().text != "=" {
+		return join, &Rejection{Code: CodeJoinUnsupported, Reason: "join condition must be a column equality", Node: p.cur().text, Offset: p.cur().off}
+	}
+	p.next()
+	right, rej := p.parseColumn(false)
+	if rej != nil {
+		return join, rej
+	}
+	if left.Table == "" || right.Table == "" || (left.Table != baseRef || right.Table != joinRef) && (left.Table != joinRef || right.Table != baseRef) {
+		return join, &Rejection{Code: CodeJoinUnsupported, Reason: "join equality must connect one qualified column from each relation", Node: columnSQL(left) + "=" + columnSQL(right)}
+	}
+	join.Left, join.Right = left, right
+	return join, nil
+}
+
+func validateKeyPredicates(q *ParsedQuery, baseRef string) *Rejection {
+	seen := make(map[int]bool, len(q.Keys))
+	for _, key := range q.Keys {
+		if key.Param < 1 || key.Param > len(q.Keys) || seen[key.Param] {
+			return &Rejection{Code: CodeParamAmbiguous, Reason: "key placeholders must be unique and contiguous from $1", Node: fmt.Sprintf("$%d", key.Param)}
+		}
+		seen[key.Param] = true
+		if key.Column.Table != "" && key.Column.Table != baseRef {
+			return &Rejection{Code: CodeJoinUnsupported, Reason: "batch key columns must belong to the base relation", Node: columnSQL(key.Column)}
+		}
+	}
+	return nil
+}
+
+func validateProjection(q ParsedQuery) *Rejection {
+	if q.Join == nil {
+		return nil
+	}
+	baseRef := q.Relation.Name
+	if q.Relation.Alias != "" {
+		baseRef = q.Relation.Alias
+	}
+	joinRef := q.Join.Relation.Name
+	if q.Join.Relation.Alias != "" {
+		joinRef = q.Join.Relation.Alias
+	}
+	for _, col := range q.Projection {
+		if col.Table == "" {
+			return &Rejection{Code: CodeProjectionAmbiguous, Reason: "joined projections must qualify every column", Node: col.Name}
+		}
+		if col.Table != baseRef && col.Table != joinRef {
+			return &Rejection{Code: CodeProjectionAmbiguous, Reason: "projection references a relation outside the bounded join", Node: columnSQL(col)}
+		}
+	}
+	return nil
 }
 
 // parseColumn parses a colref (ident[.ident]) with an optional alias when

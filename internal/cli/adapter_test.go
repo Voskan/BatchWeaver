@@ -31,6 +31,21 @@ func TestAdapterInspectSynthesizes(t *testing.T) {
 	}
 }
 
+func TestAdapterInspectSynthesizesCompositeJoin(t *testing.T) {
+	t.Parallel()
+	code, out, stderr := run(t, "adapter", "inspect",
+		"--sql", "SELECT u.tenant_id, u.id, p.display_name FROM users u LEFT JOIN profiles p ON p.user_id = u.id WHERE u.tenant_id = $1 AND u.id = $2",
+		"--key-types", "uuid,bigint", "--join-cardinality", "at-most-one")
+	if code != ExitOK {
+		t.Fatalf("exit = %d stderr=%s", code, stderr)
+	}
+	for _, want := range []string{"unnest($1::uuid[], $2::bigint[]) WITH ORDINALITY", "LEFT JOIN profiles p", "u.id = bw_requested.bw_key_2"} {
+		if !strings.Contains(out, want) {
+			t.Errorf("inspect output missing %q:\n%s", want, out)
+		}
+	}
+}
+
 func TestAdapterExplainRejects(t *testing.T) {
 	t.Parallel()
 	code, out, _ := run(t, "adapter", "explain", "--sql", "SELECT * FROM users WHERE id = $1")

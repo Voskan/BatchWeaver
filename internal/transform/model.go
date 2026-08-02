@@ -31,6 +31,15 @@ const (
 	// StrategyErrgroupCoalescing is the errgroup-specific fan-out lowering; it
 	// shares the runtime-bridge mechanism with fanout-coalescing.
 	StrategyErrgroupCoalescing StrategyID = "errgroup-coalescing"
+	// StrategyExactKeySQLSynthesis generates a content-addressed PostgreSQL
+	// batch-query binding for a validated scalar exact-key read.
+	StrategyExactKeySQLSynthesis StrategyID = "exact-key-sql-synthesis"
+	// StrategyCompositeKeySQLSynthesis extends exact-key generation to multiple
+	// parameterized key components with deterministic placeholder ordering.
+	StrategyCompositeKeySQLSynthesis StrategyID = "composite-key-sql-synthesis"
+	// StrategyBoundedJoinSQLSynthesis generates a query only for a parsed join
+	// carrying an explicit at-most-one cardinality contract.
+	StrategyBoundedJoinSQLSynthesis StrategyID = "bounded-join-sql-synthesis"
 )
 
 // RuntimeStrategies reports whether s lowers a call site through the runtime
@@ -63,6 +72,7 @@ const (
 	PhaseReplayScalarOrder Phase = "replay-scalar-order"
 	PhaseExecuteOriginal   Phase = "execute-original-body"
 	PhaseFinalize          Phase = "finalize"
+	PhaseSynthesizeSQL     Phase = "synthesize-sql"
 )
 
 // EditKind is the kind of a source edit. Only implemented kinds are exposed.
@@ -109,6 +119,7 @@ const (
 	RoleGlobalErrorCheck GeneratedRole = "global-error-check"
 	RoleResultRecon      GeneratedRole = "result-reconstruction"
 	RoleScalarReplay     GeneratedRole = "scalar-order-replay"
+	RoleSQLSynthesis     GeneratedRole = "sql-synthesis"
 )
 
 // Plan is the deterministic, versioned transformation plan for a workspace.

@@ -1,8 +1,9 @@
 # Transformation strategies
 
 Eligibility is always attached to a named strategy. A strategy is a precise
-future transformation shape with its own required-obligation set. The proof
-engine decides eligibility; it does not perform any transformation.
+transformation shape with its own required-obligation set. The semantic proof
+engine decides Go call-site eligibility; the SQL parser and synthesis contract
+provide the corresponding fail-closed evidence for generated SQL bindings.
 
 ## Strategy vocabulary
 
@@ -16,9 +17,21 @@ engine decides eligibility; it does not perform any transformation.
   without introducing additional concurrency.
 - `runtime-scope-coalescing` — route scalar calls through the runtime without
   hoisting or creating concurrency.
+- `exact-key-sql-synthesis` — generate a typed Go query constant from a validated
+  exact-key PostgreSQL read.
+- `composite-key-sql-synthesis` — generate parallel-array SQL for contiguous,
+  parameterized composite key components.
+- `bounded-join-sql-synthesis` — generate one qualified INNER/LEFT join only
+  when the synthesis plan records an explicit at-most-one contract.
 
 `wave-candidate`, `direct-only`, and `adapter-deferred` are reserved for future
 stages and recursive traversal classification.
+
+SQL strategies generate a content-addressed file in the standard transformation
+IR. The file is formatted, type-checked through an in-memory overlay, source
+mapped with the `sql-synthesis` role, and kept non-mutating until an explicit
+materialization command. Modified SQL or contract metadata invalidates the plan
+digest before database I/O.
 
 ## Why runtime coalescing can be allowed when static hoisting is rejected
 

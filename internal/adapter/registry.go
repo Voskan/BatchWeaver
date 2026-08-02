@@ -21,11 +21,11 @@ func builtinManifests() []Manifest {
 			DisplayName: "database/sql", Category: CategoryBackend, Status: StatusReady, RuntimeABI: RuntimeABIVersion,
 			Dialects: []string{"postgres"},
 			Capabilities: []Capability{
-				CapExplicitBatchBinding, CapExactKeyReadSynthesis, CapOrderedResultMapping,
+				CapExplicitBatchBinding, CapExactKeyReadSynthesis, CapCompositeKeyRead, CapBoundedJoinRead, CapOrderedResultMapping,
 				CapSparseResultMapping, CapTransactionPartition, CapChunking,
 				CapSemanticVerification,
 			},
-			Notes: "Exact-key PostgreSQL read synthesis over the standard library.",
+			Notes: "Exact and composite-key PostgreSQL read synthesis with bounded at-most-one joins over the standard library.",
 		},
 		{
 			SchemaVersion: SchemaVersion, AdapterID: "pgx", Version: 1,

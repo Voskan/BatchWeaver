@@ -12,6 +12,14 @@ BWINT001–BWINT099  internal consistency failures (reserved; not yet assigned)
 BW9001–BW9018      release readiness, integrity, and publication boundaries
 ```
 
+SQL transformation planning additionally uses stable fail-closed codes:
+
+| Code | Meaning |
+| --- | --- |
+| BW3510 | SQL generated-binding request is incomplete or unsafe |
+| BW3511 | SQL synthesis plan is invalid or its digest was modified |
+| BW3512 | generated SQL Go binding failed overlay type-checking |
+
 ## Configuration (BWCFG)
 
 | Code | Meaning |

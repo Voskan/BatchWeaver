@@ -2,8 +2,8 @@
 
 Generated SQL and adapter behavior treat scalar SQL and keys as untrusted.
 
-- **Parameterized only** — synthesized queries bind keys as a single typed array
-  parameter. Raw key values are never concatenated into SQL.
+- **Parameterized only** — synthesized queries bind one typed array per key
+  component. Raw key values are never concatenated into SQL.
 - **Validated identifiers** — table and column identifiers come only from parsing
   a static, compile-time scalar query; runtime table/column names are never
   accepted.
@@ -17,3 +17,7 @@ Generated SQL and adapter behavior treat scalar SQL and keys as untrusted.
   labels and keyed fingerprints, and credentials remain client-owned.
 - **No connections at compile time** — parsing and synthesis never open a backend
   connection.
+- **Cardinality defense** — joins require an explicit at-most-one contract and
+  the provider rejects duplicate ordinals instead of silently choosing a row.
+- **Plan integrity** — query, key types/placeholders, projection, cardinality,
+  and result contract are covered by a SHA-256 plan digest checked before I/O.

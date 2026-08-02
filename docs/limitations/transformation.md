@@ -1,7 +1,7 @@
 # Transformation Limitations
 
-The transformation stage delivers one production-quality strategy end to end.
-This document records what it does not yet do, so results are not overinterpreted.
+The transformation stage delivers several proof-gated strategies end to end.
+This document records their boundaries so results are not overinterpreted.
 
 ## Supported
 
@@ -11,18 +11,23 @@ This document records what it does not yet do, so results are not overinterprete
   provider `func(context.Context, []K) ([]V, error)`.
 - Deterministic plans, unified diffs, source maps, overlay build/test/run, and
   atomic materialization with backup, revert, and recovery.
+- Runtime call coalescing, straight-line sibling fusion, and existing
+  goroutine/errgroup fan-out lowering through generated typed bridges without
+  introducing concurrency.
+- Exact/composite-key SQL binding generation and one bounded INNER/LEFT join;
+  generated Go is formatted and type-checked in an overlay, and plan mutations
+  are rejected by digest validation.
 
 ## Not supported yet
 
 - Map range, channel range, and integer range loops.
 - Writes and aggregations (only read-only operations are transformed).
-- Deduplication and canonicalization of keys.
-- Keyed, sparse, or per-item-error batch result modes (only ordered global-error).
+- Static-loop keyed, sparse, or per-item-error batch result modes (the runtime
+  bindings themselves support richer per-item contracts).
 - Conditional scalar calls and early-exit forms beyond the supported error guard
   (`break`, `continue`, labels, `defer`, `recover`, panic recovery).
 - Interface and generic receivers beyond a uniquely resolved concrete receiver.
-- Composition of overlapping or nested transformations in one file (at most one
-  transformation per file in this stage).
+- Composition of overlapping or nested static transformations in one file.
 - Multi-file import planning beyond what the supported shape needs; the key type
   must already be importable under its own package name.
 
@@ -42,6 +47,5 @@ scalar path would not have reached after an earlier error; this is safe only
 because the operation is certified read-only. Provider performance is not
 guaranteed. Correctness assumes the analyzed program is free of data races.
 
-This stage does not generate SQL or backend batch providers, does not batch
-writes, does not lower goroutine or errgroup fan-out, and does not claim universal
-performance improvements.
+This stage does not batch writes, synthesize one-to-many/arbitrary joins, infer
+dynamic SQL, or claim universal performance improvements.

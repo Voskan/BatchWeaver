@@ -22,6 +22,7 @@ const (
 	CapExplicitBatchBinding  Capability = "explicit-batch-binding"
 	CapExactKeyReadSynthesis Capability = "exact-key-read-synthesis"
 	CapCompositeKeyRead      Capability = "composite-key-read-synthesis"
+	CapBoundedJoinRead       Capability = "bounded-join-read-synthesis"
 	CapOrderedResultMapping  Capability = "ordered-result-mapping"
 	CapKeyedResultMapping    Capability = "keyed-result-mapping"
 	CapSparseResultMapping   Capability = "sparse-result-mapping"
@@ -66,7 +67,7 @@ const (
 
 // knownCapabilities is the set used to reject unknown capabilities.
 var knownCapabilities = map[Capability]struct{}{
-	CapExplicitBatchBinding: {}, CapExactKeyReadSynthesis: {}, CapCompositeKeyRead: {},
+	CapExplicitBatchBinding: {}, CapExactKeyReadSynthesis: {}, CapCompositeKeyRead: {}, CapBoundedJoinRead: {},
 	CapOrderedResultMapping: {}, CapKeyedResultMapping: {}, CapSparseResultMapping: {},
 	CapPerItemError: {}, CapGlobalError: {}, CapTransactionPartition: {}, CapSessionPartition: {},
 	CapPreparedStatements: {}, CapChunking: {}, CapPipeline: {}, CapClusterSlotPartition: {},

@@ -30,8 +30,14 @@ func TestManifestsValidAndDeterministic(t *testing.T) {
 	if Manifests()[0].Digest != ms[0].Digest {
 		t.Error("manifest digest is not deterministic")
 	}
-	if _, ok := ManifestByID("database/sql"); !ok {
+	databaseSQL, ok := ManifestByID("database/sql")
+	if !ok {
 		t.Error("database/sql manifest missing")
+	} else if !databaseSQL.HasCapability(CapCompositeKeyRead) || !databaseSQL.HasCapability(CapBoundedJoinRead) {
+		t.Error("database/sql manifest does not advertise implemented composite/join synthesis")
+	}
+	if pgx, ok := ManifestByID("pgx"); !ok || pgx.HasCapability(CapBoundedJoinRead) {
+		t.Error("pgx manifest overclaims database/sql bounded-join synthesis")
 	}
 }
 
@@ -61,7 +67,7 @@ func TestParseReject(t *testing.T) {
 	}{
 		{"SELECT * FROM users WHERE id = $1", CodeProjectionAmbiguous},
 		{"SELECT id, now() FROM users WHERE id = $1", CodeSQLVolatile},
-		{"SELECT id FROM a JOIN b ON a.x = b.x WHERE a.id = $1", CodeSQLUnsupported},
+		{"SELECT a.id FROM a RIGHT JOIN b ON a.x = b.x WHERE a.id = $1", CodeSQLUnsupported},
 		{"INSERT INTO users VALUES ($1)", CodeSQLUnsupported},
 		{"SELECT id FROM users WHERE id = $1 ORDER BY id", CodeSQLUnsupported},
 		{"SELECT id FROM users WHERE id = $1 LIMIT 1", CodeSQLUnsupported},
@@ -114,6 +120,115 @@ func TestSynthesizeExactKey(t *testing.T) {
 	}
 }
 
+func TestSynthesizeCompositeKeyDeterministically(t *testing.T) {
+	t.Parallel()
+	q, rej := ParseExactKeySelect("SELECT tenant_id, id, name FROM users WHERE tenant_id = $1 AND id = $2")
+	if rej != nil {
+		t.Fatal(rej)
+	}
+	if len(q.Keys) != 2 || q.Keys[0].Param != 1 || q.Keys[1].Param != 2 {
+		t.Fatalf("unexpected keys: %+v", q.Keys)
+	}
+	plan, rej := SynthesizeExactKey(SynthInput{Query: q, KeyTypes: []string{"uuid", "bigint"}})
+	if rej != nil {
+		t.Fatal(rej)
+	}
+	for _, want := range []string{
+		"bw_requested(bw_key_1, bw_key_2, bw_ord)",
+		"unnest($1::uuid[], $2::bigint[]) WITH ORDINALITY",
+		"users.tenant_id = bw_requested.bw_key_1 AND users.id = bw_requested.bw_key_2",
+	} {
+		if !strings.Contains(plan.Query, want) {
+			t.Errorf("generated query missing %q:\n%s", want, plan.Query)
+		}
+	}
+	if len(plan.KeyParams) != 2 || plan.KeyParams[0] != 1 || plan.KeyParams[1] != 2 {
+		t.Fatalf("unexpected key parameters: %v", plan.KeyParams)
+	}
+}
+
+func TestBoundedJoinRequiresExplicitCardinality(t *testing.T) {
+	t.Parallel()
+	q, rej := ParseExactKeySelect("SELECT u.id, p.display_name FROM users u LEFT JOIN profiles p ON p.user_id = u.id WHERE u.id = $1")
+	if rej != nil {
+		t.Fatal(rej)
+	}
+	if q.Join == nil || q.Join.Kind != JoinLeft {
+		t.Fatalf("unexpected join: %+v", q.Join)
+	}
+	if _, rej := SynthesizeExactKey(SynthInput{Query: q, KeyType: "bigint"}); rej == nil || rej.Code != CodeCardinalityUnsupported {
+		t.Fatalf("join without cardinality contract = %v", rej)
+	}
+	plan, rej := SynthesizeExactKey(SynthInput{Query: q, KeyType: "bigint", JoinCardinality: JoinCardinalityAtMostOne})
+	if rej != nil {
+		t.Fatal(rej)
+	}
+	for _, want := range []string{"LEFT JOIN users u", "ON u.id = bw_requested.bw_key", "LEFT JOIN profiles p ON p.user_id = u.id"} {
+		if !strings.Contains(plan.Query, want) {
+			t.Errorf("generated query missing %q:\n%s", want, plan.Query)
+		}
+	}
+}
+
+func TestCompositeAndJoinRejectUnsafeShapes(t *testing.T) {
+	t.Parallel()
+	cases := []struct {
+		sql  string
+		code string
+	}{
+		{"SELECT tenant_id FROM users WHERE tenant_id = $2 AND id = $2", CodeParamAmbiguous},
+		{"SELECT tenant_id FROM users WHERE tenant_id = $1 AND id = $3", CodeParamAmbiguous},
+		{"SELECT id FROM users u JOIN profiles p ON p.user_id = u.id WHERE u.id = $1", CodeProjectionAmbiguous},
+		{"SELECT u.id FROM users u JOIN profiles p ON p.user_id = p.id WHERE u.id = $1", CodeJoinUnsupported},
+		{"SELECT p.id FROM users u JOIN profiles p ON p.user_id = u.id WHERE p.id = $1", CodeJoinUnsupported},
+		{"SELECT u.id FROM users u JOIN profiles p ON p.user_id = u.id WHERE u.id = $1 AND other.deleted_at IS NULL", CodeJoinUnsupported},
+	}
+	for _, tc := range cases {
+		_, rej := ParseExactKeySelect(tc.sql)
+		if rej == nil || rej.Code != tc.code {
+			t.Errorf("%q: rejection = %v, want %s", tc.sql, rej, tc.code)
+		}
+	}
+	q, _ := ParseExactKeySelect("SELECT id FROM users WHERE id = $1")
+	if _, rej := SynthesizeExactKey(SynthInput{Query: q, KeyType: "bigint[];DROP"}); rej == nil || rej.Code != CodeParamAmbiguous {
+		t.Fatalf("unsafe SQL type accepted: %v", rej)
+	}
+}
+
+func TestSynthPlanIntegrityKillsSemanticMutations(t *testing.T) {
+	t.Parallel()
+	plan := planFor(t, "SELECT id, name FROM users WHERE id = $1", "bigint")
+	if err := plan.Validate(); err != nil {
+		t.Fatal(err)
+	}
+	mutations := []func(*SynthPlan){
+		func(p *SynthPlan) { p.Query = strings.ReplaceAll(p.Query, " WITH ORDINALITY", "") },
+		func(p *SynthPlan) { p.Query = strings.ReplaceAll(p.Query, "ORDER BY bw_requested.bw_ord", "") },
+		func(p *SynthPlan) { p.Contract = "unordered" },
+		func(p *SynthPlan) { p.KeyTypes[0] = "text" },
+	}
+	for i, mutate := range mutations {
+		candidate := plan
+		candidate.KeyTypes = append([]string(nil), plan.KeyTypes...)
+		mutate(&candidate)
+		if err := candidate.Validate(); err == nil {
+			t.Errorf("mutation %d survived plan validation", i)
+		}
+	}
+}
+
+func TestSynthesisEnforcesBackendParameterLimit(t *testing.T) {
+	t.Parallel()
+	q, rejection := ParseExactKeySelect("SELECT tenant_id, id FROM users WHERE tenant_id = $1 AND id = $2")
+	if rejection != nil {
+		t.Fatal(rejection)
+	}
+	_, rejection = SynthesizeExactKey(SynthInput{Query: q, KeyTypes: []string{"uuid", "bigint"}, Limits: ParameterLimits{MaxItems: 10, MaxParameters: 1, MaxPayloadKB: 1}})
+	if rejection == nil || rejection.Code != CodeParamLimitExceeded {
+		t.Fatalf("parameter limit rejection = %v", rejection)
+	}
+}
+
 func TestRedisSlots(t *testing.T) {
 	t.Parallel()
 	if got := crc16([]byte("123456789")); got != 0x31C3 {
@@ -140,6 +255,7 @@ var (
 	fakeCols = []string{"bw_ord", "name"}
 	fakeData [][]driver.Value
 	fakeErr  error
+	fakeArgs []driver.NamedValue
 )
 
 type fakeDriver struct{}
@@ -156,10 +272,11 @@ func (c *fakeConn) Begin() (driver.Tx, error) { return nil, errors.New("tx unsup
 func (c *fakeConn) CheckNamedValue(*driver.NamedValue) error {
 	return nil // accept any argument, including a key slice
 }
-func (c *fakeConn) QueryContext(ctx context.Context, _ string, _ []driver.NamedValue) (driver.Rows, error) {
+func (c *fakeConn) QueryContext(ctx context.Context, _ string, args []driver.NamedValue) (driver.Rows, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
+	fakeArgs = append([]driver.NamedValue(nil), args...)
 	if fakeErr != nil {
 		return nil, fakeErr
 	}
@@ -245,6 +362,71 @@ func TestSQLProviderGlobalError(t *testing.T) {
 	fakeErr = nil
 }
 
+func TestSQLProviderCompositeArgumentsAndCardinalityDefense(t *testing.T) {
+	type compositeKey struct {
+		Tenant string
+		ID     int64
+	}
+	db, err := sql.Open("bwfake", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() { _ = db.Close() }()
+	q, rej := ParseExactKeySelect("SELECT tenant_id, id, name FROM users WHERE tenant_id = $1 AND id = $2")
+	if rej != nil {
+		t.Fatal(rej)
+	}
+	plan, rej := SynthesizeExactKey(SynthInput{Query: q, KeyTypes: []string{"text", "bigint"}})
+	if rej != nil {
+		t.Fatal(rej)
+	}
+	provider := SQLProvider[compositeKey, string]{
+		DB: db, Plan: plan,
+		KeyArgs: func(keys []compositeKey) []any {
+			tenants := make([]string, len(keys))
+			ids := make([]int64, len(keys))
+			for i, key := range keys {
+				tenants[i], ids[i] = key.Tenant, key.ID
+			}
+			return []any{tenants, ids}
+		},
+		Decode: func(rows *sql.Rows) (int64, string, error) {
+			var ordinal int64
+			var name string
+			err := rows.Scan(&ordinal, &name)
+			return ordinal, name, err
+		},
+	}
+	req := batchweaver.MustNewBatchRequest([]batchweaver.BatchItem[compositeKey]{
+		batchweaver.NewBatchItem(1, compositeKey{Tenant: "acme", ID: 7}),
+		batchweaver.NewBatchItem(2, compositeKey{Tenant: "acme", ID: 9}),
+	})
+	fakeErr = nil
+	fakeData = [][]driver.Value{{int64(1), "Ada"}}
+	resp, err := provider.Execute(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(fakeArgs) != 2 || !resp.Outcomes()[0].IsSuccess() || !errors.Is(resp.Outcomes()[1].Err, sql.ErrNoRows) {
+		t.Fatalf("args=%+v outcomes=%+v", fakeArgs, resp.Outcomes())
+	}
+
+	fakeData = [][]driver.Value{{int64(1), "Ada"}, {int64(1), "duplicate"}}
+	if _, err := provider.Execute(context.Background(), req); err == nil || !strings.Contains(err.Error(), "duplicate ordinal") {
+		t.Fatalf("duplicate join row was not rejected: %v", err)
+	}
+	provider.Limits = ParameterLimits{MaxItems: 10, MaxParameters: 10, MaxPayloadKB: 1}
+	provider.EstimatePayload = func([]compositeKey) int { return 2048 }
+	if _, err := provider.Execute(context.Background(), req); err == nil || !strings.Contains(err.Error(), CodeParamLimitExceeded) {
+		t.Fatalf("payload limit error = %v", err)
+	}
+	provider.EstimatePayload = nil
+	provider.KeyArgs = func([]compositeKey) []any { return []any{[]string{"acme"}} }
+	if _, err := provider.Execute(context.Background(), req); !errors.Is(err, ErrProviderMisconfigured) {
+		t.Fatalf("argument mismatch error = %v", err)
+	}
+}
+
 func TestVerifyReadOnly(t *testing.T) {
 	t.Parallel()
 	data := map[int]string{1: "a", 2: "b"}
@@ -279,6 +461,40 @@ func TestVerifyReadOnly(t *testing.T) {
 	}
 	if vc.Digest == "" {
 		t.Error("missing digest")
+	}
+}
+
+func TestVerifyReadOnlyCompositeDifferential(t *testing.T) {
+	t.Parallel()
+	type key struct{ Tenant, ID string }
+	data := map[key]string{{Tenant: "acme", ID: "7"}: "Ada", {Tenant: "acme", ID: "9"}: "Lin"}
+	scalar := func(_ context.Context, k key) (string, error) {
+		value, ok := data[k]
+		if !ok {
+			return "", sql.ErrNoRows
+		}
+		return value, nil
+	}
+	batch := func(_ context.Context, keys []key) ([]batchweaver.Outcome[string], error) {
+		outcomes := make([]batchweaver.Outcome[string], len(keys))
+		for i, k := range keys {
+			if value, ok := data[k]; ok {
+				outcomes[i] = batchweaver.Success(batchweaver.RequestID(i+1), value)
+			} else {
+				outcomes[i] = batchweaver.Failure[string](batchweaver.RequestID(i+1), sql.ErrNoRows)
+			}
+		}
+		return outcomes, nil
+	}
+	report := VerifyReadOnly(context.Background(), "users.get", "database/sql-composite", scalar, batch,
+		func(left, right string) bool { return left == right },
+		[]VerifyCase[key]{
+			{Name: "unique", Keys: []key{{"acme", "7"}, {"acme", "9"}}},
+			{Name: "duplicates", Keys: []key{{"acme", "7"}, {"acme", "7"}}},
+			{Name: "missing", Keys: []key{{"acme", "missing"}}},
+		})
+	if !report.Passed {
+		t.Fatalf("composite differential failed: %+v", report.Cases)
 	}
 }
 
