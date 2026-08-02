@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/Voskan/BatchWeaver/actions/workflows/ci.yml/badge.svg)](https://github.com/Voskan/BatchWeaver/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/Voskan/BatchWeaver/actions/workflows/codeql.yml/badge.svg)](https://github.com/Voskan/BatchWeaver/actions/workflows/codeql.yml)
-[![Go Reference](https://pkg.go.dev/badge/github.com/Voskan/BatchWeaver.svg)](https://pkg.go.dev/github.com/Voskan/BatchWeaver@v1.0.0)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Voskan/BatchWeaver.svg)](https://pkg.go.dev/github.com/Voskan/BatchWeaver@v1.0.1)
 [![License](https://img.shields.io/github/license/Voskan/BatchWeaver)](LICENSE)
 
 BatchWeaver is a proof-gated batching compiler and typed request-coalescing
@@ -11,11 +11,11 @@ query shapes—proves their safety conditions, previews deterministic changes,
 and executes compatible calls in bounded batches without silently crossing
 request, tenant, authorization, transaction, or session boundaries.
 
-> **Release status:** `v1.0.0` is the current stable release. The Tier 1 Go API
+> **Release status:** `v1.0.1` is the current stable release. The Tier 1 Go API
 > is frozen under Semantic Versioning; `bridge` and the `adapters/*` packages
 > are explicitly experimental, and compiler artifact schemas remain `v1alpha1`.
 > Artifacts are checksummed and reproducible but **not signed**. See the
-> [release notes](docs/release/release-notes-1.0.0.md), the
+> [release notes](docs/release/release-notes-1.0.1.md), the
 > [API freeze](docs/release/v1.0.0/api-freeze.md), and the
 > [stable-release decision](docs/release/v1.0.0/stable-release-decision.md),
 > which records the accepted risks this release ships with.
@@ -51,8 +51,8 @@ current pinned release toolchain.
 Install the CLI or add the typed library at the immutable beta version:
 
 ```bash
-go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v1.0.0
-go get github.com/Voskan/BatchWeaver@v1.0.0
+go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v1.0.1
+go get github.com/Voskan/BatchWeaver@v1.0.1
 ```
 
 For a source checkout at the same version:
@@ -60,14 +60,14 @@ For a source checkout at the same version:
 ```bash
 git clone https://github.com/Voskan/BatchWeaver.git
 cd BatchWeaver
-git checkout v1.0.0
+git checkout v1.0.1
 make build
 ./bin/batchweaver version
 ./bin/batchweaver doctor
 ```
 
 Package documentation and import examples are available through
-[pkg.go.dev](https://pkg.go.dev/github.com/Voskan/BatchWeaver@v1.0.0). See
+[pkg.go.dev](https://pkg.go.dev/github.com/Voskan/BatchWeaver@v1.0.1). See
 [Using BatchWeaver as a Go module](docs/guides/use-as-go-module.md) for the
 library and CLI installation paths.
 

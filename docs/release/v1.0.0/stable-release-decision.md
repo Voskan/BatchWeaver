@@ -21,7 +21,7 @@ without an exception and a remediation plan.
 | No unresolved P0/P1 | pass | Windows normalization, dependency configuration, and VS Code command-registration defects fixed; no open P0/P1 |
 | Transformations differential-tested | pass | deterministic scalar-versus-batch suite in `internal/assurance` |
 | Mandatory mutations killed | pass | 12/12 modeled critical mutations |
-| Compatibility matrix | accepted risk | Go 1.26.0/1.26.5, Linux/macOS/Windows, and hermetic client coverage pass locally; hosted matrix not observed at the tagged commit |
+| Compatibility matrix | accepted risk | hosted Compatibility policy, Go 1.26.0/1.26.5, native and cross-target Linux/macOS/Windows, all build modes, and hermetic client checks succeeded at the tagged commit; live-backend acceptance remains out of scope |
 | Upgrade from published prereleases | pass | executable migration suite from beta.1/2/3 to the v1.0.0 candidate |
 | Installation | accepted risk | beta.3 public installation verified; v1.0.0 proxy behaviour observable only after publication |
 | Race, fuzz, and security suites | pass | `go test -race ./...`, 18 fuzz targets, bounded soak/leak/fault, govulncheck, CodeQL, secret scan, Dependency Review |
@@ -46,11 +46,13 @@ passing anywhere in the documentation.
    *Remediation:* enable hosted signing and attestation and publish signed
    artifacts in the next patch release.
 
-2. **Hosted compatibility evidence not observed at the tagged commit.** The
-   compatibility matrix passes locally and the workflow exists, but the combined
-   hosted artifact for the exact `v1.0.0` commit has not been observed.
-   *Remediation:* run the compatibility and production-campaign workflows at the
-   `v1.0.0` tag and attach their artifacts.
+2. **No extended production-campaign evidence at the tagged commit.** The hosted
+   compatibility matrix, build-mode, cross-target, CodeQL, dependency-review, and
+   release-assurance checks all succeeded at the tagged commit, but the scheduled
+   long-running campaign (extended fuzz, soak, leak, and fault phases) had not
+   run there; those phases were verified by their bounded local equivalents.
+   *Remediation:* dispatch the production-campaign workflow and attach its
+   retained artifact.
 
 3. **Short public prerelease period.** The three betas were published on the
    same day as this release. There has been no extended external feedback

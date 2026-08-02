@@ -3,6 +3,20 @@
 Verified limitations. Entries scoped to a prerelease are retained as historical
 evidence; entries scoped to `v1.0.0` apply to the current stable release.
 
+## BW-KI-014 — v1.0.0 VS Code extension fails a clean source build
+
+- Severity: P2 for `v1.0.0`; fixed on the default branch and released in
+  `v1.0.1`
+- Affected: building the VS Code extension from the `v1.0.0` source tree
+- Impact: `editors/vscode/package.json` declares version `1.0.0` while its
+  `package-lock.json` still records `0.1.0-beta.3`. `npm ci` validates that the
+  two agree, so a clean install fails and the extension cannot be built or
+  packaged from the `v1.0.0` source. The Go module, CLI, and the prebuilt VSIX
+  are unaffected.
+- Workaround: use `v1.0.1` or later, or run `npm install` instead of `npm ci`.
+- Remediation: the lockfile is synchronized and the extension test now derives
+  the expected version from `release/VERSION`, so the two can no longer drift.
+
 ## BW-KI-012 — v1.0.0 artifacts are unsigned and unattested
 
 - Severity: P2 for `v1.0.0`
@@ -16,16 +30,19 @@ evidence; entries scoped to `v1.0.0` apply to the current stable release.
 - Remediation: enable hosted keyless signing and build attestation in the
   release workflow and publish signed artifacts in the next patch release.
 
-## BW-KI-013 — hosted compatibility evidence absent at the v1.0.0 commit
+## BW-KI-013 — no production-campaign evidence at the v1.0.0 commit
 
 - Severity: P3 for `v1.0.0`
-- Affected: the compatibility and production-campaign evidence set
-- Impact: the matrix and campaign workflows exist and pass, but the combined
-  hosted artifacts for the exact `v1.0.0` commit were not observed, so the
-  release relies on local verification for those gates.
-- Workaround: run the compatibility and production-campaign workflows at the
-  `v1.0.0` tag.
-- Remediation: attach both artifacts and reference them from the release notes.
+- Affected: the extended production-campaign evidence set
+- Impact: the hosted compatibility matrix, build-mode, cross-target, CodeQL,
+  dependency-review, and release-assurance checks all succeeded at the tagged
+  commit, but the scheduled long-running production campaign (extended fuzz,
+  soak, leak, and fault phases) had not run at that commit. Those phases were
+  verified only by their bounded local equivalents.
+- Workaround: none required; the bounded suites cover the same code paths for a
+  shorter duration.
+- Remediation: dispatch the production-campaign workflow and reference the
+  retained artifact from the release notes.
 
 ## BW-KI-011 — beta.2 downloaded checksum set uses unavailable report paths
 
