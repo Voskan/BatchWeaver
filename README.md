@@ -1,241 +1,242 @@
 # BatchWeaver
 
-BatchWeaver is a proof-gated Go compiler/runtime toolkit that turns supported
-scalar access patterns into reviewed batch execution while preserving explicit
-semantic and isolation contracts.
+[![CI](https://github.com/Voskan/BatchWeaver/actions/workflows/ci.yml/badge.svg)](https://github.com/Voskan/BatchWeaver/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/Voskan/BatchWeaver/actions/workflows/codeql.yml/badge.svg)](https://github.com/Voskan/BatchWeaver/actions/workflows/codeql.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Voskan/BatchWeaver.svg)](https://pkg.go.dev/github.com/Voskan/BatchWeaver)
+[![License](https://img.shields.io/github/license/Voskan/BatchWeaver)](LICENSE)
 
-> **Public beta preparation — v0.1.0-beta.1.** The source repository is public,
-> but this version is not tagged or released yet. APIs may change. Review every
-> transformation diff and run your full test suite before materializing changes.
+BatchWeaver is a proof-gated batching compiler and typed request-coalescing
+runtime for Go. It finds supported scalar access patterns—including common N+1
+query shapes—proves their safety conditions, previews deterministic changes,
+and executes compatible calls in bounded batches without silently crossing
+request, tenant, authorization, transaction, or session boundaries.
+
+> **Release status:** `v0.1.0-beta.1` is selected but not published. There is
+> currently no immutable tag, GitHub Release, or indexed pkg.go.dev version.
+> The repository is suitable for evaluation, not a stable v1 claim. See the
+> [release decision](docs/release/v1.0.0/stable-release-decision.md).
 
 ## Why BatchWeaver?
 
-Batching can reduce repeated backend round trips, but a rewrite can also change
-evaluation order, errors, cancellation, transactions, authorization, and result
-mapping. BatchWeaver requires proof obligations for supported strategies,
-rejects unknowns conservatively, leaves source unchanged by default, previews a
-deterministic diff, and runs transformed tests through a Go overlay.
+Hand-written batching can reduce backend round trips, but changing scalar code
+can also change evaluation order, error identity, cancellation, deadlines,
+result mapping, and isolation. BatchWeaver treats those behaviors as proof
+obligations rather than implementation details.
 
-After the public tag exists, the supported install path will be:
+- **Proof before transformation.** Unknown or unsupported behavior is rejected.
+- **Overlay before mutation.** Scan, proof, plan, diff, build, and test can run
+  without changing source files.
+- **Typed library contracts.** Generic requests, outcomes, providers, and
+  declarations avoid reflection in application-facing code.
+- **Explicit isolation.** Scope and partition contracts keep incompatible work
+  out of the same batch.
+- **Fail-closed release tooling.** Checksums, SBOMs, provenance, compatibility,
+  and publication gates are verified separately from publishing.
+- **No hidden telemetry.** Workload profiles exclude raw keys, payloads,
+  credentials, tenant identifiers, and source.
+
+BatchWeaver does not promise that every Go call can be batched or that batching
+always improves performance. Unsupported patterns remain scalar or are rejected
+with a diagnostic.
+
+## Install
+
+Go 1.26.5 is the currently tested toolchain.
+
+After an immutable beta tag is published, the CLI and library commands will be:
 
 ```bash
 go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v0.1.0-beta.1
-batchweaver version
-batchweaver doctor
-batchweaver scan ./...
+go get github.com/Voskan/BatchWeaver@v0.1.0-beta.1
 ```
 
-See the [documentation site source](site/index.html),
-[five-minute release quickstart](docs/release/release-notes-0.1.0-beta.1.md),
-[compatibility matrix](docs/release/compatibility.md), and
-[known issues](KNOWN-ISSUES.md).
-
-## Development status
-
-BatchWeaver is under active development. The repository now contains the
-foundational semantic layer:
-
-- the operation domain model (IDs, symbols, semantics, and contracts);
-- typed scalar and batch function contracts and typed declarations;
-- a strict, versioned (schema 1) YAML/JSON configuration system with includes,
-  deterministic merge, and a semantic digest;
-- a deterministic, machine-readable diagnostics system;
-- configuration and operation CLI commands;
-- an explicit, typed request-coalescing **runtime** (`runtime`, imported as
-  `batchruntime`) that safely coalesces compatible scalar requests into bounded
-  batch provider calls while preserving scope isolation, partition boundaries,
-  independent cancellation, caller deadlines, per-item outcomes, and
-  deterministic lifecycle behavior;
-- a **static analysis** engine (`batchweaver scan`) that loads real Go modules,
-  resolves operation declarations to canonical symbols, builds SSA and a
-  conservative call graph, summarizes observable effects, discovers scalar
-  operation call sites and their structural context (loops, goroutine fan-out),
-  and exports a deterministic candidate inventory — without modifying source;
-- a **semantic proof engine** (`batchweaver prove`) that turns each discovered
-  candidate into a strategy-specific eligibility decision — proven eligible,
-  proven ineligible, requires assumption, unknown, or deferred — derived from a
-  closed registry of Go-semantic and operation-contract proof obligations, with
-  deterministic, evidence-backed proof certificates and no source changes;
-- a **transformation engine** (`batchweaver transform`, `build`, `test`, `run`)
-  that consumes those certificates and performs static slice/array loop prefetch
-  for a certified read-only operation — producing a deterministic plan, unified
-  diff, and source map, building and testing through a Go overlay without editing
-  source, and optionally materializing and reverting the edits safely;
-- **runtime call lowering** that rewrites certified scalar calls into a typed,
-  reflection-free runtime bridge (`bridge.Operation.Call`), coalescing compatible
-  standalone, sibling, and existing goroutine/errgroup fan-out calls through the
-  runtime while preserving context, cancellation, deadlines, partitions, and
-  error semantics — with an overlay-first `-toolexec` integration, explicit
-  batching barriers, and a guaranteed direct scalar fallback;
-- a **backend adapter SDK** (`batchweaver adapter`) with a versioned manifest and
-  capability model, a narrow real SQL parser that safely synthesizes exact-key
-  PostgreSQL read batches (parameterized `unnest(...) WITH ORDINALITY` joins) or
-  rejects unsupported queries with exact diagnostics, a typed reflection-free
-  `database/sql` batch provider, Redis cluster hash-slot grouping and MGET/HMGET/
-  pipeline mapping, and scalar/batch contract verification;
-- **network protocol adapters** (`batchweaver graphql|grpc|http|openapi`): a fully
-  implemented HTTP explicit-batch adapter over `net/http` with typed keyed/
-  positional JSON envelopes and OpenAPI 3.1+ `x-batchweaver` binding; GraphQL
-  resolver-wave analysis (a real, non-regex query parser, one scope per operation,
-  selection/authorization partitioning, error/nullability preservation); an
-  explicit gRPC batch-binding and metadata-partition policy layer; and protocol
-  contract verification;
-- an **adaptive scheduling and production tuning** layer (`batchweaver profile`,
-  `tune`, `fairness`, `overload`, `wave`, `recursive`): privacy-safe, versioned
-  workload profiles that store only bounded histograms and anonymized counts
-  (never raw keys, tenants, or payloads); a versioned, explicitly weighted cost
-  model; a bounded, explainable controller that recommends — and, only when
-  explicitly enabled and within authoritative hard bounds, applies — `max_wait`,
-  `max_batch_size`, concurrency, chunk size, and execution mode, with shadow and
-  active modes, SLO guardrails, and automatic rollback; multi-operation wave
-  planning; recursive breadth-first batching for proven traversals; fairness,
-  quotas, and reserved capacity; overload detection, admission control, and
-  non-silent load shedding; and deterministic offline replay, simulation, and
-  tuning reports. Adaptive tuning can never bypass a semantic proof, exceed a
-  configured bound, or guarantee a universal performance improvement;
-- an **editor and developer-experience layer**: a standalone `batchweaver lsp`
-  language server (LSP 3.17, no gopls internal imports) with an optional
-  `--proxy-gopls` mode that launches and composes the user's gopls, a local
-  workspace daemon (`batchweaver daemon`), and `batchweaver editor doctor`.
-  BatchWeaver analyzes unsaved editor buffers through overlays and publishes live
-  batching diagnostics, hover, code lenses, and preview code actions, with a VS
-  Code extension (source) and standard-LSP setup for Neovim, Emacs/Eglot, Helix,
-  and Zed. It never writes source implicitly, never collects telemetry, and is
-  not a gopls plugin.
-- a **non-publishing release assurance layer** (`batchweaver release`,
-  `compatibility report`, `verify differential`, and `security audit`) that
-  creates deterministic cross-platform snapshot archives, checksums, SPDX and
-  CycloneDX SBOMs, unsigned local provenance, and a strict release manifest;
-  verifies archive contents and digests offline; and rebuilds declared artifacts
-  for byte comparison. Snapshot commands do not contain publication behavior.
-
-**Arbitrary SQL transformation, automatic write synthesis, GraphQL/gRPC fusion,
-and universal performance improvements are not implemented.** Only a narrow,
-documented exact-key PostgreSQL read shape is synthesized; everything else is
-rejected with an exact diagnostic. Every lowered operation still requires an
-explicitly declared, compatible batch provider, and the concrete pgx, go-redis,
-gqlgen, and grpc-go client bindings are contract-defined but deferred in this
-build. Universal GraphQL optimization, remote batch-method generation, and
-arbitrary HTTP request fusion are not implemented. See
-[docs/guides/plan-a-transformation.md](docs/guides/plan-a-transformation.md),
-[docs/guides/enable-runtime-lowering.md](docs/guides/enable-runtime-lowering.md),
-[docs/guides/configure-database-sql.md](docs/guides/configure-database-sql.md),
-[docs/reference/sql-support-matrix.md](docs/reference/sql-support-matrix.md),
-[docs/limitations/backend-adapters.md](docs/limitations/backend-adapters.md),
-[docs/limitations/network-adapters.md](docs/limitations/network-adapters.md),
-[docs/limitations/adaptive.md](docs/limitations/adaptive.md), and
-[docs/limitations/editor.md](docs/limitations/editor.md).
-
-## The idea
-
-Scalar code that issues one call per item is easy to write but often
-inefficient, because each call pays a full round trip. BatchWeaver's goal is to
-let you keep writing scalar code while it arranges for the underlying work to be
-executed in batches.
-
-The following is a simplified illustration. Current implementations are limited
-to documented proven shapes and require an explicit compatible batch provider:
-
-```go
-// You write ordinary scalar code:
-for _, id := range ids {
-    user := LoadUser(ctx, id) // one logical call per id
-    use(user)
-}
-
-// BatchWeaver's goal is to execute this as an equivalent batched operation:
-users := LoadUsersBatch(ctx, ids) // one batched call for all ids
-```
-
-The transformation must be semantically transparent: observable behavior stays
-the same, while redundant per-item work is coalesced.
-
-## Planned architecture (high level)
-
-BatchWeaver is planned as a pipeline that flows in one direction:
-
-```text
-CLI → project discovery → configuration → package loading → static analysis
-→ intermediate representation → optimization planning → transformation
-→ generated typed bindings → runtime scheduler → adapters → verification
-→ observability
-```
-
-See [docs/architecture/overview.md](docs/architecture/overview.md) for details
-and [ROADMAP.md](ROADMAP.md) for the phased plan.
-
-## Requirements
-
-- Go 1.26.5. Other toolchain versions are not supported by the current release
-  policy until they are explicitly tested. With the default `GOTOOLCHAIN=auto`,
-  the pinned toolchain can be fetched automatically.
-
-## Build and test
+Those versioned commands intentionally do not work yet because no release tag
+exists. For repository evaluation:
 
 ```bash
-# Build the CLI to bin/batchweaver
+git clone https://github.com/Voskan/BatchWeaver.git
+cd BatchWeaver
+git switch release/v0.1.0-beta.1
 make build
-
-# Run the current command
 ./bin/batchweaver version
+./bin/batchweaver doctor
+```
 
-# Or run without building:
-go run ./cmd/batchweaver version
+Go modules become discoverable on pkg.go.dev through the public Go module proxy
+after a semantic-version tag is published and fetched. The exact publication
+procedure and current blocker are documented in
+[Using BatchWeaver as a Go module](docs/guides/use-as-go-module.md).
 
-# Validate and inspect a configuration
-go run ./cmd/batchweaver config validate --file examples/configuration/batchweaver.yaml
-go run ./cmd/batchweaver operation list --file examples/configuration/batchweaver.yaml
+## Use the Go package
 
-# Run the full local quality gate
+Declare a scalar function and its compatible batch provider with one typed,
+statically discoverable value:
+
+```go
+package users
+
+import (
+    "context"
+
+    batchweaver "github.com/Voskan/BatchWeaver"
+    "github.com/Voskan/BatchWeaver/operation"
+)
+
+type User struct {
+    ID   int
+    Name string
+}
+
+func loadUser(ctx context.Context, id int) (User, error) {
+    // Scalar implementation.
+    return User{ID: id}, nil
+}
+
+func loadUsers(
+    ctx context.Context,
+    req batchweaver.BatchRequest[int],
+) (batchweaver.BatchResponse[User], error) {
+    values := make([]User, req.Len())
+    for i, item := range req.Items() {
+        values[i] = User{ID: item.Key}
+    }
+    return batchweaver.OrderedOutcomes(req, values)
+}
+
+var GetUser = batchweaver.MustDeclareFunction(
+    operation.MustNewSpec(
+        operation.MustParseID("users.get"),
+        operation.ReadOnly(),
+        operation.WithOrderedResults(),
+        operation.WithRequestScope(),
+    ),
+    loadUser,
+    loadUsers,
+)
+```
+
+This declaration does not start goroutines, register global state, or mutate
+source. The runtime API is opt-in; see the
+[runtime guide](docs/guides/runtime-api.md) and the compile-tested
+[declaration example](examples/declarations/basic).
+
+## Five-minute workflow
+
+```bash
+# Inspect supported commands and validate configuration.
+batchweaver help
+batchweaver config validate --file examples/configuration/batchweaver.yaml
+
+# Discover and prove candidates without modifying source.
+batchweaver scan ./...
+batchweaver prove ./...
+
+# Review a deterministic plan and diff.
+batchweaver transform plan ./...
+batchweaver transform diff ./...
+
+# Test transformed code through an overlay.
+batchweaver test -- -race ./...
+```
+
+Materialization is a separate, explicit operation with backup, recovery, and
+revert support. Start with the [verified batching tutorial](docs/tutorials/verified-batching.md).
+
+## Architecture
+
+```mermaid
+flowchart LR
+    A["Go source and config"] --> B["Package loading and static analysis"]
+    B --> C["Semantic proof obligations"]
+    C -->|"proven"| D["Versioned transformation plan"]
+    C -->|"unknown or unsafe"| R["Reject with diagnostic"]
+    D --> E["Preview and build overlay"]
+    E --> F["Transformed tests"]
+    F -->|"explicit approval"| G["Optional materialization"]
+    E --> H["Typed bridge and runtime"]
+    H --> I["Partitioned batch provider"]
+```
+
+The compiler is conservative: proof certificates are versioned, source anchors
+are checked before use, transformed builds use overlays by default, and the
+runtime validates provider outcomes before returning them to callers.
+
+Read the [architecture overview](docs/architecture/overview.md),
+[package boundaries](docs/architecture/package-boundaries.md), and
+[safety model](docs/concepts/batching-model.md).
+
+## What is implemented
+
+- typed operation, request, response, partition, scheduling, retry, and fallback
+  contracts;
+- explicit request-scoped runtime coalescing with bounded queues, independent
+  cancellation, deadlines, deduplication, memoization, and result validation;
+- Go package loading, SSA, conservative call-graph/effect analysis, candidate
+  discovery, and deterministic reports;
+- semantic proof certificates and static loop-prefetch/runtime-lowering
+  transformations through build overlays;
+- narrow exact-key PostgreSQL read synthesis, `database/sql`, Redis mapping,
+  explicit HTTP/OpenAPI batching, GraphQL wave analysis, and gRPC contracts;
+- privacy-safe adaptive analysis, fairness, overload control, recursive waves,
+  and bounded shadow/active tuning;
+- standalone LSP, optional gopls proxy, workspace daemon, and VS Code extension;
+- deterministic release archives, checksums, SPDX/CycloneDX SBOMs, local
+  provenance, compatibility reports, and non-publishing release verification.
+
+## Important limitations
+
+- Concrete pgx, go-redis, gqlgen, and grpc-go client bindings are not included.
+- SQL synthesis is limited to documented exact-key PostgreSQL reads; writes and
+  arbitrary SQL rewrites are rejected.
+- GraphQL/gRPC optimization requires explicit integrations; arbitrary network
+  request fusion is not inferred.
+- The current public API is prerelease and is not frozen as stable v1.
+- Windows CI needs the current line-ending fix verified on a hosted runner.
+- Dependency Review requires the repository Dependency Graph to be enabled.
+- No release tag, public assets, Pages deployment, or pkg.go.dev version exists.
+
+See [known issues](KNOWN-ISSUES.md) and the detailed
+[limitations index](docs/README.md#limitations).
+
+## Documentation
+
+- [Documentation index](docs/README.md)
+- [Tutorials](docs/tutorials/verified-batching.md)
+- [How-to guides](docs/guides/scan.md)
+- [Reference](docs/reference/configuration.md)
+- [Architecture](docs/architecture/overview.md)
+- [Compatibility](docs/release/compatibility.md)
+- [Security](SECURITY.md)
+- [Support](SUPPORT.md)
+- [Contributing](CONTRIBUTING.md)
+
+## Development
+
+```bash
+make fmt-check
+go test ./...
+go test -race ./...
+go vet ./...
 make check
+```
 
-# Build and independently verify an unpublished local snapshot
-./bin/batchweaver release build --snapshot --output dist
+Release assurance is non-publishing:
+
+```bash
+make release-snapshot
 ./bin/batchweaver release verify dist/release-manifest.json
 ```
 
-The selected beta is `v0.1.0-beta.1`; it has not been tagged or published because
-mandatory authenticated publication gates remain blocked. See
-[the launch decision](docs/release/0.1.0-beta.1/launch-decision.md),
-[the compatibility report](docs/release/compatibility.md),
-[known issues](KNOWN-ISSUES.md), and [release policy](docs/release/release-policy.md).
+## Project status
 
-Example `config validate` output:
-
-```text
-Configuration is valid.
-Schema: 1
-Files: 1
-Operations: 3
-Digest: sha256:...
-```
-
-Example `version` output:
-
-```text
-BatchWeaver dev
-Go: go1.26.5
-Platform: darwin/arm64
-Commit: unknown
-Build date: unknown
-```
-
-## Repository structure
-
-The layout and package boundaries are documented in
-[docs/architecture/package-boundaries.md](docs/architecture/package-boundaries.md).
-
-## Contributing
-
-Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before
-opening a pull request.
-
-## Security
-
-Please report vulnerabilities privately as described in
-[SECURITY.md](SECURITY.md). Do not open public issues for security reports.
+The stable-release evidence audit found no public prerelease, no release assets, no
+external compatibility reports, and no verified adoption period. Stable
+`v1.0.0` is therefore blocked even when local tests pass. The repository records
+the exact evidence in [beta evidence](docs/release/v1.0.0/beta-evidence.md), the
+[v1 gate report](docs/release/v1.0.0/stable-release-decision.md), and the
+[continuation plan](docs/release/v1.0.0/project-completion.md).
 
 ## License
 
-BatchWeaver is licensed under the Apache License, Version 2.0. See
-[LICENSE](LICENSE) and [NOTICE](NOTICE).
+Apache License 2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE), and
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="BatchWeaver proof-gated semantic batching for Go">
+  <meta name="description" content="BatchWeaver is a proof-gated Go batching compiler and typed request-coalescing runtime for safe N+1 optimization.">
   <title>BatchWeaver @@VERSION@@</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
@@ -22,7 +22,7 @@ batchweaver version
 batchweaver doctor
 batchweaver scan ./...
 batchweaver transform plan ./...
-batchweaver test -- -race ./...</code></pre><p>The public install command becomes valid only after the immutable beta tag is published.</p></section>
+batchweaver test -- -race ./...</code></pre><p>The public install command becomes valid only after the immutable beta tag is published. The library will be documented on <a href="https://pkg.go.dev/github.com/Voskan/BatchWeaver">pkg.go.dev</a> after the Go module proxy indexes that tag.</p></section>
 
     <section id="safety"><h2>Safety model</h2><div class="grid"><article><h3>Proof first</h3><p>No supported transformation proceeds without explicit proof obligations. Unknowns are rejections, not optimism.</p></article><article><h3>Preview first</h3><p>Source is unchanged by default. Plans, diffs, overlays, type checking, and transformed tests precede materialization.</p></article><article><h3>Boundaries preserved</h3><p>Ordering, errors, cancellation, deadlines, partitions, authorization, transactions, and result contracts are part of eligibility.</p></article></div></section>
 

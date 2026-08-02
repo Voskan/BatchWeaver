@@ -82,8 +82,8 @@ been proven.
 
 ## Current limitations
 
-This foundation implements the core end-to-end pipeline. The following are
-deferred to later prompts and are **not** exposed as stubs: SARIF and DOT output,
+The implemented analysis pipeline deliberately omits the following features;
+they are **not** exposed as stubs: SARIF and DOT output,
 a content-addressed analysis cache, `//batchweaver:` directive discovery,
 dependency metadata providers, RTA/VTA call-graph algorithms, multi-build-context
 merging, deep generic-instantiation call-site resolution, and full source-range

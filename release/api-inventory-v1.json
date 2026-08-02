@@ -1,0 +1,32 @@
+{
+  "schema": "batchweaver.api-inventory/v1alpha1",
+  "status": "candidate-not-frozen",
+  "generated_from": "internal/release/testdata/public-api.txt",
+  "go_api_records": 1121,
+  "packages": [
+    {"path": "github.com/Voskan/BatchWeaver", "records": 60, "stability": "stable-candidate"},
+    {"path": "github.com/Voskan/BatchWeaver/bridge", "records": 6, "stability": "experimental"},
+    {"path": "github.com/Voskan/BatchWeaver/config", "records": 50, "stability": "stable-candidate"},
+    {"path": "github.com/Voskan/BatchWeaver/diagnostics", "records": 78, "stability": "stable-candidate"},
+    {"path": "github.com/Voskan/BatchWeaver/operation", "records": 761, "stability": "stable-candidate"},
+    {"path": "github.com/Voskan/BatchWeaver/runtime", "records": 166, "stability": "stable-candidate"}
+  ],
+  "compatibility_surfaces": {
+    "configuration": "schema-1",
+    "diagnostics_json": "schema-1",
+    "bridge_abi": "batchweaver.bridge/v1alpha1",
+    "analysis": "batchweaver.analysis/v1alpha1",
+    "proof": "batchweaver.proof/v1alpha1",
+    "transformation": "batchweaver.transform/v1alpha1",
+    "daemon": "batchweaver.daemon/v1alpha1",
+    "adapter_manifest": "batchweaver.adapter/v1alpha1",
+    "profile": "batchweaver.profile/v1alpha1"
+  },
+  "approval": null,
+  "blockers": [
+    "no published prerelease compatibility window",
+    "no tested public migration",
+    "no maintainer v1 API approval",
+    "alpha ABI and artifact schemas"
+  ]
+}

@@ -29,8 +29,8 @@ BW3700–BW3799  cache and reproducibility (reserved)
 | BW3105 | error | Invalid scalar or batch symbol reference. |
 | BW3108 | error | Scalar or batch function does not return an error as its last result. |
 
-Reserved ranges are documented for later prompts and are not yet assigned to
-avoid reusing a code for an unrelated meaning.
+Reserved ranges are held for compatible future analysis diagnostics so that a
+code is never reused for an unrelated meaning.
 
 ## Severity and exit codes
 

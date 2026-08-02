@@ -18,5 +18,5 @@ call.
 
 This stage lowers siblings through the runtime bridge (the "immediate runtime
 call" model). A fully static sibling batch with explicit wave coordination is a
-future refinement; the runtime-bridge model is always safe and never reorders
-observable effects.
+possible future refinement. The runtime-bridge model is selected only when its
+proof obligations establish that observable effects are not reordered.

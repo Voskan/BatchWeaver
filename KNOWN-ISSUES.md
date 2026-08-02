@@ -1,89 +1,86 @@
 # Known Issues
 
-This file lists verified limitations for the selected `v0.1.0-beta.1` build. It
-does not imply that the candidate has been published.
+These are verified limitations and release blockers for the selected,
+unpublished `v0.1.0-beta.1` candidate. No stable release is implied.
 
 ## BW-KI-001 — Concrete framework client bindings are absent
 
-- Severity: major
+- Severity: P2
 - Affected: pgx, go-redis, gqlgen, and grpc-go integrations
-- Impact: the framework-neutral contracts and verification logic exist, but
-  users must write an explicit binding; documentation must not claim turnkey
-  client integration.
+- Impact: framework-neutral contracts and verification logic exist, but users
+  must provide an explicit binding.
 - Workaround: use the Adapter SDK, `database/sql`, or `net/http` providers.
-- Tracking: roadmap, post-RC integration milestone
-- Release blocker: no, when the release notes and support matrix remain explicit
-- Disclosure: public
+- Stable blocker: yes until the supported v1 surface deliberately includes or
+  excludes each integration.
 
-## BW-KI-002 — VS Code host end-to-end test is not automated locally
+## BW-KI-002 — VS Code host end-to-end evidence is absent
 
-- Severity: major
-- Affected: VS Code extension installation and activation
-- Impact: lint, typecheck, manifest consistency, and VSIX contents are tested,
-  but a real headless Extension Host session has not been demonstrated.
-- Workaround: use the standalone LSP or install the local VSIX in a disposable
-  Extension Development Host before relying on it.
-- Tracking: beta launch prerequisites
-- Release blocker: yes for Marketplace publication; no publication is authorized
-- Disclosure: public
+- Severity: P1 for Marketplace publication
+- Impact: lint, typecheck, unit tests, package construction, and VSIX contents
+  pass locally, but installation and activation in a real Extension Host have
+  not been verified.
+- Workaround: use the standalone LSP and test the VSIX in a disposable Extension
+  Development Host.
+- Stable blocker: yes for a supported VS Code release.
 
 ## BW-KI-003 — Shared daemon cache is not used by CLI/LSP analysis
 
-- Severity: minor
-- Affected: repeated editor and CLI analysis
-- Impact: correct results, but avoidable repeated analysis and memory use.
+- Severity: P3
+- Impact: results remain correct, but repeated analysis can consume avoidable
+  time and memory.
 - Workaround: run commands normally; no semantic behavior is affected.
-- Tracking: roadmap
-- Release blocker: no
-- Disclosure: public
+- Stable blocker: no when documented.
 
-## BW-KI-004 — LSP transformation application remains preview-first
+## BW-KI-004 — Editor transformation application is preview-first
 
-- Severity: minor
-- Affected: editor transformation workflow
-- Impact: the editor previews a transformation and directs users to the CLI;
-  it does not apply a full version-preconditioned WorkspaceEdit.
-- Workaround: use `batchweaver transform diff` and `materialize`.
-- Tracking: roadmap
-- Release blocker: no
-- Disclosure: public
+- Severity: P3
+- Impact: the editor previews transformations and directs users to the CLI; it
+  does not apply a full version-preconditioned `WorkspaceEdit`.
+- Workaround: use `batchweaver transform diff` and explicit materialization.
+- Stable blocker: no when documented.
 
-## BW-KI-005 — Hosted branch-protection state was not authenticated
+## BW-KI-005 — Hosted governance and security settings are unverified
 
-- Severity: major
-- Affected: GitHub release authorization and required-check enforcement
-- Impact: CODEOWNERS, least-privilege workflows, and repository policies are
-  reviewable in Git, but the GitHub branch-protection API returned 401 without an
-  authenticated maintainer token, so hosted enforcement was not verified.
-- Workaround: an authorized maintainer must inspect main-branch rules and required
-  checks before approving publication.
-- Tracking: beta launch checklist
-- Release blocker: yes for public publication; snapshot construction remains local
-- Disclosure: public
+- Severity: P1 for publication
+- Impact: the public API confirms the repository identity but unauthenticated
+  access cannot verify branch protection, required checks, environments, private
+  vulnerability reporting, release authority, or Pages configuration.
+- Workaround: an authorized repository owner must verify the settings before
+  publication.
+- Stable blocker: yes.
 
-## BW-KI-006 — Superseded dependency update pull requests remain open
+## BW-KI-006 — Dependency Graph is disabled
 
-- Severity: informational
-- Affected: GitHub Actions dependencies
-- Impact: six Dependabot pull requests were open during the audit. Release hardening
-  independently verified and pinned current action releases, so those branches
-  may now be stale or partially superseded.
-- Workaround: review CI results and close or rebase pull requests 1–6; do not
-  merge them mechanically over the reviewed pins.
-- Tracking: GitHub pull requests 1–6
-- Release blocker: no while current pinned checks pass without a known finding
-- Disclosure: public
+- Severity: P1 for release assurance
+- Evidence: PR #7 Dependency Review run `30739695826` failed with
+  “Dependency review is not supported on this repository.”
+- Impact: the mandatory dependency-change policy cannot execute.
+- Workaround: enable Dependency Graph in repository Security settings and rerun
+  the failed workflow. Do not mark the check optional.
+- Stable blocker: yes.
 
-## BW-KI-007 — Hosted Windows test job failed before beta preparation
+## BW-KI-007 — Windows line-ending correction needs hosted verification
 
-- Severity: major
-- Affected: Windows compatibility evidence at commit `d588b30`
-- Impact: build succeeded, but `go test ./...` failed in the hosted Windows job;
-  Linux, macOS, validation, release assurance, VS Code, coverage, and CodeQL
-  passed. Public logs require authentication, so the exact failing assertion was
-  not exposed by the public API.
-- Workaround: none for publication; platform-neutral LSP URI tests were corrected
-  and the hosted matrix must rerun at the release commit.
-- Tracking: beta publication gate
-- Release blocker: yes until the Windows job is green
-- Disclosure: public
+- Severity: P1 for Windows support
+- Evidence: PR #7 CI run `30739695835` failed because `.txt` golden baselines
+  were checked out as CRLF while generated output used LF.
+- Remediation: `.gitattributes` now enforces LF for `.txt` files.
+- Stable blocker: yes until a hosted Windows run passes at the release commit.
+
+## BW-KI-008 — No public module or release artifacts exist
+
+- Severity: P1 for installation
+- Impact: `go get`/`go install` at `v0.1.0-beta.1`, pkg.go.dev documentation,
+  public checksums, public SBOMs, and archive installation cannot be verified.
+- Workaround: repository evaluation from a reviewed commit only.
+- Stable blocker: yes.
+
+## BW-KI-009 — Stable evidence period has not begun
+
+- Severity: P1 for v1 governance
+- Impact: there are no published prereleases, external compatibility reports,
+  verified downstream integrations, or public installation results. Absence of
+  reports is not stability evidence.
+- Workaround: publish a gated beta, collect and reproduce evidence, then repeat
+  the stable-release audit.
+- Stable blocker: yes.

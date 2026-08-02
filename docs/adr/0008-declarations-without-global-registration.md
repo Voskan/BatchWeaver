@@ -5,8 +5,8 @@
 
 ## Context
 
-Operations must be declared in user code in a way that a future analyzer can
-discover statically and that a future runtime can consume, without hidden
+Operations must be declared in user code in a way that the analyzer can
+discover statically and the runtime can consume, without hidden
 initialization-time side effects.
 
 ## Decision
@@ -15,7 +15,7 @@ initialization-time side effects.
   created by `DeclareFunction`/`MethodDeclaration` (and their `Must` variants).
 - There is no package-level mutable registry and no `init`-time registration.
 - The canonical declaration shape is a package-level `var` assigned from
-  `MustDeclareMethod`/`MustDeclareFunction`, which a later AST analyzer can find
+  `MustDeclareMethod`/`MustDeclareFunction`, which the AST analyzer can find
   reliably.
 - `Must` constructors panic only for programmer errors during initialization,
   with deterministic messages that include the operation ID and no pointer
@@ -24,7 +24,7 @@ initialization-time side effects.
 ## Consequences
 
 - Declarations are statically discoverable and free of import-order surprises.
-- The runtime can later consume generated registries without any hidden global
+- The runtime consumes generated registries without any hidden global
   state introduced here.
 
 ## Alternatives considered

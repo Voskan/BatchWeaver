@@ -5,7 +5,7 @@
 
 ## Context
 
-The proof engine decides eligibility; a later stage performs source rewriting.
+The proof engine decides eligibility; a separate stage performs source rewriting.
 Coupling the two would make the proof engine harder to test and would risk
 changing application behavior from within an analysis-only stage.
 
@@ -13,7 +13,7 @@ changing application behavior from within an analysis-only stage.
 
 - The proof engine produces certificates only. It does not rewrite source,
   intercept the build, insert runtime calls, or generate providers.
-- Certificates record the exact mapping algorithm and obligations a future
+- Certificates record the exact mapping algorithm and obligations the
   transformation must honor, so the rewrite stage consumes them without
   re-deriving candidate structure, contracts, or eligibility.
 - The proof schema version is independent from the analysis schema version.
@@ -21,5 +21,5 @@ changing application behavior from within an analysis-only stage.
 ## Consequences
 
 The proof engine is analysis-only and side-effect-free with respect to the
-analyzed program. The first transformation stage (a later prompt) consumes these
-certificates as its trusted input.
+analyzed program. The transformation engine consumes these certificates as its
+trusted input and independently rejects stale source or version evidence.

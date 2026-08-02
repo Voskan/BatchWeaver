@@ -2,9 +2,9 @@
 // operation. It shows a scalar method paired with a native batch method and a
 // typed declaration that connects them to an operation spec.
 //
-// Declaration is implemented today. Automatic interception of scalar calls is
-// not implemented yet; later compiler prompts will discover eligible call sites
-// and transform them. This example only demonstrates the typed contracts.
+// The analyzer can discover this declaration and the compiler can transform
+// only call sites that satisfy the selected strategy's proof obligations. This
+// example focuses on the typed provider contract.
 package basic
 
 import (

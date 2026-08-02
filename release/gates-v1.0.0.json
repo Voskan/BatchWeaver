@@ -1,0 +1,24 @@
+{
+  "schema": "batchweaver.stable-gates/v1alpha1",
+  "version": "v1.0.0",
+  "decision": "blocked",
+  "evaluated_at": "2026-08-02",
+  "criteria": [
+    {"id":"p0-p1","status":"blocked","reason":"publication P1 blockers remain"},
+    {"id":"differential","status":"pass-local","reason":"final commit rerun required"},
+    {"id":"mutation","status":"pass-local","reason":"12/12 modeled critical mutations killed"},
+    {"id":"compatibility","status":"blocked","reason":"hosted Windows fix unverified"},
+    {"id":"migration","status":"blocked","reason":"no published prerelease exists"},
+    {"id":"installation","status":"blocked","reason":"no public tag, proxy version, or assets"},
+    {"id":"race-fuzz-security","status":"partial","reason":"dependency review is unavailable"},
+    {"id":"artifacts","status":"partial","reason":"local artifacts only"},
+    {"id":"documentation","status":"partial","reason":"no deployed docs or public feedback"},
+    {"id":"api-freeze","status":"blocked","reason":"inventory exists but approval does not"},
+    {"id":"security-reporting","status":"blocked","reason":"private reporting setting unverified"},
+    {"id":"rollback-hotfix","status":"pass-local","reason":"public rehearsal pending"},
+    {"id":"known-limitations","status":"pass","reason":"KNOWN-ISSUES.md"},
+    {"id":"release-dry-run","status":"pass-local","reason":"final commit rerun required"},
+    {"id":"prerelease-evidence","status":"blocked","reason":"no public prerelease evidence period"},
+    {"id":"governance-approval","status":"blocked","reason":"no explicit stable-release decision approval"}
+  ]
+}

@@ -197,6 +197,50 @@ func TestDocumentation(t *testing.T) {
 	}
 }
 
+func TestStableDecisionRemainsBlockedWithoutEvidence(t *testing.T) {
+	root := testRoot(t)
+	required := []string{
+		"docs/release/v1.0.0/api-freeze.md",
+		"docs/release/v1.0.0/beta-evidence.md",
+		"docs/release/v1.0.0/compatibility.md",
+		"docs/release/v1.0.0/documentation.md",
+		"docs/release/v1.0.0/known-issues.md",
+		"docs/release/v1.0.0/launch-health.md",
+		"docs/release/v1.0.0/migration.md",
+		"docs/release/v1.0.0/performance.md",
+		"docs/release/v1.0.0/project-completion.md",
+		"docs/release/v1.0.0/reproducibility.md",
+		"docs/release/v1.0.0/security.md",
+		"docs/release/v1.0.0/stable-release-decision.md",
+		"release/api-inventory-v1.json",
+		"release/gates-v1.0.0.json",
+	}
+	for _, rel := range required {
+		data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(rel)))
+		if err != nil {
+			t.Errorf("read required stable evidence %s: %v", rel, err)
+			continue
+		}
+		if len(data) == 0 {
+			t.Errorf("required stable evidence %s is empty", rel)
+		}
+	}
+
+	data, err := os.ReadFile(filepath.Join(root, "release", "gates-v1.0.0.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var gates struct {
+		Decision string `json:"decision"`
+	}
+	if err := json.Unmarshal(data, &gates); err != nil {
+		t.Fatalf("decode stable gates: %v", err)
+	}
+	if gates.Decision != "blocked" {
+		t.Fatalf("stable decision = %q, want blocked until public evidence passes", gates.Decision)
+	}
+}
+
 func TestLaunchGateReportIsClosedAndBlockedTruthfully(t *testing.T) {
 	root := testRoot(t)
 	data, err := os.ReadFile(filepath.Join(root, "release", "gates-v0.1.0-beta.1.json"))

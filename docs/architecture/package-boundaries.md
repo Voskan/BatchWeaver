@@ -1,53 +1,57 @@
 # Package Boundaries
 
-BatchWeaver distinguishes between a small, stable **public** API and a larger set
-of **internal** implementation packages.
+The module exposes six importable public packages. Compiler and integration
+implementations remain under Go's `internal` boundary so prerelease development
+does not accidentally enlarge the supported API.
 
 ## Public packages
 
-Public packages live at the module root and are part of BatchWeaver's supported
-surface. They must have a clear, long-term purpose and a deliberately small API.
+| Import path | Purpose | Prerelease stability |
+| --- | --- | --- |
+| `github.com/Voskan/BatchWeaver` | Generic batch requests, outcomes, helpers, and typed declarations | supported beta API |
+| `github.com/Voskan/BatchWeaver/operation` | Operation identity, semantics, contracts, and policies | supported beta API |
+| `github.com/Voskan/BatchWeaver/runtime` | Explicit scoped request coalescing | supported beta API |
+| `github.com/Voskan/BatchWeaver/bridge` | Generated-code/runtime ABI | versioned alpha ABI |
+| `github.com/Voskan/BatchWeaver/config` | Configuration loading and schema 1 | supported beta API |
+| `github.com/Voskan/BatchWeaver/diagnostics` | Stable diagnostic data and formatters | supported beta API |
 
-| Package | Purpose | Status |
-| ------- | ------- | ------ |
-| `config` | User-facing configuration schema and loading | Reserved; schema version constant only |
-| `diagnostics` | Dependency-free diagnostic data model | Foundational types implemented |
-| `runtime` | Batching-aware execution support used by generated code | Reserved; documentation only |
-
-Rules for public packages:
-
-- They must not expose unstable compiler internals (AST, SSA, IR types).
-- Adding to the public API requires a clear user need, tests, documentation, and
-  a compatibility review.
-- Generated code will eventually depend only on a minimal, stable subset of
-  `runtime`.
+All six remain prerelease until an approved API-freeze decision and stable tag.
+The exact exported surface is checked against
+`internal/release/testdata/public-api.txt`.
 
 ## Internal packages
 
-Everything under `internal/` is an implementation detail with no compatibility
-guarantee. Unstable compiler and analysis logic belongs here so that it can
-evolve freely without breaking users.
+Packages below `internal/` implement the CLI, analysis, proof, transformation,
+adapters, editor services, adaptive controller, and release tooling. External
+modules cannot import them and no compatibility promise applies to their Go
+identifiers.
 
-| Package | Purpose |
-| ------- | ------- |
-| `internal/buildinfo` | Build and platform identification |
-| `internal/cli` | Standard-library command framework |
-| `internal/filesystem` | Minimal filesystem abstraction for path resolution |
-| `internal/project` | Repository root and project path discovery |
+Stable data emitted by an internal package is governed by its documented schema
+version, not by the package's Go API. Examples include
+`batchweaver.analysis/v1alpha1`, `batchweaver.proof/v1alpha1`, and
+`batchweaver.transform/v1alpha1`.
 
-Future analysis, IR, transformation, and verification packages will also live
-under `internal/` until any part of them is intentionally promoted to the public
-API through review.
+## Dependency direction
 
-## Why unstable code stays internal
+```mermaid
+flowchart TD
+    CLI["cmd/batchweaver and internal/cli"] --> Compiler["analysis, proof, transform"]
+    CLI --> Public["config and diagnostics"]
+    Compiler --> Public
+    Compiler --> Bridge["bridge ABI"]
+    Bridge --> Runtime["runtime"]
+    Runtime --> Root["root batch contracts"]
+    Runtime --> Operation["operation contracts"]
+    Config["config"] --> Operation
+    Root --> Operation
+```
 
-Go's `internal/` mechanism prevents external import, which lets the compiler
-implementation change shape as the design matures without imposing breaking
-changes on users. Promoting a package out of `internal/` is a deliberate,
-reviewed decision, recorded in an ADR when significant.
+Forbidden directions include runtime-to-compiler, public-package-to-CLI, and
+public configuration containing AST, SSA, filesystem, or editor implementation
+types.
 
-## Naming
+## Review policy
 
-Package names are short, lowercase, and meaningful. Generic utility buckets such
-as `util`, `common`, `helpers`, or `misc` are not used, because they attract
-unrelated code and blur boundaries.
+Adding or changing an exported identifier requires tests, Go documentation,
+the public API baseline, compatibility review, and migration notes when users
+could be affected. Broad interfaces and generic utility packages are avoided.

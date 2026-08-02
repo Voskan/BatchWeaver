@@ -10,6 +10,22 @@ The public API may evolve before the 1.0 release.
 
 ### Added
 
+- Stable-release evidence triage and package-readiness documentation: a
+  compile-tested pkg.go.dev example, module-consumption guide, current README,
+  current architecture and package-boundary diagrams, reorganized documentation
+  index, public API inventory, migration plan, blocked v1 decision, beta evidence,
+  compatibility/security/performance/reproducibility/documentation reports, and
+  post-v1 release and incident procedures. Stable v1 remains blocked because no
+  prerelease, public installs, migration evidence, or stable approval exists.
+
+### Fixed
+
+- Enforce LF checkout for `.txt` fixtures so Windows compares generated output
+  against golden and public-API baselines deterministically.
+- Replace stale “future implementation” claims in package and architecture
+  documentation with the implemented analyzer, compiler bridge, runtime, and
+  transformation behavior.
+
 - Public-beta preparation for `v0.1.0-beta.1`: machine-readable launch gates,
   authenticated publication stop conditions and idempotent helper scripts,
   deterministic GitHub Pages source/workflow, privacy-safe `doctor --bundle`,

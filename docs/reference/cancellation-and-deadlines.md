@@ -38,7 +38,7 @@ before sending, and a cancelled waiter is skipped.
 
 A configurable maximum deadline spread and per-cohort splitting are not exposed
 in this release; all compatible items may join one batch subject to the batch
-context rules above. This is a documented limitation for a later prompt.
+context rules above. This remains a documented compatibility limitation.
 
 ## Engine and scope shutdown
 
