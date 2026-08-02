@@ -49,3 +49,12 @@ others:
 Never include secrets — tokens, keys, credentials, or private data — in reports,
 issues, logs, or test fixtures. Redact them before sharing. The project does not
 commit secrets and expects the same of contributions.
+
+## Coordination and releases
+
+There is no guaranteed response SLA before 1.0. The maintainer will acknowledge
+reports when available, validate impact privately, coordinate an embargo when
+needed, and publish an advisory after a fix is ready. CVE assignment and
+backports are evaluated per incident; only versions listed as supported above
+are candidates. Reporter credit is offered with the reporter's consent. Do not
+send vulnerability details to an invented or unmonitored email address.

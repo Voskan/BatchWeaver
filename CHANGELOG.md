@@ -10,6 +10,19 @@ The public API may evolve before the 1.0 release.
 
 ### Added
 
+- Release-candidate assurance commands: `release check|build|verify|reproduce|
+  notes|manifest|clean`, `compatibility report`, `verify differential`, and
+  `security audit`; deterministic five-target binary archives and source archive;
+  SHA-256 checksums; SPDX 2.3 and CycloneDX 1.5 SBOMs; unsigned local provenance;
+  strict artifact verification and byte-reproduction; exported-Go-API baseline;
+  schema compatibility and manifest fuzzing; central deterministic differential,
+  modeled safety-mutation, fault-injection, short-soak, and performance-budget
+  suites; explicit compatibility/security/performance/reproducibility reports;
+  release policy, checklist, rollback, draft notes, and Prompt 13 handoff.
+- A locked VS Code extension dependency graph, pinned VSIX packager, manifest
+  consistency test, and removal of two unimplemented editor settings. Generated
+  Mach-O binaries are no longer tracked in source control.
+
 - Editor and interactive developer-experience layer: a standalone `batchweaver
   lsp` language server (LSP 3.17 over a small internal JSON-RPC implementation
   with hand-written protocol types and no gopls internal imports), an optional

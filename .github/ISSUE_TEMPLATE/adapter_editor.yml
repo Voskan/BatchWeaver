@@ -1,0 +1,20 @@
+---
+name: Adapter or editor integration issue
+description: Report a versioned adapter, protocol, gopls, LSP, or VS Code problem.
+title: "integration: "
+labels: ["integration"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [SQL/database, Redis, GraphQL, gRPC, HTTP/OpenAPI, gopls/LSP, VS Code, daemon]
+    validations: {required: true}
+  - type: input
+    id: versions
+    attributes: {label: Exact BatchWeaver and upstream versions}
+    validations: {required: true}
+  - type: textarea
+    id: reproduction
+    attributes: {label: Redacted minimal reproduction and diagnostics}
+    validations: {required: true}

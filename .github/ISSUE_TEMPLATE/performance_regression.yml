@@ -1,0 +1,23 @@
+---
+name: Performance regression
+description: Report a statistically supported performance change.
+title: "perf: "
+labels: ["performance"]
+body:
+  - type: textarea
+    id: environment
+    attributes: {label: Hardware, OS, toolchain, commits, and commands}
+    validations: {required: true}
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Baseline and candidate evidence
+      description: Include sample counts, raw benchmark output, comparison method, and variance.
+    validations: {required: true}
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: Profiles and output contain no raw keys, tenants, tokens, or payloads.
+          required: true

@@ -1,0 +1,1121 @@
+github.com/Voskan/BatchWeaver/bridge: const github.com/Voskan/BatchWeaver/bridge.ABIVersion untyped string
+github.com/Voskan/BatchWeaver/bridge: func (github.com/Voskan/BatchWeaver/bridge.Operation[R, K, V]).Call(ctx context.Context, receiver R, key K) (V, error)
+github.com/Voskan/BatchWeaver/bridge: func github.com/Voskan/BatchWeaver/bridge.Barrier(ctx context.Context) error
+github.com/Voskan/BatchWeaver/bridge: func github.com/Voskan/BatchWeaver/bridge.Flush(ctx context.Context) error
+github.com/Voskan/BatchWeaver/bridge: func github.com/Voskan/BatchWeaver/bridge.WithOperation[K, V any](ctx context.Context, opID string, op *github.com/Voskan/BatchWeaver/runtime.BoundOperation[K, V]) context.Context
+github.com/Voskan/BatchWeaver/bridge: type github.com/Voskan/BatchWeaver/bridge.Operation[R, K, V any] struct{OpID string; Scalar func(ctx context.Context, receiver R, key K) (V, error)}
+github.com/Voskan/BatchWeaver/config: const github.com/Voskan/BatchWeaver/config.CompilerDisabled github.com/Voskan/BatchWeaver/config.CompilerMode
+github.com/Voskan/BatchWeaver/config: const github.com/Voskan/BatchWeaver/config.CompilerTransparent github.com/Voskan/BatchWeaver/config.CompilerMode
+github.com/Voskan/BatchWeaver/config: const github.com/Voskan/BatchWeaver/config.CurrentSchemaVersion untyped int
+github.com/Voskan/BatchWeaver/config: const github.com/Voskan/BatchWeaver/config.LoggingDebug github.com/Voskan/BatchWeaver/config.LoggingLevel
+github.com/Voskan/BatchWeaver/config: const github.com/Voskan/BatchWeaver/config.LoggingErrors github.com/Voskan/BatchWeaver/config.LoggingLevel
+github.com/Voskan/BatchWeaver/config: const github.com/Voskan/BatchWeaver/config.LoggingInfo github.com/Voskan/BatchWeaver/config.LoggingLevel
+github.com/Voskan/BatchWeaver/config: const github.com/Voskan/BatchWeaver/config.LoggingSilent github.com/Voskan/BatchWeaver/config.LoggingLevel
+github.com/Voskan/BatchWeaver/config: const github.com/Voskan/BatchWeaver/config.LoggingWarnings github.com/Voskan/BatchWeaver/config.LoggingLevel
+github.com/Voskan/BatchWeaver/config: func (*github.com/Voskan/BatchWeaver/config.ByteSize).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/config: func (*github.com/Voskan/BatchWeaver/config.Duration).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.ByteSize).Bytes() int64
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.ByteSize).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.ByteSize).String() string
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.CompilerMode).String() string
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.CompilerMode).String() string
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.CompilerMode).String() string
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.Duration).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.Duration).Std() time.Duration
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.Duration).String() string
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.LoadResult).HasErrors() bool
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.LoggingLevel).String() string
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.LoggingLevel).String() string
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.LoggingLevel).String() string
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.LoggingLevel).String() string
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.LoggingLevel).String() string
+github.com/Voskan/BatchWeaver/config: func (github.com/Voskan/BatchWeaver/config.LoggingLevel).String() string
+github.com/Voskan/BatchWeaver/config: func github.com/Voskan/BatchWeaver/config.Digest(cfg github.com/Voskan/BatchWeaver/config.Config) string
+github.com/Voskan/BatchWeaver/config: func github.com/Voskan/BatchWeaver/config.Load(ctx context.Context, options github.com/Voskan/BatchWeaver/config.LoadOptions) (github.com/Voskan/BatchWeaver/config.LoadResult, error)
+github.com/Voskan/BatchWeaver/config: func github.com/Voskan/BatchWeaver/config.ParseByteSize(s string) (github.com/Voskan/BatchWeaver/config.ByteSize, error)
+github.com/Voskan/BatchWeaver/config: func github.com/Voskan/BatchWeaver/config.ParseCompilerMode(s string) (github.com/Voskan/BatchWeaver/config.CompilerMode, error)
+github.com/Voskan/BatchWeaver/config: func github.com/Voskan/BatchWeaver/config.ParseDuration(s string) (github.com/Voskan/BatchWeaver/config.Duration, error)
+github.com/Voskan/BatchWeaver/config: func github.com/Voskan/BatchWeaver/config.ParseLoggingLevel(s string) (github.com/Voskan/BatchWeaver/config.LoggingLevel, error)
+github.com/Voskan/BatchWeaver/config: func github.com/Voskan/BatchWeaver/config.RenderJSON(cfg github.com/Voskan/BatchWeaver/config.Config) ([]byte, error)
+github.com/Voskan/BatchWeaver/config: func github.com/Voskan/BatchWeaver/config.SchemaVersionSupported(v int) bool
+github.com/Voskan/BatchWeaver/config: type github.com/Voskan/BatchWeaver/config.ByteSize int64
+github.com/Voskan/BatchWeaver/config: type github.com/Voskan/BatchWeaver/config.Compiler struct{Mode github.com/Voskan/BatchWeaver/config.CompilerMode}
+github.com/Voskan/BatchWeaver/config: type github.com/Voskan/BatchWeaver/config.CompilerMode uint8
+github.com/Voskan/BatchWeaver/config: type github.com/Voskan/BatchWeaver/config.Config struct{Version int; Compiler github.com/Voskan/BatchWeaver/config.Compiler; Runtime github.com/Voskan/BatchWeaver/config.Runtime; Security github.com/Voskan/BatchWeaver/config.Security; Observability github.com/Voskan/BatchWeaver/config.Observability; Catalog github.com/Voskan/BatchWeaver/operation.Catalog; Extensions []github.com/Voskan/BatchWeaver/operation.Extension}
+github.com/Voskan/BatchWeaver/config: type github.com/Voskan/BatchWeaver/config.Duration int64
+github.com/Voskan/BatchWeaver/config: type github.com/Voskan/BatchWeaver/config.LoadOptions struct{Path string; WorkingDirectory string; Discover bool; AllowAbsoluteInclude bool; RepositoryRoot string; MaximumFileSize int64; MaximumIncludeDepth int}
+github.com/Voskan/BatchWeaver/config: type github.com/Voskan/BatchWeaver/config.LoadResult struct{Config github.com/Voskan/BatchWeaver/config.Config; Catalog github.com/Voskan/BatchWeaver/operation.Catalog; Diagnostics github.com/Voskan/BatchWeaver/diagnostics.Collection; Files []string; Digest string; Found bool}
+github.com/Voskan/BatchWeaver/config: type github.com/Voskan/BatchWeaver/config.LoggingLevel uint8
+github.com/Voskan/BatchWeaver/config: type github.com/Voskan/BatchWeaver/config.Observability struct{Metrics bool; Tracing bool; Logging github.com/Voskan/BatchWeaver/config.LoggingLevel}
+github.com/Voskan/BatchWeaver/config: type github.com/Voskan/BatchWeaver/config.Runtime struct{DefaultScope github.com/Voskan/BatchWeaver/operation.Scope}
+github.com/Voskan/BatchWeaver/config: type github.com/Voskan/BatchWeaver/config.Security struct{CrossScopeBatching bool; RawKeyObservability bool}
+github.com/Voskan/BatchWeaver/config: var github.com/Voskan/BatchWeaver/config.ErrInternal error
+github.com/Voskan/BatchWeaver/config: var github.com/Voskan/BatchWeaver/config.ErrInvalidByteSize error
+github.com/Voskan/BatchWeaver/config: var github.com/Voskan/BatchWeaver/config.ErrInvalidCompilerMode error
+github.com/Voskan/BatchWeaver/config: var github.com/Voskan/BatchWeaver/config.ErrInvalidDuration error
+github.com/Voskan/BatchWeaver/config: var github.com/Voskan/BatchWeaver/config.ErrInvalidLoggingLevel error
+github.com/Voskan/BatchWeaver/diagnostics: const github.com/Voskan/BatchWeaver/diagnostics.JSONSchemaVersion untyped int
+github.com/Voskan/BatchWeaver/diagnostics: const github.com/Voskan/BatchWeaver/diagnostics.SeverityError github.com/Voskan/BatchWeaver/diagnostics.Severity
+github.com/Voskan/BatchWeaver/diagnostics: const github.com/Voskan/BatchWeaver/diagnostics.SeverityInfo github.com/Voskan/BatchWeaver/diagnostics.Severity
+github.com/Voskan/BatchWeaver/diagnostics: const github.com/Voskan/BatchWeaver/diagnostics.SeverityUnknown github.com/Voskan/BatchWeaver/diagnostics.Severity
+github.com/Voskan/BatchWeaver/diagnostics: const github.com/Voskan/BatchWeaver/diagnostics.SeverityWarning github.com/Voskan/BatchWeaver/diagnostics.Severity
+github.com/Voskan/BatchWeaver/diagnostics: func (*github.com/Voskan/BatchWeaver/diagnostics.Code).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/diagnostics: func (*github.com/Voskan/BatchWeaver/diagnostics.Collection).Add(d github.com/Voskan/BatchWeaver/diagnostics.Diagnostic)
+github.com/Voskan/BatchWeaver/diagnostics: func (*github.com/Voskan/BatchWeaver/diagnostics.Collection).AddCollection(other github.com/Voskan/BatchWeaver/diagnostics.Collection)
+github.com/Voskan/BatchWeaver/diagnostics: func (*github.com/Voskan/BatchWeaver/diagnostics.Severity).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/diagnostics: func (*github.com/Voskan/BatchWeaver/diagnostics.Severity).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/diagnostics: func (*github.com/Voskan/BatchWeaver/diagnostics.Severity).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/diagnostics: func (*github.com/Voskan/BatchWeaver/diagnostics.Severity).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/diagnostics: func (*github.com/Voskan/BatchWeaver/diagnostics.Severity).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Code).Category() string
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Code).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Code).String() string
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Code).Validate() error
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Collection).Count(sev github.com/Voskan/BatchWeaver/diagnostics.Severity) int
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Collection).Deduplicated() github.com/Voskan/BatchWeaver/diagnostics.Collection
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Collection).Diagnostics() []github.com/Voskan/BatchWeaver/diagnostics.Diagnostic
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Collection).Empty() bool
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Collection).FilterByCodePrefix(prefix string) github.com/Voskan/BatchWeaver/diagnostics.Collection
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Collection).FilterBySeverity(sev github.com/Voskan/BatchWeaver/diagnostics.Severity) github.com/Voskan/BatchWeaver/diagnostics.Collection
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Collection).FilterBySource(source string) github.com/Voskan/BatchWeaver/diagnostics.Collection
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Collection).HasErrors() bool
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Collection).Len() int
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Collection).Sorted() github.com/Voskan/BatchWeaver/diagnostics.Collection
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Diagnostic).IsError() bool
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Diagnostic).String() string
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Diagnostic).Validate() error
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Fix).Validate() error
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.JSONFormatter).Format(w io.Writer, c github.com/Voskan/BatchWeaver/diagnostics.Collection) error
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Position).IsZero() bool
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Position).String() string
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Position).Validate() error
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Range).File() string
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Range).IsZero() bool
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Range).String() string
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Range).Validate() error
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.RelatedInformation).Validate() error
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).String() string
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).String() string
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).String() string
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).String() string
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).String() string
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).Valid() bool
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).Valid() bool
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).Valid() bool
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).Valid() bool
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.Severity).Valid() bool
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.TextEdit).Validate() error
+github.com/Voskan/BatchWeaver/diagnostics: func (github.com/Voskan/BatchWeaver/diagnostics.TextFormatter).Format(w io.Writer, c github.com/Voskan/BatchWeaver/diagnostics.Collection) error
+github.com/Voskan/BatchWeaver/diagnostics: func github.com/Voskan/BatchWeaver/diagnostics.AtPosition(p github.com/Voskan/BatchWeaver/diagnostics.Position) github.com/Voskan/BatchWeaver/diagnostics.Range
+github.com/Voskan/BatchWeaver/diagnostics: func github.com/Voskan/BatchWeaver/diagnostics.NewCollection() github.com/Voskan/BatchWeaver/diagnostics.Collection
+github.com/Voskan/BatchWeaver/diagnostics: func github.com/Voskan/BatchWeaver/diagnostics.NewJSONFormatter() github.com/Voskan/BatchWeaver/diagnostics.JSONFormatter
+github.com/Voskan/BatchWeaver/diagnostics: func github.com/Voskan/BatchWeaver/diagnostics.NewTextFormatter() github.com/Voskan/BatchWeaver/diagnostics.TextFormatter
+github.com/Voskan/BatchWeaver/diagnostics: func github.com/Voskan/BatchWeaver/diagnostics.ParseSeverity(value string) (github.com/Voskan/BatchWeaver/diagnostics.Severity, error)
+github.com/Voskan/BatchWeaver/diagnostics: type github.com/Voskan/BatchWeaver/diagnostics.Code string
+github.com/Voskan/BatchWeaver/diagnostics: type github.com/Voskan/BatchWeaver/diagnostics.Collection struct{diags []github.com/Voskan/BatchWeaver/diagnostics.Diagnostic}
+github.com/Voskan/BatchWeaver/diagnostics: type github.com/Voskan/BatchWeaver/diagnostics.Diagnostic struct{Code github.com/Voskan/BatchWeaver/diagnostics.Code; Severity github.com/Voskan/BatchWeaver/diagnostics.Severity; Message string; Range github.com/Voskan/BatchWeaver/diagnostics.Range; Details string; Source string; Related []github.com/Voskan/BatchWeaver/diagnostics.RelatedInformation; Fixes []github.com/Voskan/BatchWeaver/diagnostics.Fix}
+github.com/Voskan/BatchWeaver/diagnostics: type github.com/Voskan/BatchWeaver/diagnostics.Fix struct{Message string; Edits []github.com/Voskan/BatchWeaver/diagnostics.TextEdit}
+github.com/Voskan/BatchWeaver/diagnostics: type github.com/Voskan/BatchWeaver/diagnostics.JSONFormatter struct{}
+github.com/Voskan/BatchWeaver/diagnostics: type github.com/Voskan/BatchWeaver/diagnostics.Position struct{File string; Offset int; Line int; Column int}
+github.com/Voskan/BatchWeaver/diagnostics: type github.com/Voskan/BatchWeaver/diagnostics.Range struct{Start github.com/Voskan/BatchWeaver/diagnostics.Position; End github.com/Voskan/BatchWeaver/diagnostics.Position}
+github.com/Voskan/BatchWeaver/diagnostics: type github.com/Voskan/BatchWeaver/diagnostics.RelatedInformation struct{Message string; Range github.com/Voskan/BatchWeaver/diagnostics.Range}
+github.com/Voskan/BatchWeaver/diagnostics: type github.com/Voskan/BatchWeaver/diagnostics.Severity uint8
+github.com/Voskan/BatchWeaver/diagnostics: type github.com/Voskan/BatchWeaver/diagnostics.TextEdit struct{Range github.com/Voskan/BatchWeaver/diagnostics.Range; NewText string}
+github.com/Voskan/BatchWeaver/diagnostics: type github.com/Voskan/BatchWeaver/diagnostics.TextFormatter struct{Color bool}
+github.com/Voskan/BatchWeaver/diagnostics: var github.com/Voskan/BatchWeaver/diagnostics.ErrInvalidCode error
+github.com/Voskan/BatchWeaver/diagnostics: var github.com/Voskan/BatchWeaver/diagnostics.ErrInvalidDiagnostic error
+github.com/Voskan/BatchWeaver/diagnostics: var github.com/Voskan/BatchWeaver/diagnostics.ErrInvalidFix error
+github.com/Voskan/BatchWeaver/diagnostics: var github.com/Voskan/BatchWeaver/diagnostics.ErrInvalidPosition error
+github.com/Voskan/BatchWeaver/diagnostics: var github.com/Voskan/BatchWeaver/diagnostics.ErrInvalidSeverity error
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.AtomicityAllOrNothing github.com/Voskan/BatchWeaver/operation.Atomicity
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.AtomicityPerItem github.com/Voskan/BatchWeaver/operation.Atomicity
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.AtomicityPrefix github.com/Voskan/BatchWeaver/operation.Atomicity
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.AtomicityProviderDefined github.com/Voskan/BatchWeaver/operation.Atomicity
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ConflictError github.com/Voskan/BatchWeaver/operation.ConflictBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ConflictKeepExisting github.com/Voskan/BatchWeaver/operation.ConflictBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ConflictReplace github.com/Voskan/BatchWeaver/operation.ConflictBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DeduplicationCanonical github.com/Voskan/BatchWeaver/operation.DeduplicationMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DeduplicationDisabled github.com/Voskan/BatchWeaver/operation.DeduplicationMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DeduplicationExact github.com/Voskan/BatchWeaver/operation.DeduplicationMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DimensionAuthorization github.com/Voskan/BatchWeaver/operation.PartitionDimension
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DimensionConsistency github.com/Voskan/BatchWeaver/operation.PartitionDimension
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DimensionDeadlineClass github.com/Voskan/BatchWeaver/operation.PartitionDimension
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DimensionEncryptionContext github.com/Voskan/BatchWeaver/operation.PartitionDimension
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DimensionReceiver github.com/Voskan/BatchWeaver/operation.PartitionDimension
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DimensionRegion github.com/Voskan/BatchWeaver/operation.PartitionDimension
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DimensionSession github.com/Voskan/BatchWeaver/operation.PartitionDimension
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DimensionTenant github.com/Voskan/BatchWeaver/operation.PartitionDimension
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DimensionTransaction github.com/Voskan/BatchWeaver/operation.PartitionDimension
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DuplicateContractViolation github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DuplicateCustom github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DuplicateFirst github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.DuplicateLast github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.EffectAggregate github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.EffectRead github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.EffectUnknown github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.EffectWrite github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ErrorGlobal github.com/Voskan/BatchWeaver/operation.ErrorMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ErrorMixed github.com/Voskan/BatchWeaver/operation.ErrorMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ErrorPerItem github.com/Voskan/BatchWeaver/operation.ErrorMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.FairnessFIFO github.com/Voskan/BatchWeaver/operation.FairnessMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.FairnessWeighted github.com/Voskan/BatchWeaver/operation.FairnessMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.FallbackBatchOfOne github.com/Voskan/BatchWeaver/operation.FallbackMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.FallbackParallelScalar github.com/Voskan/BatchWeaver/operation.FallbackMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.FallbackReject github.com/Voskan/BatchWeaver/operation.FallbackMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.FallbackScalar github.com/Voskan/BatchWeaver/operation.FallbackMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.IdempotencyConditional github.com/Voskan/BatchWeaver/operation.Idempotency
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.IdempotencyIdempotent github.com/Voskan/BatchWeaver/operation.Idempotency
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.IdempotencyNonIdempotent github.com/Voskan/BatchWeaver/operation.Idempotency
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.IdempotencyUnknown github.com/Voskan/BatchWeaver/operation.Idempotency
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.JitterEqual github.com/Voskan/BatchWeaver/operation.JitterMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.JitterFull github.com/Voskan/BatchWeaver/operation.JitterMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.JitterNone github.com/Voskan/BatchWeaver/operation.JitterMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.KindAtomicGroup github.com/Voskan/BatchWeaver/operation.Kind
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.KindCommutativeAggregation github.com/Voskan/BatchWeaver/operation.Kind
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.KindFreshnessSensitiveRead github.com/Voskan/BatchWeaver/operation.Kind
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.KindIdempotentWrite github.com/Voskan/BatchWeaver/operation.Kind
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.KindNonIdempotentWrite github.com/Voskan/BatchWeaver/operation.Kind
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.KindOrderedAggregation github.com/Voskan/BatchWeaver/operation.Kind
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.KindReadOnly github.com/Voskan/BatchWeaver/operation.Kind
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.KindSessionBound github.com/Voskan/BatchWeaver/operation.Kind
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.KindTransactionBound github.com/Voskan/BatchWeaver/operation.Kind
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.KindUnknown github.com/Voskan/BatchWeaver/operation.Kind
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.MissingContractViolation github.com/Voskan/BatchWeaver/operation.MissingBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.MissingDimensionError github.com/Voskan/BatchWeaver/operation.MissingDimensionBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.MissingDimensionReject github.com/Voskan/BatchWeaver/operation.MissingDimensionBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.MissingError github.com/Voskan/BatchWeaver/operation.MissingBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.MissingNotFound github.com/Voskan/BatchWeaver/operation.MissingBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.MissingZeroValue github.com/Voskan/BatchWeaver/operation.MissingBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.OrderingCommutative github.com/Voskan/BatchWeaver/operation.Ordering
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.OrderingPreserve github.com/Voskan/BatchWeaver/operation.Ordering
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.OrderingReorderable github.com/Voskan/BatchWeaver/operation.Ordering
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.OverflowBlock github.com/Voskan/BatchWeaver/operation.OverflowBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.OverflowFallback github.com/Voskan/BatchWeaver/operation.OverflowBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.OverflowReject github.com/Voskan/BatchWeaver/operation.OverflowBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ReceiverAny github.com/Voskan/BatchWeaver/operation.ReceiverPolicy
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ReceiverSame github.com/Voskan/BatchWeaver/operation.ReceiverPolicy
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ResultKeyed github.com/Voskan/BatchWeaver/operation.ResultMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ResultOrdered github.com/Voskan/BatchWeaver/operation.ResultMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ResultSparse github.com/Voskan/BatchWeaver/operation.ResultMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.RetryConflict github.com/Voskan/BatchWeaver/operation.RetryClassification
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.RetryThrottled github.com/Voskan/BatchWeaver/operation.RetryClassification
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.RetryTimeout github.com/Voskan/BatchWeaver/operation.RetryClassification
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.RetryTransport github.com/Voskan/BatchWeaver/operation.RetryClassification
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.RetryUnavailable github.com/Voskan/BatchWeaver/operation.RetryClassification
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.SchedulerAdaptive github.com/Voskan/BatchWeaver/operation.SchedulerMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.SchedulerDeadlineAware github.com/Voskan/BatchWeaver/operation.SchedulerMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.SchedulerFixedWindow github.com/Voskan/BatchWeaver/operation.SchedulerMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.SchedulerImmediateWave github.com/Voskan/BatchWeaver/operation.SchedulerMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.SchedulerLatency github.com/Voskan/BatchWeaver/operation.SchedulerMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.SchedulerManual github.com/Voskan/BatchWeaver/operation.SchedulerMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.SchedulerThroughput github.com/Voskan/BatchWeaver/operation.SchedulerMode
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ScopeCustom github.com/Voskan/BatchWeaver/operation.Scope
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ScopeGraphQLOperation github.com/Voskan/BatchWeaver/operation.Scope
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ScopeJob github.com/Voskan/BatchWeaver/operation.Scope
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ScopeProcess github.com/Voskan/BatchWeaver/operation.Scope
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ScopeRequest github.com/Voskan/BatchWeaver/operation.Scope
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ScopeSession github.com/Voskan/BatchWeaver/operation.Scope
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.ScopeTransaction github.com/Voskan/BatchWeaver/operation.Scope
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.UnexpectedContractViolation github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.UnexpectedError github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.UnknownOutcomeNoRetry github.com/Voskan/BatchWeaver/operation.UnknownOutcomeBehavior
+github.com/Voskan/BatchWeaver/operation: const github.com/Voskan/BatchWeaver/operation.UnknownOutcomeRetry github.com/Voskan/BatchWeaver/operation.UnknownOutcomeBehavior
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Atomicity).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Atomicity).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Atomicity).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Atomicity).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Atomicity).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.CatalogBuilder).Add(spec github.com/Voskan/BatchWeaver/operation.Spec)
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.CatalogBuilder).Build() github.com/Voskan/BatchWeaver/operation.Catalog
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.CatalogBuilder).Diagnostics() github.com/Voskan/BatchWeaver/diagnostics.Collection
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.DeduplicationMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.DeduplicationMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.DeduplicationMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.DeduplicationMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Effect).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Effect).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Effect).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Effect).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Effect).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.ErrorMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.ErrorMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.ErrorMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.ErrorMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.FallbackMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.FallbackMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.FallbackMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.FallbackMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.FallbackMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.ID).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Idempotency).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Idempotency).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Idempotency).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Idempotency).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Idempotency).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Kind).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Kind).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Kind).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Kind).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Kind).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Kind).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Kind).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Kind).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Kind).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Kind).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Kind).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.MissingBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.MissingBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.MissingBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.MissingBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.MissingBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Ordering).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Ordering).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Ordering).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Ordering).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.ResultMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.ResultMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.ResultMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.ResultMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.RetryClassification).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.RetryClassification).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.RetryClassification).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.RetryClassification).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.RetryClassification).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.RetryClassification).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.SchedulerMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.SchedulerMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.SchedulerMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.SchedulerMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.SchedulerMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.SchedulerMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.SchedulerMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.SchedulerMode).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Scope).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Scope).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Scope).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Scope).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Scope).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Scope).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Scope).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Scope).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.Symbol).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior).UnmarshalText(data []byte) error
+github.com/Voskan/BatchWeaver/operation: func (*github.com/Voskan/BatchWeaver/operation.ValidationError).Error() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Atomicity).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Catalog).Digest() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Catalog).Get(id github.com/Voskan/BatchWeaver/operation.ID) (github.com/Voskan/BatchWeaver/operation.Spec, bool)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Catalog).IDs() []github.com/Voskan/BatchWeaver/operation.ID
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Catalog).Len() int
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Catalog).List() []github.com/Voskan/BatchWeaver/operation.Spec
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Catalog).Merge(other github.com/Voskan/BatchWeaver/operation.Catalog, behavior github.com/Voskan/BatchWeaver/operation.ConflictBehavior) (github.com/Voskan/BatchWeaver/operation.Catalog, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Catalog).Validate() github.com/Voskan/BatchWeaver/diagnostics.Collection
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy).Canonicalizer() github.com/Voskan/BatchWeaver/operation.Symbol
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy).Enabled() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy).ErrorMemoization() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy).InFlight() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy).MaxBytes() int64
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy).MaxItems() int
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy).Mode() github.com/Voskan/BatchWeaver/operation.DeduplicationMode
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy).NegativeMemoization() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy).ScopeMemoization() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Effect).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ErrorMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ErrorMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ErrorMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ErrorMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ErrorMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ErrorMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ErrorMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ErrorMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ErrorMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ErrorMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ErrorMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ErrorMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Extension).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FairnessMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FairnessMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FairnessMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FairnessMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FairnessMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FairnessMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackPolicy).MaxScalarConcurrency() int
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackPolicy).Mode() github.com/Voskan/BatchWeaver/operation.FallbackMode
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackPolicy).OnProviderUnavailable() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackPolicy).OnQueueOverflow() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackPolicy).OnUnsupportedPartition() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.FallbackPolicy).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ID).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ID).Segments() []string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ID).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ID).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Idempotency).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.JitterMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.JitterMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.JitterMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.JitterMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.JitterMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.JitterMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.JitterMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.JitterMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.KeyContract).CanonicalKeySymbol() github.com/Voskan/BatchWeaver/operation.Symbol
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.KeyContract).Comparable() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.KeyContract).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Effect() github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Effect() github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Effect() github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Effect() github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Effect() github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Effect() github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Effect() github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Effect() github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Effect() github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Effect() github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Effect() github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Kind).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingDimensionBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingDimensionBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingDimensionBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingDimensionBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingDimensionBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.MissingDimensionBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Ordering).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Ordering).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Ordering).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Ordering).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Ordering).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Ordering).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Ordering).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Ordering).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Ordering).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Ordering).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Ordering).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Ordering).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.OverflowBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.OverflowBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.OverflowBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.OverflowBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.OverflowBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.OverflowBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.OverflowBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.OverflowBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).CrossRootScopeAllowed() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).MaxActivePartitions() int
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).MissingDimension() github.com/Voskan/BatchWeaver/operation.MissingDimensionBehavior
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).Optional() []github.com/Voskan/BatchWeaver/operation.PartitionDimension
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).PublicContextIndependent() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).ReceiverPolicy() github.com/Voskan/BatchWeaver/operation.ReceiverPolicy
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).Required() []github.com/Voskan/BatchWeaver/operation.PartitionDimension
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).Scope() github.com/Voskan/BatchWeaver/operation.Scope
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).WithCrossRootScope() github.com/Voskan/BatchWeaver/operation.PartitionContract
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).WithMaxActivePartitions(n int) github.com/Voskan/BatchWeaver/operation.PartitionContract
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).WithPublicContextIndependent() github.com/Voskan/BatchWeaver/operation.PartitionContract
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionContract).WithReceiverPolicy(p github.com/Voskan/BatchWeaver/operation.ReceiverPolicy) github.com/Voskan/BatchWeaver/operation.PartitionContract
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).IsWellKnown() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).IsWellKnown() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).IsWellKnown() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).IsWellKnown() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).IsWellKnown() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).IsWellKnown() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).IsWellKnown() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).IsWellKnown() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).IsWellKnown() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).IsWellKnown() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.PartitionDimension).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ReceiverPolicy).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ReceiverPolicy).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ReceiverPolicy).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ReceiverPolicy).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ReceiverPolicy).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ReceiverPolicy).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultContract).Duplicate() github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultContract).ErrorMode() github.com/Voskan/BatchWeaver/operation.ErrorMode
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultContract).Missing() github.com/Voskan/BatchWeaver/operation.MissingBehavior
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultContract).Mode() github.com/Voskan/BatchWeaver/operation.ResultMode
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultContract).OrderSignificant() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultContract).Unexpected() github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultContract).UnknownRepresentable() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultContract).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultContract).WithDuplicate(d github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior) github.com/Voskan/BatchWeaver/operation.ResultContract
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultContract).WithErrorMode(m github.com/Voskan/BatchWeaver/operation.ErrorMode) github.com/Voskan/BatchWeaver/operation.ResultContract
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultContract).WithMissing(m github.com/Voskan/BatchWeaver/operation.MissingBehavior) github.com/Voskan/BatchWeaver/operation.ResultContract
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultContract).WithUnexpected(u github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior) github.com/Voskan/BatchWeaver/operation.ResultContract
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.ResultMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryClassification).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryPolicy).Enabled() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryPolicy).IdempotencyKey() github.com/Voskan/BatchWeaver/operation.Symbol
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryPolicy).InitialBackoff() time.Duration
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryPolicy).Jitter() github.com/Voskan/BatchWeaver/operation.JitterMode
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryPolicy).MaxAttempts() int
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryPolicy).MaxBackoff() time.Duration
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryPolicy).PartialItemRetry() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryPolicy).RespectRetryAfter() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryPolicy).Retryable() []github.com/Voskan/BatchWeaver/operation.RetryClassification
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryPolicy).UnknownOutcome() github.com/Voskan/BatchWeaver/operation.UnknownOutcomeBehavior
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.RetryPolicy).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerMode).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).ActivePartitions() int
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).DeadlineMargin() time.Duration
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).Fairness() github.com/Voskan/BatchWeaver/operation.FairnessMode
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).MaxBatchSize() int
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).MaxBatchWeight() int
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).MaxConcurrency() int
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).MaxPayloadBytes() int64
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).MaxWait() time.Duration
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).MinBatchSize() int
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).Mode() github.com/Voskan/BatchWeaver/operation.SchedulerMode
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).Overflow() github.com/Voskan/BatchWeaver/operation.OverflowBehavior
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).PrioritySupport() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).QueueBytes() int64
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).QueueItems() int
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy).WaitersPerKey() int
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Scope).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Semantics).Atomicity() github.com/Voskan/BatchWeaver/operation.Atomicity
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Semantics).CrossScopeBatchingAllowed() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Semantics).DeduplicationAllowed() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Semantics).Effect() github.com/Voskan/BatchWeaver/operation.Effect
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Semantics).FreshnessDependent() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Semantics).Idempotency() github.com/Voskan/BatchWeaver/operation.Idempotency
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Semantics).Kind() github.com/Voskan/BatchWeaver/operation.Kind
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Semantics).Ordering() github.com/Voskan/BatchWeaver/operation.Ordering
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Semantics).RetryAllowed() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Semantics).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Semantics).WithReorderable() github.com/Voskan/BatchWeaver/operation.Semantics
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).BatchSymbol() github.com/Voskan/BatchWeaver/operation.Symbol
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).Canonical() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).ConfigBased() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).DeduplicationPolicy() github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).Extensions() []github.com/Voskan/BatchWeaver/operation.Extension
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).FallbackPolicy() github.com/Voskan/BatchWeaver/operation.FallbackPolicy
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).ID() github.com/Voskan/BatchWeaver/operation.ID
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).KeyContract() github.com/Voskan/BatchWeaver/operation.KeyContract
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).PartitionContract() github.com/Voskan/BatchWeaver/operation.PartitionContract
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).ResultContract() github.com/Voskan/BatchWeaver/operation.ResultContract
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).RetryPolicy() github.com/Voskan/BatchWeaver/operation.RetryPolicy
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).ScalarSymbol() github.com/Voskan/BatchWeaver/operation.Symbol
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).SchedulerPolicy() github.com/Voskan/BatchWeaver/operation.SchedulerPolicy
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).Semantics() github.com/Voskan/BatchWeaver/operation.Semantics
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).Source() github.com/Voskan/BatchWeaver/operation.Source
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).Validate() github.com/Voskan/BatchWeaver/diagnostics.Collection
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Spec).ValidationError() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Symbol).ImportPath() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Symbol).IsMethod() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Symbol).IsZero() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Symbol).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Symbol).Name() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Symbol).PointerReceiver() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Symbol).Receiver() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Symbol).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.Symbol).Validate() error
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior).MarshalText() ([]byte, error)
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnknownOutcomeBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnknownOutcomeBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnknownOutcomeBehavior).String() string
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnknownOutcomeBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnknownOutcomeBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func (github.com/Voskan/BatchWeaver/operation.UnknownOutcomeBehavior).Valid() bool
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.AtomicGroup() github.com/Voskan/BatchWeaver/operation.Semantics
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.CommutativeAggregation() github.com/Voskan/BatchWeaver/operation.Semantics
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.CustomDimension(name string) (github.com/Voskan/BatchWeaver/operation.PartitionDimension, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.DefaultDeduplicationPolicy() github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.DefaultFallbackPolicy() github.com/Voskan/BatchWeaver/operation.FallbackPolicy
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.DefaultKeyContract() github.com/Voskan/BatchWeaver/operation.KeyContract
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.DefaultPartitionContract() github.com/Voskan/BatchWeaver/operation.PartitionContract
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.DefaultRetryPolicy() github.com/Voskan/BatchWeaver/operation.RetryPolicy
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.DefaultSchedulerPolicy() github.com/Voskan/BatchWeaver/operation.SchedulerPolicy
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.FreshnessSensitiveRead() github.com/Voskan/BatchWeaver/operation.Semantics
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.IdempotentWrite() github.com/Voskan/BatchWeaver/operation.Semantics
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.KeyedResults() github.com/Voskan/BatchWeaver/operation.ResultContract
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.MustNewSpec(id github.com/Voskan/BatchWeaver/operation.ID, semantics github.com/Voskan/BatchWeaver/operation.Semantics, options ...github.com/Voskan/BatchWeaver/operation.SpecOption) github.com/Voskan/BatchWeaver/operation.Spec
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.MustParseID(value string) github.com/Voskan/BatchWeaver/operation.ID
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.MustParseSymbol(value string) github.com/Voskan/BatchWeaver/operation.Symbol
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.NewCatalogBuilder() *github.com/Voskan/BatchWeaver/operation.CatalogBuilder
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.NewDeduplicationPolicy(params github.com/Voskan/BatchWeaver/operation.DeduplicationParams) (github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.NewFallbackPolicy(params github.com/Voskan/BatchWeaver/operation.FallbackParams) (github.com/Voskan/BatchWeaver/operation.FallbackPolicy, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.NewKeyContract(comparable bool, canonical github.com/Voskan/BatchWeaver/operation.Symbol) (github.com/Voskan/BatchWeaver/operation.KeyContract, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.NewPartitionContract(scope github.com/Voskan/BatchWeaver/operation.Scope, required []github.com/Voskan/BatchWeaver/operation.PartitionDimension, optional []github.com/Voskan/BatchWeaver/operation.PartitionDimension) github.com/Voskan/BatchWeaver/operation.PartitionContract
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.NewRetryPolicy(params github.com/Voskan/BatchWeaver/operation.RetryParams) (github.com/Voskan/BatchWeaver/operation.RetryPolicy, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.NewSchedulerPolicy(params github.com/Voskan/BatchWeaver/operation.SchedulerParams) (github.com/Voskan/BatchWeaver/operation.SchedulerPolicy, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.NewSpec(id github.com/Voskan/BatchWeaver/operation.ID, semantics github.com/Voskan/BatchWeaver/operation.Semantics, options ...github.com/Voskan/BatchWeaver/operation.SpecOption) (github.com/Voskan/BatchWeaver/operation.Spec, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.NonIdempotentWrite() github.com/Voskan/BatchWeaver/operation.Semantics
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.OrderedAggregation() github.com/Voskan/BatchWeaver/operation.Semantics
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.OrderedResults() github.com/Voskan/BatchWeaver/operation.ResultContract
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseAtomicity(s string) (github.com/Voskan/BatchWeaver/operation.Atomicity, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseDeduplicationMode(s string) (github.com/Voskan/BatchWeaver/operation.DeduplicationMode, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseDuplicateResultBehavior(s string) (github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseEffect(s string) (github.com/Voskan/BatchWeaver/operation.Effect, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseErrorMode(s string) (github.com/Voskan/BatchWeaver/operation.ErrorMode, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseFallbackMode(s string) (github.com/Voskan/BatchWeaver/operation.FallbackMode, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseID(value string) (github.com/Voskan/BatchWeaver/operation.ID, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseIdempotency(s string) (github.com/Voskan/BatchWeaver/operation.Idempotency, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseKind(s string) (github.com/Voskan/BatchWeaver/operation.Kind, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseMissingBehavior(s string) (github.com/Voskan/BatchWeaver/operation.MissingBehavior, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseOrdering(s string) (github.com/Voskan/BatchWeaver/operation.Ordering, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseResultMode(s string) (github.com/Voskan/BatchWeaver/operation.ResultMode, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseRetryClassification(s string) (github.com/Voskan/BatchWeaver/operation.RetryClassification, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseSchedulerMode(s string) (github.com/Voskan/BatchWeaver/operation.SchedulerMode, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseScope(v string) (github.com/Voskan/BatchWeaver/operation.Scope, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseSymbol(value string) (github.com/Voskan/BatchWeaver/operation.Symbol, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ParseUnexpectedResultBehavior(s string) (github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior, error)
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.ReadOnly() github.com/Voskan/BatchWeaver/operation.Semantics
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.SessionBound() github.com/Voskan/BatchWeaver/operation.Semantics
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.SparseResults(missing github.com/Voskan/BatchWeaver/operation.MissingBehavior) github.com/Voskan/BatchWeaver/operation.ResultContract
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.TransactionBound() github.com/Voskan/BatchWeaver/operation.Semantics
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithBatchSymbol(s github.com/Voskan/BatchWeaver/operation.Symbol) github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithDeduplicationPolicy(p github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy) github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithExtensions(exts []github.com/Voskan/BatchWeaver/operation.Extension) github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithFallbackPolicy(p github.com/Voskan/BatchWeaver/operation.FallbackPolicy) github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithKeyContract(c github.com/Voskan/BatchWeaver/operation.KeyContract) github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithKeyedResults() github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithOrderedResults() github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithPartitionContract(c github.com/Voskan/BatchWeaver/operation.PartitionContract) github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithRequestScope() github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithResultContract(c github.com/Voskan/BatchWeaver/operation.ResultContract) github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithRetryPolicy(p github.com/Voskan/BatchWeaver/operation.RetryPolicy) github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithScalarSymbol(s github.com/Voskan/BatchWeaver/operation.Symbol) github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithSchedulerPolicy(p github.com/Voskan/BatchWeaver/operation.SchedulerPolicy) github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: func github.com/Voskan/BatchWeaver/operation.WithSource(src github.com/Voskan/BatchWeaver/operation.Source) github.com/Voskan/BatchWeaver/operation.SpecOption
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.Atomicity uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.Catalog struct{specs []github.com/Voskan/BatchWeaver/operation.Spec; index map[github.com/Voskan/BatchWeaver/operation.ID]int}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.CatalogBuilder struct{specs []github.com/Voskan/BatchWeaver/operation.Spec; index map[github.com/Voskan/BatchWeaver/operation.ID]int; diags github.com/Voskan/BatchWeaver/diagnostics.Collection}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.ConflictBehavior uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.DeduplicationMode uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.DeduplicationParams struct{Mode github.com/Voskan/BatchWeaver/operation.DeduplicationMode; InFlight bool; ScopeMemoization bool; NegativeMemoization bool; ErrorMemoization bool; MaxItems int; MaxBytes int64; Canonicalizer github.com/Voskan/BatchWeaver/operation.Symbol}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy struct{params github.com/Voskan/BatchWeaver/operation.DeduplicationParams}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.Effect uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.ErrorMode uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.Extension struct{Namespace string; Data []byte}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.FairnessMode uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.FallbackMode uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.FallbackParams struct{Mode github.com/Voskan/BatchWeaver/operation.FallbackMode; MaxScalarConcurrency int; OnQueueOverflow bool; OnProviderUnavailable bool; OnUnsupportedPartition bool}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.FallbackPolicy struct{params github.com/Voskan/BatchWeaver/operation.FallbackParams}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.ID string
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.Idempotency uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.JitterMode uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.KeyContract struct{comparable bool; canonicalKeySymbol github.com/Voskan/BatchWeaver/operation.Symbol}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.Kind uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.MissingBehavior uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.MissingDimensionBehavior uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.Ordering uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.OverflowBehavior uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.PartitionContract struct{scope github.com/Voskan/BatchWeaver/operation.Scope; required []github.com/Voskan/BatchWeaver/operation.PartitionDimension; optional []github.com/Voskan/BatchWeaver/operation.PartitionDimension; crossRootScope bool; receiverPolicy github.com/Voskan/BatchWeaver/operation.ReceiverPolicy; missingDimension github.com/Voskan/BatchWeaver/operation.MissingDimensionBehavior; maxActivePartitions int; publicContextIndep bool}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.PartitionDimension string
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.ReceiverPolicy uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.ResultContract struct{mode github.com/Voskan/BatchWeaver/operation.ResultMode; missing github.com/Voskan/BatchWeaver/operation.MissingBehavior; errorMode github.com/Voskan/BatchWeaver/operation.ErrorMode; duplicate github.com/Voskan/BatchWeaver/operation.DuplicateResultBehavior; unexpected github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior; orderSignificant bool; unknownRepresentable bool}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.ResultMode uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.RetryClassification uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.RetryParams struct{Enabled bool; MaxAttempts int; InitialBackoff time.Duration; MaxBackoff time.Duration; Jitter github.com/Voskan/BatchWeaver/operation.JitterMode; Retryable []github.com/Voskan/BatchWeaver/operation.RetryClassification; RespectRetryAfter bool; PartialItemRetry bool; UnknownOutcome github.com/Voskan/BatchWeaver/operation.UnknownOutcomeBehavior; IdempotencyKey github.com/Voskan/BatchWeaver/operation.Symbol}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.RetryPolicy struct{params github.com/Voskan/BatchWeaver/operation.RetryParams}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.SchedulerMode uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.SchedulerParams struct{Mode github.com/Voskan/BatchWeaver/operation.SchedulerMode; MinBatchSize int; MaxBatchSize int; MaxBatchWeight int; MaxPayloadBytes int64; MaxWait time.Duration; DeadlineMargin time.Duration; MaxConcurrency int; QueueItems int; QueueBytes int64; ActivePartitions int; WaitersPerKey int; Fairness github.com/Voskan/BatchWeaver/operation.FairnessMode; PrioritySupport bool; Overflow github.com/Voskan/BatchWeaver/operation.OverflowBehavior}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.SchedulerPolicy struct{params github.com/Voskan/BatchWeaver/operation.SchedulerParams}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.Scope uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.Semantics struct{kind github.com/Voskan/BatchWeaver/operation.Kind; effect github.com/Voskan/BatchWeaver/operation.Effect; idempotency github.com/Voskan/BatchWeaver/operation.Idempotency; ordering github.com/Voskan/BatchWeaver/operation.Ordering; atomicity github.com/Voskan/BatchWeaver/operation.Atomicity; retryAllowed bool; deduplicationAllowed bool; crossScopeAllowed bool; freshnessDependent bool}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.Source struct{Range github.com/Voskan/BatchWeaver/diagnostics.Range}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.Spec struct{id github.com/Voskan/BatchWeaver/operation.ID; semantics github.com/Voskan/BatchWeaver/operation.Semantics; scalarSymbol github.com/Voskan/BatchWeaver/operation.Symbol; batchSymbol github.com/Voskan/BatchWeaver/operation.Symbol; keyContract github.com/Voskan/BatchWeaver/operation.KeyContract; resultContract github.com/Voskan/BatchWeaver/operation.ResultContract; partitionContract github.com/Voskan/BatchWeaver/operation.PartitionContract; schedulerPolicy github.com/Voskan/BatchWeaver/operation.SchedulerPolicy; deduplicationPolicy github.com/Voskan/BatchWeaver/operation.DeduplicationPolicy; retryPolicy github.com/Voskan/BatchWeaver/operation.RetryPolicy; fallbackPolicy github.com/Voskan/BatchWeaver/operation.FallbackPolicy; source github.com/Voskan/BatchWeaver/operation.Source; extensions []github.com/Voskan/BatchWeaver/operation.Extension}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.SpecOption func(*github.com/Voskan/BatchWeaver/operation.Spec)
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.Symbol struct{importPath string; receiver string; name string; pointer bool}
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.UnexpectedResultBehavior uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.UnknownOutcomeBehavior uint8
+github.com/Voskan/BatchWeaver/operation: type github.com/Voskan/BatchWeaver/operation.ValidationError struct{ID github.com/Voskan/BatchWeaver/operation.ID; Diagnostics github.com/Voskan/BatchWeaver/diagnostics.Collection}
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidAtomicity error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidDeduplicationMode error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidDeduplicationPolicy error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidDimension error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidDuplicateBehavior error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidEffect error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidErrorMode error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidExtension error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidFallbackMode error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidFallbackPolicy error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidID error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidIdempotency error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidKeyContract error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidKind error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidMissingBehavior error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidOrdering error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidPartitionContract error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidReceiverPolicy error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidResultContract error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidResultMode error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidRetryClassification error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidRetryPolicy error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidSchedulerMode error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidSchedulerPolicy error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidScope error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidSemantics error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidSymbol error
+github.com/Voskan/BatchWeaver/operation: var github.com/Voskan/BatchWeaver/operation.ErrInvalidUnexpectedBehavior error
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EngineStateClosed github.com/Voskan/BatchWeaver/runtime.EngineState
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EngineStateClosing github.com/Voskan/BatchWeaver/runtime.EngineState
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EngineStateOpen github.com/Voskan/BatchWeaver/runtime.EngineState
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventBatchCompleted github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventBatchDispatched github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventBatchFailed github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventBatchSelected github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventContractViolation github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventEngineClosed github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventEngineClosing github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventFallbackCompleted github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventFallbackStarted github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventMemoHit github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventRequestCanceled github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventRequestJoinedInFlight github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventRequestRejected github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventRequestSubmitted github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventScopeClosed github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.EventScopeOpened github.com/Voskan/BatchWeaver/runtime.EventKind
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.FlushBytes github.com/Voskan/BatchWeaver/runtime.FlushReason
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.FlushDeadline github.com/Voskan/BatchWeaver/runtime.FlushReason
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.FlushEngineClose github.com/Voskan/BatchWeaver/runtime.FlushReason
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.FlushManual github.com/Voskan/BatchWeaver/runtime.FlushReason
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.FlushOverflow github.com/Voskan/BatchWeaver/runtime.FlushReason
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.FlushScopeClose github.com/Voskan/BatchWeaver/runtime.FlushReason
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.FlushSize github.com/Voskan/BatchWeaver/runtime.FlushReason
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.FlushWait github.com/Voskan/BatchWeaver/runtime.FlushReason
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.FlushWeight github.com/Voskan/BatchWeaver/runtime.FlushReason
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.NestedIsolateChild github.com/Voskan/BatchWeaver/runtime.NestedPolicy
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.NestedRejectNested github.com/Voskan/BatchWeaver/runtime.NestedPolicy
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.NestedReuseParent github.com/Voskan/BatchWeaver/runtime.NestedPolicy
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.OverflowBlock github.com/Voskan/BatchWeaver/runtime.OverflowPolicy
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.OverflowFallback github.com/Voskan/BatchWeaver/runtime.OverflowPolicy
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.OverflowReject github.com/Voskan/BatchWeaver/runtime.OverflowPolicy
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.PanicPolicyRecover github.com/Voskan/BatchWeaver/runtime.PanicPolicy
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.PanicPolicyRepanic github.com/Voskan/BatchWeaver/runtime.PanicPolicy
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.ScopeStateClosed github.com/Voskan/BatchWeaver/runtime.ScopeState
+github.com/Voskan/BatchWeaver/runtime: const github.com/Voskan/BatchWeaver/runtime.ScopeStateOpen github.com/Voskan/BatchWeaver/runtime.ScopeState
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.BoundOperation[K, V]).ApplyAdaptiveSettings(s github.com/Voskan/BatchWeaver/runtime.AdaptiveSettings)
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.BoundOperation[K, V]).ClearAdaptiveSettings()
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.BoundOperation[K, V]).Do(ctx context.Context, key K) (V, error)
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.BoundOperation[K, V]).EffectiveSettings() github.com/Voskan/BatchWeaver/runtime.AdaptiveSettings
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.CallbackPanicError).Error() string
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.CallbackPanicError).Is(target error) bool
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.ContractError).Error() string
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.ContractError).Is(target error) bool
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.Engine).Close(ctx context.Context) error
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.Engine).Flush(ctx context.Context) error
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.Engine).NewScope(parent context.Context, options ...github.com/Voskan/BatchWeaver/runtime.ScopeOption) (context.Context, *github.com/Voskan/BatchWeaver/runtime.Scope, error)
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.Engine).Snapshot() github.com/Voskan/BatchWeaver/runtime.StatisticsSnapshot
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.Engine).State() github.com/Voskan/BatchWeaver/runtime.EngineState
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.PartitionLimitError).Error() string
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.PartitionLimitError).Is(target error) bool
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.ProviderPanicError).Error() string
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.ProviderPanicError).Is(target error) bool
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.QueueFullError).Error() string
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.QueueFullError).Is(target error) bool
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.Scope).Close(ctx context.Context) error
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.Scope).Drain(ctx context.Context) error
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.Scope).Flush(ctx context.Context) error
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.Scope).ID() github.com/Voskan/BatchWeaver/runtime.ScopeID
+github.com/Voskan/BatchWeaver/runtime: func (*github.com/Voskan/BatchWeaver/runtime.Scope).State() github.com/Voskan/BatchWeaver/runtime.ScopeState
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.EngineState).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.EngineState).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.EngineState).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.EngineState).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.FlushReason).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.FlushReason).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.FlushReason).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.FlushReason).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.FlushReason).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.FlushReason).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.FlushReason).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.FlushReason).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.FlushReason).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.FlushReason).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.OverflowPolicy).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.OverflowPolicy).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.OverflowPolicy).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.OverflowPolicy).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.Partition).IsZero() bool
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.Partition).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.PartitionerFunc[K]).Partition(ctx context.Context, key K) (github.com/Voskan/BatchWeaver/runtime.Partition, error)
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.ProviderFunc[K, V]).Execute(ctx context.Context, req github.com/Voskan/BatchWeaver.BatchRequest[K]) (github.com/Voskan/BatchWeaver.BatchResponse[V], error)
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.QueueLimits).Validate() error
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.ScalarFallbackFunc[K, V]).Execute(ctx context.Context, key K) (V, error)
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.ScopeID).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.ScopeState).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.ScopeState).String() string
+github.com/Voskan/BatchWeaver/runtime: func (github.com/Voskan/BatchWeaver/runtime.ScopeState).String() string
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.Bind[K, V any](engine *github.com/Voskan/BatchWeaver/runtime.Engine, decl github.com/Voskan/BatchWeaver/runtime.Declaration, b github.com/Voskan/BatchWeaver/runtime.Binding[K, V]) (*github.com/Voskan/BatchWeaver/runtime.BoundOperation[K, V], error)
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.BytesKeys() github.com/Voskan/BatchWeaver/runtime.KeyStrategy[[]byte]
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.ComparableKeys[K comparable]() github.com/Voskan/BatchWeaver/runtime.KeyStrategy[K]
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.ContextWithScope(ctx context.Context, scope *github.com/Voskan/BatchWeaver/runtime.Scope) context.Context
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.NewEngine(options ...github.com/Voskan/BatchWeaver/runtime.EngineOption) (*github.com/Voskan/BatchWeaver/runtime.Engine, error)
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.PartitionFromBytes(values ...[]byte) github.com/Voskan/BatchWeaver/runtime.Partition
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.PartitionFromStrings(values ...string) github.com/Voskan/BatchWeaver/runtime.Partition
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.RequireScope(ctx context.Context) (*github.com/Voskan/BatchWeaver/runtime.Scope, error)
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.Run[T any](engine *github.com/Voskan/BatchWeaver/runtime.Engine, parent context.Context, fn func(context.Context) (T, error), options ...github.com/Voskan/BatchWeaver/runtime.ScopeOption) (T, error)
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.ScopeFromContext(ctx context.Context) (*github.com/Voskan/BatchWeaver/runtime.Scope, bool)
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.SinglePartition() github.com/Voskan/BatchWeaver/runtime.Partition
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.StringKeys() github.com/Voskan/BatchWeaver/runtime.KeyStrategy[string]
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.SystemClock() github.com/Voskan/BatchWeaver/runtime.Clock
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.WithClock(clock github.com/Voskan/BatchWeaver/runtime.Clock) github.com/Voskan/BatchWeaver/runtime.EngineOption
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.WithDefaultOverflowPolicy(policy github.com/Voskan/BatchWeaver/runtime.OverflowPolicy) github.com/Voskan/BatchWeaver/runtime.EngineOption
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.WithDefaultQueueLimits(limits github.com/Voskan/BatchWeaver/runtime.QueueLimits) github.com/Voskan/BatchWeaver/runtime.EngineOption
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.WithHooks(hooks github.com/Voskan/BatchWeaver/runtime.Hooks) github.com/Voskan/BatchWeaver/runtime.EngineOption
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.WithNestedPolicy(p github.com/Voskan/BatchWeaver/runtime.NestedPolicy) github.com/Voskan/BatchWeaver/runtime.ScopeOption
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.WithPanicPolicy(policy github.com/Voskan/BatchWeaver/runtime.PanicPolicy) github.com/Voskan/BatchWeaver/runtime.EngineOption
+github.com/Voskan/BatchWeaver/runtime: func github.com/Voskan/BatchWeaver/runtime.WithStatistics(enabled bool) github.com/Voskan/BatchWeaver/runtime.EngineOption
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.AdaptiveSettings struct{MaxWait time.Duration; MaxBatchSize int; MaxConcurrency int}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.Binding[K, V any] struct{Provider github.com/Voskan/BatchWeaver/runtime.Provider[K, V]; Keys github.com/Voskan/BatchWeaver/runtime.KeyStrategy[K]; Partitioner github.com/Voskan/BatchWeaver/runtime.Partitioner[K]; Weight github.com/Voskan/BatchWeaver/runtime.WeightFunc[K]; Fallback github.com/Voskan/BatchWeaver/runtime.ScalarFallback[K, V]; Limits github.com/Voskan/BatchWeaver/runtime.QueueLimits; Overflow *github.com/Voskan/BatchWeaver/runtime.OverflowPolicy; RequireScope bool; EnableMemoization bool}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.BoundOperation[K, V any] struct{coord *github.com/Voskan/BatchWeaver/runtime.coordinator[K, V]; engine *github.com/Voskan/BatchWeaver/runtime.Engine; memoMu sync.Mutex; memo map[uint64]*github.com/Voskan/BatchWeaver/runtime.memoTable[K, V]}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.CallbackPanicError struct{Operation string; Callback string; Value string}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.Clock interface{NewTimer(d time.Duration) github.com/Voskan/BatchWeaver/runtime.Timer; Now() time.Time}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.ContractError struct{Operation string; Reason string}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.Declaration interface{Spec() github.com/Voskan/BatchWeaver/operation.Spec}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.Engine struct{mu sync.Mutex; state github.com/Voskan/BatchWeaver/runtime.EngineState; ops map[string]github.com/Voskan/BatchWeaver/runtime.operationController; clock github.com/Voskan/BatchWeaver/runtime.Clock; defaultLimits github.com/Voskan/BatchWeaver/runtime.QueueLimits; defaultOverflow github.com/Voskan/BatchWeaver/runtime.OverflowPolicy; hooks github.com/Voskan/BatchWeaver/runtime.Hooks; panicPolicy github.com/Voskan/BatchWeaver/runtime.PanicPolicy; statsEnabled bool; engineID string; ctx context.Context; cancel context.CancelFunc; wg sync.WaitGroup; scopeSeq sync/atomic.Uint64; requestSeq sync/atomic.Uint64; counters github.com/Voskan/BatchWeaver/runtime.engineCounters}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.EngineOption func(*github.com/Voskan/BatchWeaver/runtime.Engine) error
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.EngineState uint8
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.Event struct{Kind github.com/Voskan/BatchWeaver/runtime.EventKind; Time time.Time; Operation string; Partition string; ScopeID string; BatchID uint64; Count int; FlushReason github.com/Voskan/BatchWeaver/runtime.FlushReason; ErrorClass string}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.EventKind uint8
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.FlushReason uint8
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.Hooks struct{OnEvent func(github.com/Voskan/BatchWeaver/runtime.Event); OnError func(error)}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.KeyStrategy[K any] interface{Clone(K) K; Equal(K, K) bool; EstimateBytes(K) int; Hash(K) uint64}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.NestedPolicy uint8
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.OperationStats struct{Operation string; ActivePartitions int; QueuedItems int; QueuedWaiters int; ActiveProviderCalls int; Batches uint64; TotalBatchItems uint64; MaxBatchSize int; InFlightJoins uint64; MemoHits uint64; Fallbacks uint64; ProviderErrors uint64; ItemErrors uint64; QueueRejections uint64; FlushReasons map[string]uint64}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.OverflowPolicy uint8
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.PanicPolicy uint8
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.Partition struct{encoded string; hash uint64}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.PartitionLimitError struct{Operation string; Limit int}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.PartitionerFunc[K any] func(ctx context.Context, key K) (github.com/Voskan/BatchWeaver/runtime.Partition, error)
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.Partitioner[K any] interface{Partition(ctx context.Context, key K) (github.com/Voskan/BatchWeaver/runtime.Partition, error)}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.ProviderFunc[K, V any] func(context.Context, github.com/Voskan/BatchWeaver.BatchRequest[K]) (github.com/Voskan/BatchWeaver.BatchResponse[V], error)
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.ProviderPanicError struct{Operation string; Value string}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.Provider[K, V any] interface{Execute(context.Context, github.com/Voskan/BatchWeaver.BatchRequest[K]) (github.com/Voskan/BatchWeaver.BatchResponse[V], error)}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.QueueFullError struct{Operation string; Limit string}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.QueueLimits struct{MaxItems int; MaxWaiters int; MaxBytes int64; MaxWeight int64; MaxPartitions int}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.ScalarFallbackFunc[K, V any] func(context.Context, K) (V, error)
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.ScalarFallback[K, V any] interface{Execute(context.Context, K) (V, error)}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.Scope struct{id github.com/Voskan/BatchWeaver/runtime.ScopeID; engine *github.com/Voskan/BatchWeaver/runtime.Engine; parent context.Context; mu sync.Mutex; state github.com/Voskan/BatchWeaver/runtime.ScopeState; ops map[github.com/Voskan/BatchWeaver/runtime.operationController]struct{}}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.ScopeID uint64
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.ScopeOption func(*github.com/Voskan/BatchWeaver/runtime.scopeConfig)
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.ScopeState uint8
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.StatisticsSnapshot struct{State github.com/Voskan/BatchWeaver/runtime.EngineState; ActiveScopes int; BoundOperations int; ActivePartitions int; QueuedItems int; QueuedWaiters int; ActiveProviderCalls int; TotalProviderCalls uint64; TotalRequests uint64; TotalBackendItems uint64; TotalCallsSaved uint64; TotalFallbacks uint64; TotalCancellations uint64; TotalContractViolations uint64; Operations []github.com/Voskan/BatchWeaver/runtime.OperationStats}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.Timer interface{C() <-chan time.Time; Reset(d time.Duration) bool; Stop() bool}
+github.com/Voskan/BatchWeaver/runtime: type github.com/Voskan/BatchWeaver/runtime.WeightFunc[K any] func(K) int64
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrBatchContractViolation error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrCallbackPanic error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrDeadlineBeforeDispatch error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrDrainTimeout error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrEngineClosed error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrEngineClosing error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrFlushTimeout error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrInvalidBinding error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrInvalidOption error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrItemTooLarge error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrMissingResult error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrNestedScope error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrOperationAlreadyBound error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrPartitionLimit error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrProviderPanic error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrQueueFull error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrRecursiveOperation error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrScopeClosed error
+github.com/Voskan/BatchWeaver/runtime: var github.com/Voskan/BatchWeaver/runtime.ErrScopeRequired error
+github.com/Voskan/BatchWeaver: const github.com/Voskan/BatchWeaver.MaxPriority untyped int
+github.com/Voskan/BatchWeaver: const github.com/Voskan/BatchWeaver.MinPriority untyped int
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.BatchItem[K]).Validate() error
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.BatchItem[K]).WithDeadline(d time.Time) github.com/Voskan/BatchWeaver.BatchItem[K]
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.BatchItem[K]).WithPriority(p int) github.com/Voskan/BatchWeaver.BatchItem[K]
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.BatchItem[K]).WithWeight(w int) github.com/Voskan/BatchWeaver.BatchItem[K]
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.BatchRequest[K]).IDs() []github.com/Voskan/BatchWeaver.RequestID
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.BatchRequest[K]).Items() []github.com/Voskan/BatchWeaver.BatchItem[K]
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.BatchRequest[K]).Len() int
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.BatchRequest[K]).Validate() error
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.BatchResponse[V]).Len() int
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.BatchResponse[V]).Outcomes() []github.com/Voskan/BatchWeaver.Outcome[V]
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.BatchResponse[V]).Validate() error
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.BatchResponse[V]).ValidateAgainst(requestIDs []github.com/Voskan/BatchWeaver.RequestID) error
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.FunctionDeclaration[K, V]).Batch() github.com/Voskan/BatchWeaver.BatchFunc[K, V]
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.FunctionDeclaration[K, V]).Scalar() github.com/Voskan/BatchWeaver.ScalarFunc[K, V]
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.FunctionDeclaration[K, V]).Spec() github.com/Voskan/BatchWeaver/operation.Spec
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.FunctionDeclaration[K, V]).Validate() error
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.MethodDeclaration[R, K, V]).Batch() github.com/Voskan/BatchWeaver.BatchMethod[R, K, V]
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.MethodDeclaration[R, K, V]).Scalar() github.com/Voskan/BatchWeaver.ScalarMethod[R, K, V]
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.MethodDeclaration[R, K, V]).Spec() github.com/Voskan/BatchWeaver/operation.Spec
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.MethodDeclaration[R, K, V]).Validate() error
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.Outcome[V]).IsFailure() bool
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.Outcome[V]).IsNotFound() bool
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.Outcome[V]).IsSuccess() bool
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.Outcome[V]).Validate() error
+github.com/Voskan/BatchWeaver: func (github.com/Voskan/BatchWeaver.RequestID).IsValid() bool
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.DeclareFunction[K, V any](spec github.com/Voskan/BatchWeaver/operation.Spec, scalar github.com/Voskan/BatchWeaver.ScalarFunc[K, V], batch github.com/Voskan/BatchWeaver.BatchFunc[K, V]) (github.com/Voskan/BatchWeaver.FunctionDeclaration[K, V], error)
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.DeclareMethod[R, K, V any](spec github.com/Voskan/BatchWeaver/operation.Spec, scalar github.com/Voskan/BatchWeaver.ScalarMethod[R, K, V], batch github.com/Voskan/BatchWeaver.BatchMethod[R, K, V]) (github.com/Voskan/BatchWeaver.MethodDeclaration[R, K, V], error)
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.Failure[V any](id github.com/Voskan/BatchWeaver.RequestID, err error) github.com/Voskan/BatchWeaver.Outcome[V]
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.KeyedOutcomes[K comparable, V any](req github.com/Voskan/BatchWeaver.BatchRequest[K], values map[K]V, onMissing func(id github.com/Voskan/BatchWeaver.RequestID, key K) github.com/Voskan/BatchWeaver.Outcome[V]) (github.com/Voskan/BatchWeaver.BatchResponse[V], error)
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.MustDeclareFunction[K, V any](spec github.com/Voskan/BatchWeaver/operation.Spec, scalar github.com/Voskan/BatchWeaver.ScalarFunc[K, V], batch github.com/Voskan/BatchWeaver.BatchFunc[K, V]) github.com/Voskan/BatchWeaver.FunctionDeclaration[K, V]
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.MustDeclareMethod[R, K, V any](spec github.com/Voskan/BatchWeaver/operation.Spec, scalar github.com/Voskan/BatchWeaver.ScalarMethod[R, K, V], batch github.com/Voskan/BatchWeaver.BatchMethod[R, K, V]) github.com/Voskan/BatchWeaver.MethodDeclaration[R, K, V]
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.MustNewBatchRequest[K any](items []github.com/Voskan/BatchWeaver.BatchItem[K]) github.com/Voskan/BatchWeaver.BatchRequest[K]
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.MustNewBatchResponse[V any](outcomes []github.com/Voskan/BatchWeaver.Outcome[V]) github.com/Voskan/BatchWeaver.BatchResponse[V]
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.NewBatchItem[K any](id github.com/Voskan/BatchWeaver.RequestID, key K) github.com/Voskan/BatchWeaver.BatchItem[K]
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.NewBatchRequest[K any](items []github.com/Voskan/BatchWeaver.BatchItem[K]) (github.com/Voskan/BatchWeaver.BatchRequest[K], error)
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.NewBatchResponse[V any](outcomes []github.com/Voskan/BatchWeaver.Outcome[V]) (github.com/Voskan/BatchWeaver.BatchResponse[V], error)
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.NotFound[V any](id github.com/Voskan/BatchWeaver.RequestID) github.com/Voskan/BatchWeaver.Outcome[V]
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.OrderedOutcomes[K, V any](req github.com/Voskan/BatchWeaver.BatchRequest[K], values []V) (github.com/Voskan/BatchWeaver.BatchResponse[V], error)
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.OrderedResultOutcomes[K, V any](req github.com/Voskan/BatchWeaver.BatchRequest[K], results []github.com/Voskan/BatchWeaver.ItemResult[V]) (github.com/Voskan/BatchWeaver.BatchResponse[V], error)
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.SparseOutcomes[K, V any](req github.com/Voskan/BatchWeaver.BatchRequest[K], lookup func(key K) (V, bool), onMissing func(id github.com/Voskan/BatchWeaver.RequestID, key K) github.com/Voskan/BatchWeaver.Outcome[V]) (github.com/Voskan/BatchWeaver.BatchResponse[V], error)
+github.com/Voskan/BatchWeaver: func github.com/Voskan/BatchWeaver.Success[V any](id github.com/Voskan/BatchWeaver.RequestID, value V) github.com/Voskan/BatchWeaver.Outcome[V]
+github.com/Voskan/BatchWeaver: type github.com/Voskan/BatchWeaver.BatchFunc[K, V any] func(context.Context, github.com/Voskan/BatchWeaver.BatchRequest[K]) (github.com/Voskan/BatchWeaver.BatchResponse[V], error)
+github.com/Voskan/BatchWeaver: type github.com/Voskan/BatchWeaver.BatchItem[K any] struct{ID github.com/Voskan/BatchWeaver.RequestID; Key K; Deadline time.Time; Priority int; Weight int}
+github.com/Voskan/BatchWeaver: type github.com/Voskan/BatchWeaver.BatchMethod[R, K, V any] func(R, context.Context, github.com/Voskan/BatchWeaver.BatchRequest[K]) (github.com/Voskan/BatchWeaver.BatchResponse[V], error)
+github.com/Voskan/BatchWeaver: type github.com/Voskan/BatchWeaver.BatchRequest[K any] struct{items []github.com/Voskan/BatchWeaver.BatchItem[K]}
+github.com/Voskan/BatchWeaver: type github.com/Voskan/BatchWeaver.BatchResponse[V any] struct{outcomes []github.com/Voskan/BatchWeaver.Outcome[V]}
+github.com/Voskan/BatchWeaver: type github.com/Voskan/BatchWeaver.FunctionDeclaration[K, V any] struct{spec github.com/Voskan/BatchWeaver/operation.Spec; scalar github.com/Voskan/BatchWeaver.ScalarFunc[K, V]; batch github.com/Voskan/BatchWeaver.BatchFunc[K, V]}
+github.com/Voskan/BatchWeaver: type github.com/Voskan/BatchWeaver.ItemResult[V any] struct{Value V; Err error; Found bool}
+github.com/Voskan/BatchWeaver: type github.com/Voskan/BatchWeaver.MethodDeclaration[R, K, V any] struct{spec github.com/Voskan/BatchWeaver/operation.Spec; scalar github.com/Voskan/BatchWeaver.ScalarMethod[R, K, V]; batch github.com/Voskan/BatchWeaver.BatchMethod[R, K, V]}
+github.com/Voskan/BatchWeaver: type github.com/Voskan/BatchWeaver.Outcome[V any] struct{RequestID github.com/Voskan/BatchWeaver.RequestID; Value V; Err error; Found bool}
+github.com/Voskan/BatchWeaver: type github.com/Voskan/BatchWeaver.RequestID uint64
+github.com/Voskan/BatchWeaver: type github.com/Voskan/BatchWeaver.ScalarFunc[K, V any] func(context.Context, K) (V, error)
+github.com/Voskan/BatchWeaver: type github.com/Voskan/BatchWeaver.ScalarMethod[R, K, V any] func(R, context.Context, K) (V, error)
+github.com/Voskan/BatchWeaver: var github.com/Voskan/BatchWeaver.ErrInvalidBatchItem error
+github.com/Voskan/BatchWeaver: var github.com/Voskan/BatchWeaver.ErrInvalidBatchRequest error
+github.com/Voskan/BatchWeaver: var github.com/Voskan/BatchWeaver.ErrInvalidBatchResponse error
+github.com/Voskan/BatchWeaver: var github.com/Voskan/BatchWeaver.ErrInvalidOutcome error
+github.com/Voskan/BatchWeaver: var github.com/Voskan/BatchWeaver.ErrNilImplementation error

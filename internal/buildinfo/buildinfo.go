@@ -41,19 +41,30 @@ const (
 // Values are captured once via Get; construct additional values only in tests.
 type Info struct {
 	// Version is the semantic version, or "dev" before the first release.
-	Version string
+	Version string `json:"version"`
 	// Commit is the source revision the binary was built from, if known.
-	Commit string
+	Commit string `json:"commit"`
 	// BuildDate is the build timestamp, if known.
-	BuildDate string
+	BuildDate string `json:"build_date"`
 	// Dirty reports whether the source tree had uncommitted changes at build time.
-	Dirty bool
+	Dirty bool `json:"dirty"`
 	// GoVersion is the Go toolchain version that produced the binary.
-	GoVersion string
+	GoVersion string `json:"go_version"`
 	// GOOS is the target operating system.
-	GOOS string
+	GOOS string `json:"goos"`
 	// GOARCH is the target architecture.
-	GOARCH string
+	GOARCH string `json:"goarch"`
+	// RuntimeABI is the generated bridge/runtime compatibility identifier.
+	RuntimeABI string `json:"runtime_abi"`
+	// ConfigSchema is the current configuration schema version.
+	ConfigSchema int `json:"config_schema"`
+	// ArtifactSchemas lists stable artifact schema identifiers in sorted order.
+	ArtifactSchemas []string `json:"artifact_schemas"`
+	// Features lists major compiled feature families without implying support
+	// for every upstream framework integration.
+	Features []string `json:"features"`
+	// ReproducibleMetadata explains how volatile metadata was handled.
+	ReproducibleMetadata string `json:"reproducible_metadata"`
 }
 
 // Get returns the Info for the current binary. The version, commit, and build
@@ -61,13 +72,18 @@ type Info struct {
 // read from the runtime and are therefore always populated.
 func Get() Info {
 	return Info{
-		Version:   version,
-		Commit:    commit,
-		BuildDate: buildDate,
-		Dirty:     false,
-		GoVersion: runtime.Version(),
-		GOOS:      runtime.GOOS,
-		GOARCH:    runtime.GOARCH,
+		Version:              version,
+		Commit:               commit,
+		BuildDate:            buildDate,
+		Dirty:                false,
+		GoVersion:            runtime.Version(),
+		GOOS:                 runtime.GOOS,
+		GOARCH:               runtime.GOARCH,
+		RuntimeABI:           "batchweaver.runtime/v1alpha1",
+		ConfigSchema:         1,
+		ArtifactSchemas:      []string{"batchweaver.analysis/v1alpha1", "batchweaver.proof/v1alpha1", "batchweaver.release/v1alpha1", "batchweaver.transform/v1alpha1"},
+		Features:             []string{"adaptive", "adapters", "analysis", "daemon", "lsp", "proof", "runtime", "transform"},
+		ReproducibleMetadata: "build date omitted (unknown); trimpath required for release artifacts",
 	}
 }
 

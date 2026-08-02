@@ -1,0 +1,34 @@
+{
+  "schema": "batchweaver.compatibility/v1alpha1",
+  "as_of": "2026-08-02",
+  "primary_toolchain": "go1.26.5",
+  "status_vocabulary": [
+    "supported-and-tested",
+    "supported-with-limited-testing",
+    "experimental",
+    "not-supported",
+    "not-tested"
+  ],
+  "rows": [
+    {"category":"Go","environment":"go1.26.5","status":"supported-and-tested","evidence":"full local suite on darwin/arm64"},
+    {"category":"Go","environment":"other Go versions","status":"not-supported","evidence":"module language version is Go 1.26"},
+    {"category":"platform","environment":"darwin/arm64","status":"supported-and-tested","evidence":"native test, race, vet, and release archive"},
+    {"category":"platform","environment":"darwin/amd64","status":"supported-with-limited-testing","evidence":"cross-build and archive verification"},
+    {"category":"platform","environment":"linux/amd64","status":"supported-with-limited-testing","evidence":"cross-build and archive verification; CI native job"},
+    {"category":"platform","environment":"linux/arm64","status":"supported-with-limited-testing","evidence":"cross-build and archive verification"},
+    {"category":"platform","environment":"windows/amd64","status":"supported-with-limited-testing","evidence":"cross-build and archive verification; CI native job"},
+    {"category":"platform","environment":"windows/arm64","status":"not-supported","evidence":"not in release artifact policy"},
+    {"category":"build","environment":"CGO_ENABLED=0","status":"supported-and-tested","evidence":"release and assurance builds"},
+    {"category":"build","environment":"CGO_ENABLED=1","status":"supported-with-limited-testing","evidence":"native unit/race suite only"},
+    {"category":"build","environment":"module mode","status":"supported-and-tested","evidence":"full suite and clean module download"},
+    {"category":"build","environment":"go.work mode","status":"not-tested","evidence":"go.work is intentionally local and ignored"},
+    {"category":"build","environment":"local replace","status":"supported-and-tested","evidence":"standalone transform/editor fixtures use local replace"},
+    {"category":"build","environment":"vendor/offline","status":"not-tested","evidence":"no committed vendor directory"},
+    {"category":"build","environment":"race and coverage","status":"supported-and-tested","evidence":"mandatory race suite and CI coverage job"},
+    {"category":"gopls","environment":"v0.21.1","status":"supported-and-tested","evidence":"proxy launch and capability smoke"},
+    {"category":"VS Code","environment":"engine >=1.85","status":"supported-with-limited-testing","evidence":"manifest, typecheck, lint, local VSIX; no headless host run"},
+    {"category":"LSP","environment":"3.17 clients","status":"supported-with-limited-testing","evidence":"stdio initialize and protocol unit tests"},
+    {"category":"adapter","environment":"database/sql + net/http","status":"supported-and-tested","evidence":"hermetic provider and httptest suites"},
+    {"category":"adapter","environment":"pgx/go-redis/gqlgen/grpc-go","status":"not-tested","evidence":"framework-neutral contracts only; concrete bindings absent"}
+  ]
+}

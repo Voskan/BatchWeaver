@@ -79,6 +79,12 @@ foundational semantic layer:
   Code extension (source) and standard-LSP setup for Neovim, Emacs/Eglot, Helix,
   and Zed. It never writes source implicitly, never collects telemetry, and is
   not a gopls plugin.
+- a **non-publishing release assurance layer** (`batchweaver release`,
+  `compatibility report`, `verify differential`, and `security audit`) that
+  creates deterministic cross-platform snapshot archives, checksums, SPDX and
+  CycloneDX SBOMs, unsigned local provenance, and a strict release manifest;
+  verifies archive contents and digests offline; and rebuilds declared artifacts
+  for byte comparison. Snapshot commands do not contain publication behavior.
 
 **Arbitrary SQL transformation, automatic write synthesis, GraphQL/gRPC fusion,
 and universal performance improvements are not implemented.** Only a narrow,
@@ -137,8 +143,9 @@ and [ROADMAP.md](ROADMAP.md) for the phased plan.
 
 ## Requirements
 
-- Go 1.26 or newer. The module pins `toolchain go1.26.5`; with the default
-  `GOTOOLCHAIN=auto`, the correct toolchain is fetched automatically.
+- Go 1.26.5. Other toolchain versions are not supported by the current release
+  policy until they are explicitly tested. With the default `GOTOOLCHAIN=auto`,
+  the pinned toolchain can be fetched automatically.
 
 ## Build and test
 
@@ -158,7 +165,15 @@ go run ./cmd/batchweaver operation list --file examples/configuration/batchweave
 
 # Run the full local quality gate
 make check
+
+# Build and independently verify an unpublished local snapshot
+./bin/batchweaver release build --snapshot --output dist
+./bin/batchweaver release verify dist/release-manifest.json
 ```
+
+The proposed candidate is `0.1.0-rc.1`; it has not been selected, tagged, or
+published. See [the compatibility report](docs/release/compatibility.md),
+[known issues](KNOWN-ISSUES.md), and [release policy](docs/release/release-policy.md).
 
 Example `config validate` output:
 

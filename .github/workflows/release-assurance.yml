@@ -1,0 +1,64 @@
+---
+name: Extended Release Assurance
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * 2"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-assurance-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GO_VERSION: "1.26.5"
+
+jobs:
+  extended:
+    name: Fuzz, release snapshot, and reproduction
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          check-latest: false
+
+      - name: Set up Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: editors/vscode/package-lock.json
+
+      - name: Verify clean checkout and generated API
+        run: |
+          test -z "$(git status --porcelain --untracked-files=all)"
+          go test ./internal/release -run '^TestPublicAPIBaseline$' -count=1
+
+      - name: Fuzz release manifest
+        run: go test ./internal/release -run '^$' -fuzz '^FuzzManifest$' -fuzztime 30s
+
+      - name: Build, verify, and reproduce snapshot
+        run: |
+          go run ./cmd/batchweaver release build --snapshot --output dist
+          go run ./cmd/batchweaver release verify dist/release-manifest.json
+          go run ./cmd/batchweaver release reproduce --manifest dist/release-manifest.json
+
+      - name: Upload unpublished snapshot
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: batchweaver-unpublished-snapshot
+          path: dist
+          if-no-files-found: error
+          retention-days: 7

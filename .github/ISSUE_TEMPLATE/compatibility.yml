@@ -1,0 +1,20 @@
+---
+name: Compatibility failure
+description: Report a failure on a declared or previously working environment.
+title: "compat: "
+labels: ["compatibility"]
+body:
+  - type: input
+    id: matrix
+    attributes: {label: Exact toolchain/platform/client versions}
+    validations: {required: true}
+  - type: textarea
+    id: reproduce
+    attributes: {label: Redacted reproduction and output}
+    validations: {required: true}
+  - type: dropdown
+    id: claimed
+    attributes:
+      label: Matrix status
+      options: [supported-and-tested, supported-with-limited-testing, experimental, not-tested]
+    validations: {required: true}

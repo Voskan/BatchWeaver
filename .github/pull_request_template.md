@@ -24,6 +24,10 @@
 
 <!-- Any breaking changes to the public API or generated-code format? -->
 
+## Semantic safety
+
+<!-- Proof obligations, result/error ordering, cancellation, partitions, barriers. -->
+
 ## Security
 
 <!-- Any security implications? -->
@@ -38,6 +42,8 @@
 - [ ] `make check` passes locally.
 - [ ] Tests cover the change.
 - [ ] Documentation is updated.
+- [ ] Public API/schema baselines and generated files are current or unaffected.
+- [ ] Changelog/release notes are updated or intentionally not required.
 - [ ] Commits follow Conventional Commits.
 - [ ] An ADR was added or updated for any significant decision.
-- [ ] No secrets or local agent files are included.
+- [ ] No secrets, profiles, local editor state, release keys, or agent files are included.

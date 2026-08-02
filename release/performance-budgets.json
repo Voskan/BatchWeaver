@@ -1,0 +1,14 @@
+{
+  "schema": "batchweaver.performance-budgets/v1alpha1",
+  "policy": {
+    "minimum_samples": 20,
+    "time_budget_is_release_signal_not_single-run_regression_claim": true,
+    "exception_requires": ["owner", "reason", "expiry", "tracking_issue"]
+  },
+  "budgets": [
+    {"id":"differential-1024-allocs","metric":"allocations_per_run","maximum":1100,"samples":20},
+    {"id":"differential-1024-wall","metric":"milliseconds_for_25_samples","maximum":2000,"samples":25},
+    {"id":"cli-uncompressed-size","metric":"bytes","maximum":52428800,"samples":1}
+  ],
+  "exceptions": []
+}

@@ -2,12 +2,13 @@
   "name": "batchweaver-vscode",
   "displayName": "BatchWeaver",
   "description": "Live batching diagnostics, proof-aware code actions, transformation previews, and operation views for Go, powered by the BatchWeaver language server.",
-  "version": "0.1.0",
+  "version": "0.1.0-rc.1",
   "publisher": "batchweaver",
   "license": "Apache-2.0",
   "private": true,
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.85.0",
+    "node": ">=22"
   },
   "categories": ["Programming Languages", "Linters", "Other"],
   "repository": {
@@ -38,29 +39,29 @@
         "batchweaver.enabled": {"type": "boolean", "default": true, "description": "Enable the BatchWeaver language server."},
         "batchweaver.mode": {"type": "string", "enum": ["sidecar", "proxy"], "default": "sidecar", "description": "sidecar runs BatchWeaver alongside gopls; proxy runs BatchWeaver as the Go language server and delegates standard features to gopls."},
         "batchweaver.server.path": {"type": "string", "default": "batchweaver", "description": "Path to the BatchWeaver executable."},
-        "batchweaver.gopls.path": {"type": "string", "default": "gopls", "description": "Path to gopls, used in proxy mode."},
-        "batchweaver.deepAnalysis": {"type": "boolean", "default": false, "description": "Allow deep proof/verification analysis (requires a trusted workspace)."},
-        "batchweaver.trace.server": {"type": "string", "enum": ["off", "messages", "verbose"], "default": "off", "description": "LSP trace verbosity (redacted; never logs source or secrets by default)."}
+        "batchweaver.gopls.path": {"type": "string", "default": "gopls", "description": "Path to gopls, used in proxy mode."}
       }
     }
   },
   "scripts": {
-    "compile": "tsc -p ./",
+    "compile": "esbuild src/extension.ts --bundle --external:vscode --platform=node --format=cjs --outfile=out/extension.js --sourcemap=external",
     "watch": "tsc -watch -p ./",
     "lint": "eslint src --ext ts",
     "typecheck": "tsc --noEmit -p ./",
-    "test": "node ./out/test/runTest.js",
-    "package": "vsce package --no-dependencies"
+    "test": "node ./scripts/test-extension.mjs",
+    "package": "node scripts/package.mjs"
   },
   "dependencies": {
     "vscode-languageclient": "9.0.1"
   },
   "devDependencies": {
-    "@types/node": "20.11.30",
+	"@types/node": "22.20.1",
     "@types/vscode": "1.85.0",
-    "@typescript-eslint/eslint-plugin": "7.4.0",
-    "@typescript-eslint/parser": "7.4.0",
-    "eslint": "8.57.0",
-    "typescript": "5.4.3"
+	"@typescript-eslint/eslint-plugin": "8.65.0",
+	"@typescript-eslint/parser": "8.65.0",
+	"eslint": "10.8.0",
+    "esbuild": "0.28.1",
+	"typescript": "5.9.3",
+    "@vscode/vsce": "3.9.2"
   }
 }

@@ -118,12 +118,19 @@ gopls internals are imported and no source is written implicitly. Remaining
 increments: routing analysis through the shared daemon cache, the full versioned
 `WorkspaceEdit` apply flow, and CI-gated real-gopls and VS Code E2E matrices.
 
-## Phase 12 — Advanced correctness and release-candidate hardening
+## Phase 12 — Advanced correctness and release-candidate hardening 🚧
 
 Compatibility matrix across Go/gopls/platforms; mutation and differential
 testing; extensive fuzz and soak coverage; security and supply-chain hardening;
 reproducible builds; SBOM and provenance; CLI/SDK API review; documentation
 completeness; packaging; and release-candidate preparation.
+
+Implemented in the current branch: the non-publishing release commands,
+deterministic artifact matrix, checksums, dual SBOM formats, local provenance,
+API/schema gates, central differential and selected mutation harnesses, security
+and license checks, performance budgets, compatibility policy, and release
+reports. Publication and Marketplace Extension Host verification remain outside
+this phase's authorized actions; verified residual gaps are in `KNOWN-ISSUES.md`.
 
 ## Phase 13 — Public beta
 

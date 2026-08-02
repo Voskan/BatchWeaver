@@ -9,6 +9,7 @@ BWOP001–BWOP099    operation IDs, symbols, semantics, and contracts
 BWDECL001–BWDECL099 typed declaration validation (reserved; not yet assigned)
 BWCLI001–BWCLI099  command-line usage (reserved; not yet assigned)
 BWINT001–BWINT099  internal consistency failures (reserved; not yet assigned)
+BW9001–BW9018      release readiness, integrity, and publication boundaries
 ```
 
 ## Configuration (BWCFG)
@@ -60,3 +61,26 @@ BWINT001–BWINT099  internal consistency failures (reserved; not yet assigned)
 | BWOP015 | Configuration-based operation missing scalar/batch symbols |
 | BWOP016 | Invalid symbol |
 | BWOP017 | Duplicate operation ID in a catalog |
+
+## Release assurance (BW9001–BW9018)
+
+| Code | Meaning |
+| --- | --- |
+| BW9001 | Release source tree is dirty or output target is unsafe |
+| BW9002 | Generated artifacts are stale or incorrectly tracked |
+| BW9003 | Public Go API baseline differs |
+| BW9004 | Schema compatibility check failed |
+| BW9005 | Semantic differential mismatch |
+| BW9006 | Selected safety mutation survived |
+| BW9007 | Required fuzz corpus smoke failed |
+| BW9008 | Compatibility matrix requirement failed |
+| BW9009 | Performance budget failed |
+| BW9010 | Release-blocking security finding |
+| BW9011 | License audit failed |
+| BW9012 | SBOM generation or validation failed |
+| BW9013 | Provenance generation or validation failed |
+| BW9014 | Artifact checksum, size, metadata, or layout mismatch |
+| BW9015 | Declared reproducibility comparison failed |
+| BW9016 | Release documentation validation failed |
+| BW9017 | Packaged-artifact or release dry-run failure |
+| BW9018 | Publication or non-snapshot build is unauthorized |

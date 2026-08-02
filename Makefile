@@ -38,11 +38,11 @@ help: ## Show this help
 
 .PHONY: fmt
 fmt: ## Format Go source with gofmt
-	gofmt -w .
+	git ls-files -z '*.go' | xargs -0 gofmt -w
 
 .PHONY: fmt-check
 fmt-check: ## Verify all Go source is gofmt-formatted
-	@unformatted="$$(gofmt -l .)"; \
+	@unformatted="$$(git ls-files -z '*.go' | xargs -0 gofmt -l)"; \
 	if [ -n "$$unformatted" ]; then \
 		echo "The following files are not gofmt-formatted:"; \
 		echo "$$unformatted"; \
@@ -66,6 +66,20 @@ test-cover: ## Run unit tests and write coverage.out
 	go test -coverprofile=coverage.out ./...
 	@go tool cover -func=coverage.out | tail -1
 
+.PHONY: assurance
+assurance: ## Run API, schema, differential, mutation, fault, soak, and budget tests
+	go test ./internal/release ./internal/assurance -count=1
+
+.PHONY: extension-check
+extension-check: ## Clean-install and verify the VS Code extension (requires Node 22)
+	cd editors/vscode && npm ci && npm audit --audit-level=high
+	cd editors/vscode && npm run lint && npm run typecheck && npm run compile && npm test && npm run package
+
+.PHONY: release-snapshot
+release-snapshot: build ## Build and verify an unpublished snapshot under dist/
+	$(BINARY) release build --snapshot --output dist
+	$(BINARY) release verify dist/release-manifest.json
+
 .PHONY: build
 build: ## Build the CLI into bin/batchweaver
 	@mkdir -p $(BIN_DIR)
@@ -86,9 +100,9 @@ vulncheck: ## Scan for known vulnerabilities
 .PHONY: docs-check
 docs-check: ## Lint Markdown and YAML (skips a linter if it is not installed)
 	@if command -v markdownlint >/dev/null 2>&1; then \
-		markdownlint '**/*.md' --ignore node_modules; \
+		markdownlint '**/*.md' --ignore '**/node_modules/**'; \
 	elif command -v npx >/dev/null 2>&1; then \
-		npx --yes markdownlint-cli '**/*.md' --ignore node_modules; \
+		npx --yes markdownlint-cli '**/*.md' --ignore '**/node_modules/**'; \
 	else \
 		echo "markdownlint not found; skipping Markdown lint"; \
 	fi
@@ -101,7 +115,7 @@ docs-check: ## Lint Markdown and YAML (skips a linter if it is not installed)
 	fi
 
 .PHONY: check
-check: fmt-check vet test test-race build lint vulncheck docs-check ## Run all mandatory local gates
+check: fmt-check vet test test-race assurance build lint vulncheck docs-check ## Run all mandatory local gates
 
 .PHONY: clean
 clean: ## Remove build and coverage output

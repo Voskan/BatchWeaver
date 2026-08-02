@@ -8,8 +8,6 @@ VS Code settings (also documented in the extension's `package.json`):
 | `batchweaver.mode` | `sidecar` | `sidecar` or `proxy`. |
 | `batchweaver.server.path` | `batchweaver` | Path to the BatchWeaver executable. |
 | `batchweaver.gopls.path` | `gopls` | gopls path (proxy mode). |
-| `batchweaver.deepAnalysis` | `false` | Allow deep proof/verification analysis (trusted workspace only). |
-| `batchweaver.trace.server` | `off` | LSP trace verbosity (redacted). |
 
 ## Precedence
 

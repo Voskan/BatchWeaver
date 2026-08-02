@@ -5,8 +5,8 @@ compiler and runtime project, and contributions of all sizes are welcome.
 
 ## Prerequisites
 
-- Go 1.26 or newer. The module pins `toolchain go1.26.5`; with the default
-  `GOTOOLCHAIN=auto`, the correct toolchain is fetched automatically.
+- Go 1.26.5. The release policy does not claim compatibility with other
+  toolchains until they are tested; `GOTOOLCHAIN=auto` can fetch the pin.
 - `make` (optional but recommended; it drives the local quality gates).
 
 ## Clone, build, and test
@@ -33,6 +33,8 @@ make check   # run all mandatory local gates
   home directory, local GitHub authentication, timezone, or locale.
 - Use `t.TempDir()` for filesystem work and avoid sleeps for synchronization.
 - Tests must pass under the race detector: `make test-race`.
+- Public API changes must update the reviewed baseline intentionally; schema and
+  semantic-safety changes require compatibility and differential tests.
 
 ## Documentation
 

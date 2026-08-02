@@ -1,0 +1,36 @@
+---
+name: Semantic or transformation safety regression
+description: Report a scalar/transformed observable-behavior mismatch.
+title: "semantic: "
+labels: ["bug", "semantic-safety"]
+body:
+  - type: markdown
+    attributes:
+      value: Remove credentials, tenant identifiers, query data, and production payloads.
+  - type: textarea
+    id: minimal
+    attributes:
+      label: Redacted minimal program
+      description: Include the scalar and transformed commands, strategy, and deterministic seed.
+    validations: {required: true}
+  - type: textarea
+    id: observable
+    attributes:
+      label: Observable mismatch
+      description: >-
+        Values, error identity/order, side effects, cancellation, deadline,
+        partition, or transaction behavior.
+    validations: {required: true}
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: Proof and artifact versions
+      description: Provide redacted schema IDs, proof ID, source digest, Go version, platform, and commit.
+    validations: {required: true}
+  - type: checkboxes
+    id: safe
+    attributes:
+      label: Safety
+      options:
+        - label: I removed secrets and private data; this is not an undisclosed vulnerability.
+          required: true
