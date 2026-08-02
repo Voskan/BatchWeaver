@@ -23,6 +23,11 @@ The public API may evolve before the 1.0 release.
   concurrent single-flight, bounded memory and persistent disk LRU tiers,
   corruption recovery, restart reuse, path isolation, privacy-safe hit/miss
   observability, and local-analysis fallback when no daemon is running.
+- A blocking hosted compatibility matrix for minimum/current Go, native hosted
+  operating systems, every release target, CGO, module/vendor/go.work modes,
+  exact client-library pins, a real gopls proxy process, and minimum/current VS
+  Code Extension Hosts. Per-job JSON evidence is aggregated and verified against
+  the exact release commit before publication.
 
 ## [0.1.0-beta.3] - 2026-08-02
 

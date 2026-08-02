@@ -10,7 +10,11 @@
     "vscode": "^1.85.0",
     "node": ">=22"
   },
-  "categories": ["Programming Languages", "Linters", "Other"],
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Other"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Voskan/BatchWeaver"
@@ -21,25 +25,69 @@
       "description": "In an untrusted workspace BatchWeaver performs only static text diagnostics; it does not start gopls, run the Go command, tests, benchmarks, generators, materialization, or the workspace daemon."
     }
   },
-  "activationEvents": ["onLanguage:go", "workspaceContains:**/batchweaver.{yaml,yml,json}"],
+  "activationEvents": [
+    "onLanguage:go",
+    "workspaceContains:**/batchweaver.{yaml,yml,json}"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
-      {"command": "batchweaver.scanWorkspace", "title": "BatchWeaver: Scan Workspace"},
-      {"command": "batchweaver.previewTransformation", "title": "BatchWeaver: Preview Transformation"},
-      {"command": "batchweaver.proveCandidate", "title": "BatchWeaver: Prove Candidate"},
-      {"command": "batchweaver.showOperationGraph", "title": "BatchWeaver: Show Operation Graph"},
-      {"command": "batchweaver.doctor", "title": "BatchWeaver: Run Doctor"},
-      {"command": "batchweaver.restartServer", "title": "BatchWeaver: Restart Server"},
-      {"command": "batchweaver.openLogs", "title": "BatchWeaver: Open Logs"}
+      {
+        "command": "batchweaver.scanWorkspace",
+        "title": "BatchWeaver: Scan Workspace"
+      },
+      {
+        "command": "batchweaver.previewTransformation",
+        "title": "BatchWeaver: Preview Transformation"
+      },
+      {
+        "command": "batchweaver.proveCandidate",
+        "title": "BatchWeaver: Prove Candidate"
+      },
+      {
+        "command": "batchweaver.showOperationGraph",
+        "title": "BatchWeaver: Show Operation Graph"
+      },
+      {
+        "command": "batchweaver.doctor",
+        "title": "BatchWeaver: Run Doctor"
+      },
+      {
+        "command": "batchweaver.restartServer",
+        "title": "BatchWeaver: Restart Server"
+      },
+      {
+        "command": "batchweaver.openLogs",
+        "title": "BatchWeaver: Open Logs"
+      }
     ],
     "configuration": {
       "title": "BatchWeaver",
       "properties": {
-        "batchweaver.enabled": {"type": "boolean", "default": true, "description": "Enable the BatchWeaver language server."},
-        "batchweaver.mode": {"type": "string", "enum": ["sidecar", "proxy"], "default": "sidecar", "description": "sidecar runs BatchWeaver alongside gopls; proxy runs BatchWeaver as the Go language server and delegates standard features to gopls."},
-        "batchweaver.server.path": {"type": "string", "default": "batchweaver", "description": "Path to the BatchWeaver executable."},
-        "batchweaver.gopls.path": {"type": "string", "default": "gopls", "description": "Path to gopls, used in proxy mode."}
+        "batchweaver.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the BatchWeaver language server."
+        },
+        "batchweaver.mode": {
+          "type": "string",
+          "enum": [
+            "sidecar",
+            "proxy"
+          ],
+          "default": "sidecar",
+          "description": "sidecar runs BatchWeaver alongside gopls; proxy runs BatchWeaver as the Go language server and delegates standard features to gopls."
+        },
+        "batchweaver.server.path": {
+          "type": "string",
+          "default": "batchweaver",
+          "description": "Path to the BatchWeaver executable."
+        },
+        "batchweaver.gopls.path": {
+          "type": "string",
+          "default": "gopls",
+          "description": "Path to gopls, used in proxy mode."
+        }
       }
     }
   },
@@ -49,19 +97,21 @@
     "lint": "eslint src --ext ts",
     "typecheck": "tsc --noEmit -p ./",
     "test": "node ./scripts/test-extension.mjs",
+    "test:host": "node ./scripts/run-host-test.mjs",
     "package": "node scripts/package.mjs"
   },
   "dependencies": {
     "vscode-languageclient": "9.0.1"
   },
   "devDependencies": {
-	"@types/node": "22.20.1",
+    "@types/node": "22.20.1",
     "@types/vscode": "1.85.0",
-	"@typescript-eslint/eslint-plugin": "8.65.0",
-	"@typescript-eslint/parser": "8.65.0",
-	"eslint": "10.8.0",
+    "@typescript-eslint/eslint-plugin": "8.65.0",
+    "@typescript-eslint/parser": "8.65.0",
+    "@vscode/test-electron": "3.1.0",
+    "@vscode/vsce": "3.9.2",
     "esbuild": "0.28.1",
-	"typescript": "5.9.3",
-    "@vscode/vsce": "3.9.2"
+    "eslint": "10.8.0",
+    "typescript": "5.9.3"
   }
 }

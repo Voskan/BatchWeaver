@@ -27,8 +27,9 @@ be replaced by local test success.
 
 ## Compatibility
 
-Go 1.26.5 is the sole tested toolchain for the current candidate. Supported
-platforms and integrations are exactly those in `release/compatibility.json`.
+Go 1.26.x is the tested toolchain window for the current candidate: 1.26.0 is
+the minimum and 1.26.5 is the current pin. Supported platforms and integrations
+are exactly those in `release/compatibility.json`.
 Untested combinations remain untested.
 
 Configuration, diagnostic JSON, bridge ABI, proof, transform, daemon, profile,

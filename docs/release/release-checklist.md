@@ -4,7 +4,9 @@
 
 - [ ] Source and dependency freeze approved.
 - [ ] Generated files and public API baseline reviewed.
-- [ ] Primary and extended compatibility jobs pass.
+- [ ] `Compatibility policy` passes for the exact candidate commit and
+  `scripts/verify-hosted-compatibility.sh <commit>` verifies all 18 retained
+  evidence rows.
 - [ ] Differential, mutation, fuzz, fault, soak, and performance gates pass.
 - [ ] Security, vulnerability, secret, workflow, dependency, and license checks pass.
 - [ ] Documentation, examples, and clean quickstart pass.

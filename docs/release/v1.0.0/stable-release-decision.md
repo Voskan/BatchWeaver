@@ -16,7 +16,7 @@ stable v1.
 | No unresolved P0/P1 | pass for current verified evidence | Windows text normalization, dependency configuration, and VS Code command-registration defects were resolved; future reports must still be triaged |
 | Supported transformations differential-tested | pass locally | deterministic differential suite; must rerun on final commit |
 | Mandatory mutations killed | pass locally | 12/12 modeled critical mutations; final rerun required |
-| Compatibility matrix | partial | Linux, macOS, and Windows hosted jobs pass; primary client bindings have hermetic coverage, but only Go 1.26.5 and limited live environments are tested |
+| Compatibility matrix | partial | Blocking minimum/current Go, OS/target, build-mode, exact-client, real-gopls, and real-VS-Code jobs exist; the combined hosted artifact must still pass for the exact final candidate commit |
 | Upgrade from supported prereleases | blocked | migration from this beta to a future v1 candidate cannot yet be exercised |
 | Installation | pass for current beta | beta.3 public Go proxy, version metadata, complete release checksum set, archives, and VSIX are post-publication-verified; v1 installation remains future work |
 | Race, fuzz, and security suites | partial | race, bounded fuzz, CodeQL, vulnerability, secret, and Dependency Review evidence exists; final extended campaigns remain |

@@ -7,3 +7,4 @@ eslint.config.mjs
 **/*.map
 **/*.ts
 scripts/**
+test/**

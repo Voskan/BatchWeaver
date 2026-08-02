@@ -41,7 +41,8 @@ with a diagnostic.
 
 ## Install
 
-Go 1.26.5 is the currently tested toolchain.
+Go 1.26.x is the tested support window: 1.26.0 is the minimum and 1.26.5 is the
+current pinned release toolchain.
 
 Install the CLI or add the typed library at the immutable beta version:
 

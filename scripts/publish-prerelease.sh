@@ -17,6 +17,7 @@ fi
 command -v gh >/dev/null
 gh auth status >/dev/null
 scripts/verify-github-release-gates.sh --publish
+scripts/verify-hosted-compatibility.sh "$(git rev-parse HEAD)"
 test "$(git describe --exact-match --tags HEAD)" = "$EXPECTED_VERSION"
 test -f "$DIST/release-manifest.json"
 test "$(jq -r .decision "$GATES")" = "ready"
