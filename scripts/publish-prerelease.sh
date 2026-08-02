@@ -11,6 +11,8 @@ if [ "$CONFIRM" != "--confirm-v0.1.0-beta.1" ]; then
   exit 2
 fi
 
+command -v gh >/dev/null
+gh auth status >/dev/null
 scripts/verify-github-release-gates.sh
 test "$(git describe --exact-match --tags HEAD)" = "$EXPECTED_VERSION"
 test -f "$DIST/release-manifest.json"
