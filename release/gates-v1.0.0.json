@@ -8,7 +8,7 @@
     {"id":"differential","status":"pass-local","reason":"final commit rerun required"},
     {"id":"mutation","status":"pass-local","reason":"12/12 modeled critical mutations killed"},
     {"id":"compatibility","status":"partial","reason":"Linux, macOS, and Windows pass; toolchain and integration coverage remains limited"},
-    {"id":"migration","status":"blocked","reason":"upgrade from v0.1.0-beta.1 and v0.1.0-beta.2 cannot be tested until a v1 candidate exists"},
+    {"id":"migration","status":"blocked","reason":"upgrade from v0.1.0-beta.1, v0.1.0-beta.2, and v0.1.0-beta.3 cannot be tested until a v1 candidate exists"},
     {"id":"installation","status":"pass-beta","reason":"current beta Go proxy, version metadata, archives, checksums, and VSIX are post-publication verified; stable-v1 installation remains future work"},
     {"id":"race-fuzz-security","status":"partial","reason":"race, bounded fuzz, CodeQL, secret, vulnerability, and Dependency Review evidence passes; final extended v1 campaign remains"},
     {"id":"artifacts","status":"partial","reason":"public beta assets verify and reproduce, but signatures and hosted attestations are absent"},

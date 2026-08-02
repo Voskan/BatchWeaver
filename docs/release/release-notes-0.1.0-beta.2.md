@@ -3,6 +3,10 @@
 Status: public beta prerelease. This version supersedes beta.1 for new
 installations; neither release is a stable-v1 or production-readiness claim.
 
+> Superseded for new installations by `v0.1.0-beta.3`: GitHub flattened five
+> report asset names while beta.2's checksum file retained directory prefixes,
+> preventing whole-set verification after a complete release download.
+
 ## Why beta.2
 
 Public verification of `go install ...@v0.1.0-beta.1` found that the installed

@@ -124,6 +124,28 @@ func TestVersionConsistency(t *testing.T) {
 	}
 }
 
+func TestGitHubReleaseLayout(t *testing.T) {
+	t.Parallel()
+
+	flat := &Manifest{Artifacts: []Artifact{{Path: "compatibility.json"}, {Path: "security.md"}}}
+	if err := validateGitHubReleaseLayout(flat); err != nil {
+		t.Fatalf("flat release layout rejected: %v", err)
+	}
+
+	for name, manifest := range map[string]*Manifest{
+		"directory":         {Artifacts: []Artifact{{Path: "reports/security.md"}}},
+		"windows-directory": {Artifacts: []Artifact{{Path: `reports\security.md`}}},
+		"duplicate":         {Artifacts: []Artifact{{Path: "security.md"}, {Path: "security.md"}}},
+		"empty":             {Artifacts: []Artifact{{Path: ""}}},
+	} {
+		t.Run(name, func(t *testing.T) {
+			if err := validateGitHubReleaseLayout(manifest); err == nil {
+				t.Fatal("invalid public release layout accepted")
+			}
+		})
+	}
+}
+
 func FuzzManifest(f *testing.F) {
 	seed := Manifest{Schema: ManifestSchema, Version: "0.1.0-beta.1", Snapshot: true, Publication: "disabled", Commit: strings.Repeat("a", 40), Artifacts: []Artifact{{Path: "x", Kind: "test", Size: 1, Digest: Digest{Algorithm: "sha256", Value: strings.Repeat("0", 64)}}}}
 	data, _ := json.Marshal(seed)
@@ -190,7 +212,7 @@ func TestDocumentation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, required := range []string{"docs/release/release-policy.md", "docs/release/readiness-report.md", "docs/release/compatibility.md", "docs/release/security-report.md", "docs/release/performance-report.md", "docs/release/reproducibility-report.md", "docs/release/release-checklist.md", "docs/release/rollback.md", "docs/release/0.1.0-beta.1/launch-decision.md", "docs/release/0.1.0-beta.1/publication-blockers.md", "docs/release/0.1.0-beta.2/launch-decision.md", "docs/release/0.1.0-beta.2/publication-blockers.md", "docs/release/release-notes-0.1.0-beta.2.md", "docs/release/beta-exit-criteria.md", "docs/privacy.md", "docs/maintainers/beta-operations.md", "site/index.html", "KNOWN-ISSUES.md"} {
+	for _, required := range []string{"docs/release/release-policy.md", "docs/release/readiness-report.md", "docs/release/compatibility.md", "docs/release/security-report.md", "docs/release/performance-report.md", "docs/release/reproducibility-report.md", "docs/release/release-checklist.md", "docs/release/rollback.md", "docs/release/0.1.0-beta.1/launch-decision.md", "docs/release/0.1.0-beta.1/publication-blockers.md", "docs/release/0.1.0-beta.2/launch-decision.md", "docs/release/0.1.0-beta.2/publication-blockers.md", "docs/release/0.1.0-beta.3/launch-decision.md", "docs/release/0.1.0-beta.3/publication-blockers.md", "docs/release/release-notes-0.1.0-beta.3.md", "docs/release/beta-exit-criteria.md", "docs/privacy.md", "docs/maintainers/beta-operations.md", "site/index.html", "KNOWN-ISSUES.md"} {
 		if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(required))); err != nil {
 			t.Errorf("required release document %s: %v", required, err)
 		}

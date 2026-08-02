@@ -37,7 +37,9 @@ smoke passes after fixing duplicate VS Code command registration.
 `v0.1.0-beta.1` is the first immutable public tag and GitHub prerelease.
 Post-publication verification found incorrect version output on its `go install`
 binary, so immutable `v0.1.0-beta.2` supersedes it with the regression fix.
-Neither beta is stable-v1 evidence by itself.
+Post-publication verification then found beta.2's nested checksum paths were
+flattened by GitHub; immutable `v0.1.0-beta.3` supersedes it with a flat,
+whole-release-verifiable asset layout. No beta is stable-v1 evidence by itself.
 
 ## Remaining limitations
 

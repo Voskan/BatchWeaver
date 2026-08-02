@@ -10,6 +10,15 @@ The public API may evolve before the 1.0 release.
 
 No changes yet.
 
+## [0.1.0-beta.3] - 2026-08-02
+
+### Fixed
+
+- Publish every manifest-declared artifact at the release root so GitHub asset
+  names, `SHA256SUMS`, and release-manifest paths remain identical after a
+  complete download. The release builder now rejects nested, empty, or
+  duplicate public asset names before publication.
+
 ## [0.1.0-beta.2] - 2026-08-02
 
 ### Fixed

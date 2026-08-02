@@ -1,6 +1,6 @@
 # Release Readiness Report
 
-Release decision: **ready for public `v0.1.0-beta.2` publication**. Source
+Release decision: **ready for public `v0.1.0-beta.3` publication**. Source
 identity is the clean tagged commit and is recorded exactly in the generated
 release manifest.
 
@@ -19,7 +19,7 @@ release manifest.
 | Artifacts and installation smoke | PASS | Digest, layout, native version/help, SBOM, provenance, VSIX install, and real Extension Host activation checks |
 | Reproducibility | PASS in declared scope | Two isolated outputs compare byte-for-byte under fixed Go/Node toolchains |
 
-Recommendation: publish the exact `v0.1.0-beta.2` commit as a prerelease under
+Recommendation: publish the exact `v0.1.0-beta.3` commit as a prerelease under
 the declared toolchains. Hosted Linux, macOS, Windows, CodeQL, and Dependency
 Review checks pass. Repository identity, admin authority, protected-main checks,
 private security reporting, Pages, community settings, and a real VS Code

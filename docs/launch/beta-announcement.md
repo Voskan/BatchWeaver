@@ -1,6 +1,6 @@
 # GitHub Beta Announcement Draft
 
-BatchWeaver `v0.1.0-beta.2` is a proof-gated Go compiler/runtime toolkit for
+BatchWeaver `v0.1.0-beta.3` is a proof-gated Go compiler/runtime toolkit for
 evaluating supported scalar-to-batch transformations. It provides conservative
 analysis, proof evidence, diff/overlay testing, typed runtime batching, verified
 artifact checksums, SBOMs, and explicit rollback paths.
