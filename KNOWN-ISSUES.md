@@ -59,14 +59,6 @@ unpublished `v0.1.0-beta.1` candidate. No stable release is implied.
   the failed workflow. Do not mark the check optional.
 - Stable blocker: yes.
 
-## BW-KI-007 — Windows line-ending correction needs hosted verification
-
-- Severity: P1 for Windows support
-- Evidence: PR #7 CI run `30739695835` failed because `.txt` golden baselines
-  were checked out as CRLF while generated output used LF.
-- Remediation: `.gitattributes` now enforces LF for `.txt` files.
-- Stable blocker: yes until a hosted Windows run passes at the release commit.
-
 ## BW-KI-008 — No public module or release artifacts exist
 
 - Severity: P1 for installation

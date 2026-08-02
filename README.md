@@ -191,7 +191,7 @@ Read the [architecture overview](docs/architecture/overview.md),
 - GraphQL/gRPC optimization requires explicit integrations; arbitrary network
   request fusion is not inferred.
 - The current public API is prerelease and is not frozen as stable v1.
-- Windows CI needs the current line-ending fix verified on a hosted runner.
+- Linux, macOS, and Windows hosted builds pass on the corrected release branch.
 - Dependency Review requires the repository Dependency Graph to be enabled.
 - No release tag, public assets, Pages deployment, or pkg.go.dev version exists.
 

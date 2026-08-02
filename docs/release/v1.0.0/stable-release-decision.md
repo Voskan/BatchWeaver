@@ -12,10 +12,10 @@ governance evidence period.
 
 | Criterion | Status | Evidence or blocker |
 | --- | --- | --- |
-| No unresolved P0/P1 | blocked | Windows, dependency-policy, installation, editor E2E, and hosted settings remain P1 publication blockers |
+| No unresolved P0/P1 | blocked | dependency-policy, installation, editor E2E, and hosted settings remain P1 publication blockers |
 | Supported transformations differential-tested | pass locally | deterministic differential suite; must rerun on final commit |
 | Mandatory mutations killed | pass locally | 12/12 modeled critical mutations; final rerun required |
-| Compatibility matrix | blocked | hosted Windows correction unverified; only Go 1.26.5 tested |
+| Compatibility matrix | partial | Linux, macOS, and Windows hosted jobs pass; only Go 1.26.5 and limited integrations are tested |
 | Upgrade from supported prereleases | blocked | no prerelease has been published |
 | Installation | blocked | no tag, proxy version, release asset, or public docs deployment |
 | Race, fuzz, and security suites | partial | local evidence exists; dependency review cannot run |

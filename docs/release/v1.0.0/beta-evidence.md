@@ -29,9 +29,9 @@ At candidate commit `eee33b88761af4ac309298eae035d015547287f1`:
 - CodeQL run `30739695827` passed.
 - Linux and macOS builds, validation, coverage, VS Code checks, and release
   assurance passed within CI run `30739695835`.
-- The Windows job failed on two LF-versus-CRLF baseline comparisons. The root
-  cause is reproduced and corrected by enforcing LF for `.txt` files; hosted
-  verification is pending.
+- The earlier Windows job failed on two LF-versus-CRLF baseline comparisons.
+  The root cause was corrected by enforcing LF for `.txt` files. PR #7 CI run
+  `30741225928` then passed Linux, macOS, and Windows build/test jobs.
 - Dependency Review run `30739695826` failed because the repository Dependency
   Graph is disabled. This is a repository setting, not a lockfile finding.
 

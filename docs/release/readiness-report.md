@@ -20,8 +20,8 @@ No tag or publication has occurred.
 | Reproducibility | PASS in declared scope | Two isolated outputs compare byte-for-byte under fixed Go/Node toolchains |
 
 Recommendation: the source remains suitable for an unpublished beta snapshot
-under the declared toolchains. Public publication is not ready until the hosted
-Windows correction passes, Dependency Graph enables the mandatory dependency
-review, and an authorized maintainer verifies branch protection, security
-reporting, required checks, publishing identity, and a real VS Code Extension
-Host smoke; see `KNOWN-ISSUES.md`.
+under the declared toolchains. Hosted Linux, macOS, and Windows builds now pass.
+Public publication is not ready until Dependency Graph enables the mandatory
+dependency review and an authorized maintainer verifies branch protection,
+security reporting, required checks, publishing identity, and a real VS Code
+Extension Host smoke; see `KNOWN-ISSUES.md`.

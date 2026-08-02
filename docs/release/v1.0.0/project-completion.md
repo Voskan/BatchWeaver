@@ -26,9 +26,9 @@ documented independently.
 
 Local assurance covers unit, race, differential, selected mutation, fault,
 short-soak, performance budget, vulnerability, license, artifact, SBOM,
-provenance, and reproducibility checks. Hosted CodeQL passes. Hosted Windows
-failed on a verified text-normalization defect now corrected in source; hosted
-rerun is pending. Dependency Review is blocked by a disabled repository feature.
+provenance, and reproducibility checks. Hosted CodeQL and Linux, macOS, and
+Windows build/test jobs pass after the verified text-normalization correction.
+Dependency Review is blocked by a disabled repository feature.
 
 ## Release history
 
@@ -38,7 +38,7 @@ and represented by a release branch and PR, not by an immutable distribution.
 ## Remaining limitations
 
 The exact list is maintained in `KNOWN-ISSUES.md`. Principal blockers are
-hosted repository settings, dependency review, Windows verification, VS Code
+hosted repository settings, dependency review, VS Code
 host E2E, public module/archive installation, public migration evidence, API
 approval, security-reporting verification, and a meaningful beta evidence
 period.

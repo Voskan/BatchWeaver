@@ -4,10 +4,10 @@
   "decision": "blocked",
   "evaluated_at": "2026-08-02",
   "criteria": [
-    {"id":"p0-p1","status":"blocked","reason":"publication P1 blockers remain"},
+    {"id":"p0-p1","status":"blocked","reason":"dependency, installation, editor E2E, and hosted-settings P1 blockers remain"},
     {"id":"differential","status":"pass-local","reason":"final commit rerun required"},
     {"id":"mutation","status":"pass-local","reason":"12/12 modeled critical mutations killed"},
-    {"id":"compatibility","status":"blocked","reason":"hosted Windows fix unverified"},
+    {"id":"compatibility","status":"partial","reason":"Linux, macOS, and Windows pass; toolchain and integration coverage remains limited"},
     {"id":"migration","status":"blocked","reason":"no published prerelease exists"},
     {"id":"installation","status":"blocked","reason":"no public tag, proxy version, or assets"},
     {"id":"race-fuzz-security","status":"partial","reason":"dependency review is unavailable"},
