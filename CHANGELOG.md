@@ -4,9 +4,39 @@ All notable changes to this project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-The public API may evolve before the 1.0 release.
+The Tier 1 public API is frozen for the `v1` series; `bridge` and `adapters/*`
+are experimental and may change in a minor release.
 
-## [Unreleased]
+## [1.0.0]
+
+First stable release. See
+[release notes](docs/release/release-notes-1.0.0.md), the
+[API freeze](docs/release/v1.0.0/api-freeze.md), and the
+[stable-release decision](docs/release/v1.0.0/stable-release-decision.md), which
+records the accepted risks this release ships with (unsigned artifacts, hosted
+compatibility evidence not observed at the tagged commit, a short public
+prerelease period, and no live-backend acceptance).
+
+### Added
+
+- Public API freeze with explicit stable and experimental tiers, an enforced
+  exported-surface baseline, and a documented compatibility window.
+- Executable prerelease migration suite covering `v0.1.0-beta.1`,
+  `v0.1.0-beta.2`, and `v0.1.0-beta.3` to the `v1.0.0` candidate: configuration
+  schema 1 continuity, migration-inventory contract, workload-profile rejection
+  on ABI or configuration change, staleness on age, and scalar rollback.
+- Scheduled and manually dispatchable production-like campaigns spanning eleven
+  fuzz categories, compiler/runtime/adapters/editor/daemon/adaptive phases, long
+  deterministic soak, explicit leak budgets, injected failures, release
+  reproduction, and per-commit machine-readable hosted evidence.
+
+### Changed
+
+- The stable gate report is now an auditable launch report whose decision must
+  match its gate states; an accepted risk requires an explicit exception and a
+  remediation plan, enforced by tests.
+
+## [0.1.0-beta.3] and earlier
 
 ### Added
 

@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/Voskan/BatchWeaver/actions/workflows/ci.yml/badge.svg)](https://github.com/Voskan/BatchWeaver/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/Voskan/BatchWeaver/actions/workflows/codeql.yml/badge.svg)](https://github.com/Voskan/BatchWeaver/actions/workflows/codeql.yml)
-[![Go Reference](https://pkg.go.dev/badge/github.com/Voskan/BatchWeaver.svg)](https://pkg.go.dev/github.com/Voskan/BatchWeaver@v0.1.0-beta.3)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Voskan/BatchWeaver.svg)](https://pkg.go.dev/github.com/Voskan/BatchWeaver@v1.0.0)
 [![License](https://img.shields.io/github/license/Voskan/BatchWeaver)](LICENSE)
 
 BatchWeaver is a proof-gated batching compiler and typed request-coalescing
@@ -11,10 +11,14 @@ query shapes—proves their safety conditions, previews deterministic changes,
 and executes compatible calls in bounded batches without silently crossing
 request, tenant, authorization, transaction, or session boundaries.
 
-> **Release status:** `v0.1.0-beta.3` is the current public beta. Its APIs may
-> change before v1, and the project does not yet make a stable-production claim.
-> See the [release notes](docs/release/release-notes-0.1.0-beta.3.md) and the
-> [stable-release decision](docs/release/v1.0.0/stable-release-decision.md).
+> **Release status:** `v1.0.0` is the current stable release. The Tier 1 Go API
+> is frozen under Semantic Versioning; `bridge` and the `adapters/*` packages
+> are explicitly experimental, and compiler artifact schemas remain `v1alpha1`.
+> Artifacts are checksummed and reproducible but **not signed**. See the
+> [release notes](docs/release/release-notes-1.0.0.md), the
+> [API freeze](docs/release/v1.0.0/api-freeze.md), and the
+> [stable-release decision](docs/release/v1.0.0/stable-release-decision.md),
+> which records the accepted risks this release ships with.
 
 ## Why BatchWeaver?
 
@@ -47,8 +51,8 @@ current pinned release toolchain.
 Install the CLI or add the typed library at the immutable beta version:
 
 ```bash
-go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v0.1.0-beta.3
-go get github.com/Voskan/BatchWeaver@v0.1.0-beta.3
+go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v1.0.0
+go get github.com/Voskan/BatchWeaver@v1.0.0
 ```
 
 For a source checkout at the same version:
@@ -56,14 +60,14 @@ For a source checkout at the same version:
 ```bash
 git clone https://github.com/Voskan/BatchWeaver.git
 cd BatchWeaver
-git checkout v0.1.0-beta.3
+git checkout v1.0.0
 make build
 ./bin/batchweaver version
 ./bin/batchweaver doctor
 ```
 
 Package documentation and import examples are available through
-[pkg.go.dev](https://pkg.go.dev/github.com/Voskan/BatchWeaver@v0.1.0-beta.3). See
+[pkg.go.dev](https://pkg.go.dev/github.com/Voskan/BatchWeaver@v1.0.0). See
 [Using BatchWeaver as a Go module](docs/guides/use-as-go-module.md) for the
 library and CLI installation paths.
 
@@ -189,16 +193,20 @@ Read the [architecture overview](docs/architecture/overview.md),
 
 ## Important limitations
 
-- The current `v0.1.0-beta.3` artifacts predate the concrete client bindings;
-  until a newer immutable release is published, use a reviewed source commit to
-  evaluate `adapters/pgxv5`, `adapters/redisv9`, `adapters/gqlgen`, and
-  `adapters/grpcgo`.
+- `bridge` and the four `adapters/*` client packages are experimental: they ship
+  in the `v1` module but are not covered by the `v1` compatibility promise,
+  because they track third-party client APIs.
+- Release artifacts are checksummed, SBOM-documented, and reproducible, but they
+  are **not cryptographically signed** and carry no hosted build attestation.
+- Client integrations are covered by hermetic fakes, not by live PostgreSQL or
+  Redis Cluster acceptance runs.
 - SQL synthesis is limited to documented exact/composite-key PostgreSQL reads
   and one explicitly at-most-one INNER/LEFT join; writes, one-to-many joins, and
   arbitrary SQL rewrites are rejected.
 - GraphQL/gRPC optimization requires explicit integrations; arbitrary network
   request fusion is not inferred.
-- The current public API is prerelease and is not frozen as stable v1.
+- Compiler and runtime artifact schemas remain `v1alpha1`; they are regenerated
+  rather than migrated and are excluded from the `v1` API promise.
 - Linux, macOS, and Windows hosted builds pass on the corrected release branch.
 - The VS Code extension is supplied as a GitHub Release VSIX, not through the
   Visual Studio Marketplace.
@@ -243,11 +251,16 @@ make release-snapshot
 
 ## Project status
 
-The public beta begins the evidence period required before a stable release.
-There are not yet sufficient downstream compatibility, migration, adoption, or
-feedback results to authorize `v1.0.0`, even though the beta release gates pass.
-The repository records the exact state in [beta evidence](docs/release/v1.0.0/beta-evidence.md),
-the [v1 gate report](docs/release/v1.0.0/stable-release-decision.md), and the
+`v1.0.0` freezes the Tier 1 public Go API under Semantic Versioning and ships a
+tested upgrade path from every published prerelease. It ships with explicitly
+accepted risks — unsigned artifacts, hosted compatibility evidence not observed
+at the tagged commit, a short public prerelease period, and no live-backend
+acceptance — each recorded with a remediation plan in the
+[stable-release decision](docs/release/v1.0.0/stable-release-decision.md) and the
+machine-readable [gate report](release/gates-v1.0.0.json).
+
+The project does not claim long-term production-stability evidence. See
+[beta evidence](docs/release/v1.0.0/beta-evidence.md) and the
 [continuation plan](docs/release/v1.0.0/project-completion.md).
 
 ## License

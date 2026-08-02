@@ -8,6 +8,8 @@
   `scripts/verify-hosted-compatibility.sh <commit>` verifies all 18 retained
   evidence rows.
 - [ ] Differential, mutation, fuzz, fault, soak, and performance gates pass.
+- [ ] Multiple `production-campaign-<commit>` hosted artifacts pass at the exact
+      final candidate; each contains every required phase and retained corpus.
 - [ ] Security, vulnerability, secret, workflow, dependency, and license checks pass.
 - [ ] Documentation, examples, and clean quickstart pass.
 - [ ] Snapshot artifacts, checksums, SBOMs, provenance, and manifest verify.

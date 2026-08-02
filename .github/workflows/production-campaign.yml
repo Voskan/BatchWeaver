@@ -1,0 +1,294 @@
+name: Production-like Campaign
+
+on:
+  workflow_dispatch:
+    inputs:
+      fuzz_minutes:
+        description: Minutes per parallel fuzz category
+        required: true
+        default: 15
+        type: number
+      soak_minutes:
+        description: Minutes for the mixed production-like soak
+        required: true
+        default: 30
+        type: number
+  schedule:
+    - cron: "23 2 * * 6"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-campaign-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GO_VERSION: "1.26.5"
+  NODE_VERSION: "22.22.0"
+  CAMPAIGN_SEED: "1119513617"
+  FUZZ_TIME: ${{ github.event_name == 'schedule' && '30m' || format('{0}m', inputs.fuzz_minutes) }}
+  SOAK_TIME: ${{ github.event_name == 'schedule' && '60m' || format('{0}m', inputs.soak_minutes) }}
+
+jobs:
+  fuzz:
+    name: Fuzz ${{ matrix.category }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - category: config
+            package: ./config
+            target: FuzzParseDuration
+          - category: schemas
+            package: ./internal/configdecode
+            target: FuzzParseYAML
+          - category: proof
+            package: ./internal/proof
+            target: FuzzProveNoPanic
+          - category: transforms
+            package: ./internal/transform
+            target: FuzzUnifiedDiff
+          - category: sql
+            package: ./internal/adapter
+            target: FuzzSQLSynthesis
+          - category: protocols
+            package: ./internal/lsp/protocol
+            target: FuzzProtocolInitialize
+          - category: lsp
+            package: ./internal/lsp/jsonrpc
+            target: FuzzReadMessage
+          - category: daemon
+            package: ./internal/daemon
+            target: FuzzDaemonDiscovery
+          - category: profiles
+            package: ./internal/adaptive
+            target: FuzzProfileUnmarshal
+          - category: releases
+            package: ./internal/release
+            target: FuzzManifest
+          - category: migrations
+            package: ./internal/release
+            target: FuzzMigrationInventory
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          check-latest: false
+
+      - name: Run category fuzz campaign
+        env:
+          BATCHWEAVER_CAMPAIGN_SEED: ${{ env.CAMPAIGN_SEED }}
+          BATCHWEAVER_FUZZ_CORPUS: ${{ runner.temp }}/batchweaver-fuzz-${{ matrix.category }}/fuzz
+          GOCACHE: ${{ runner.temp }}/batchweaver-fuzz-${{ matrix.category }}
+        run: >-
+          go run .github/scripts/campaign-phase.go
+          --output evidence/${{ matrix.category }}.json
+          --name fuzz-${{ matrix.category }}
+          --category ${{ matrix.category }}
+          go test ${{ matrix.package }} -run '^$'
+          -fuzz '^${{ matrix.target }}$' -fuzztime '${{ env.FUZZ_TIME }}'
+          -parallel 4
+
+      - name: Upload phase evidence and generated corpus
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: campaign-fuzz-${{ matrix.category }}
+          path: |
+            evidence
+            ${{ runner.temp }}/batchweaver-fuzz-${{ matrix.category }}/fuzz
+          if-no-files-found: error
+          retention-days: 30
+
+  mixed:
+    name: Mixed compiler, runtime, integrations, and soak
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          check-latest: false
+
+      - name: Set up Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: editors/vscode/package-lock.json
+
+      - name: Compiler and transformation phase
+        run: >-
+          go run .github/scripts/campaign-phase.go
+          --output evidence/compiler.json --name compiler-transform
+          --category compiler
+          go test -race ./internal/analysis ./internal/proof ./internal/transform -count=1
+
+      - name: Runtime phase
+        if: always()
+        run: >-
+          go run .github/scripts/campaign-phase.go
+          --output evidence/runtime.json --name runtime-scheduler
+          --category runtime
+          go test -race ./runtime ./operation -count=1
+
+      - name: Concrete adapter phase
+        if: always()
+        run: >-
+          go run .github/scripts/campaign-phase.go
+          --output evidence/adapters.json --name concrete-adapters
+          --category adapters
+          go test -race ./internal/adapter ./adapters/... -count=1
+
+      - name: Daemon and cache phase
+        if: always()
+        run: >-
+          go run .github/scripts/campaign-phase.go
+          --output evidence/daemon-cache.json --name daemon-cache
+          --category daemon-runtime
+          go test -race ./internal/daemon ./internal/analysiscache -count=1
+
+      - name: Adaptive phase
+        if: always()
+        run: >-
+          go run .github/scripts/campaign-phase.go
+          --output evidence/adaptive.json --name adaptive-control
+          --category adaptive
+          go test -race ./internal/adaptive -count=1
+
+      - name: Real VS Code Extension Host phase
+        if: always()
+        run: >-
+          go run .github/scripts/campaign-phase.go
+          --output evidence/editor.json --name vscode-extension-host
+          --category editor
+          bash -c 'cd editors/vscode && npm ci && npm run lint && npm run typecheck
+          && npm run compile && npm test && xvfb-run -a npm run test:host -- --version 1.131.0'
+
+      - name: Production-like mixed soak
+        if: always()
+        env:
+          BATCHWEAVER_CAMPAIGN_SEED: ${{ env.CAMPAIGN_SEED }}
+          BATCHWEAVER_SOAK_DURATION: ${{ env.SOAK_TIME }}
+        run: >-
+          go run .github/scripts/campaign-phase.go
+          --output evidence/soak.json --name production-like-soak
+          --category soak
+          go test -race ./internal/assurance
+          -run '^TestProductionLikeSoak$' -count=1 -timeout 75m
+
+      - name: Upload mixed phase evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: campaign-mixed
+          path: evidence
+          if-no-files-found: error
+          retention-days: 30
+
+  faults:
+    name: Leak budgets and injected failures
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          check-latest: false
+
+      - name: Goroutine, memory, timer, descriptor, stream, and child budgets
+        run: >-
+          go run .github/scripts/campaign-phase.go
+          --output evidence/leaks.json --name resource-leak-budgets
+          --category leaks
+          go test -race ./internal/assurance
+          -run '^TestResourceLeakBudgets$' -count=1
+
+      - name: Timeout, reset, malformed, corruption, permission, crash, download, and signature faults
+        if: always()
+        run: >-
+          go run .github/scripts/campaign-phase.go
+          --output evidence/faults.json --name injected-fault-matrix
+          --category faults
+          go test -race ./internal/assurance
+          -run '^TestProductionFaultMatrix$' -count=1
+
+      - name: Unpublished release reproduction phase
+        if: always()
+        run: >-
+          go run .github/scripts/campaign-phase.go
+          --output evidence/release.json --name release-reproduction
+          --category release
+          bash -c 'go run ./cmd/batchweaver release build --snapshot --output dist
+          && go run ./cmd/batchweaver release verify dist/release-manifest.json
+          && go run ./cmd/batchweaver release reproduce --manifest dist/release-manifest.json'
+
+      - name: Upload leak, fault, and release evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: campaign-faults-release
+          path: evidence
+          if-no-files-found: error
+          retention-days: 30
+
+  policy:
+    name: Production campaign policy
+    if: always()
+    needs: [fuzz, mixed, faults]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          check-latest: false
+
+      - name: Download all phase evidence
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: campaign-*
+          path: downloaded-campaign
+
+      - name: Validate completeness, exact commit, and passing phases
+        run: >-
+          go run .github/scripts/validate-campaign-evidence.go
+          --root downloaded-campaign --commit '${{ github.sha }}'
+          --expected 'config,schemas,proof,transforms,sql,protocols,lsp,daemon,profiles,releases,migrations,
+          compiler,runtime,adapters,daemon-runtime,adaptive,editor,soak,leaks,faults,release'
+          --output combined-campaign/campaign-${{ github.sha }}.json
+
+      - name: Upload combined hosted evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: production-campaign-${{ github.sha }}
+          path: combined-campaign
+          if-no-files-found: error
+          retention-days: 90

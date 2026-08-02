@@ -1,7 +1,7 @@
 schema: batchweaver.release-config/v1alpha1
-mode: snapshot
+mode: release
 publish: false
-version_recommendation: 0.1.0-beta.3
+version_recommendation: 1.0.0
 toolchain: go1.26.5
 targets:
   - linux/amd64
@@ -13,7 +13,7 @@ integrity:
   checksum: sha256
   sbom: [spdx-2.3-json, cyclonedx-1.5-json]
   provenance: local-unsigned-statement
-  signing: disabled-for-snapshot
+  signing: disabled-unsigned-artifacts
 reproducibility:
   trimpath: true
   buildvcs: false

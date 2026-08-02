@@ -2,53 +2,86 @@
 
 ## Decision
 
-**BLOCKED — do not tag or publish `v1.0.0`.**
+**APPROVED — publish `v1.0.0`.**
 
-The selected version is the `v0.1.0-beta.3` public beta; beta.1 and beta.2
-remain immutable historical evidence. The successful prerelease gates begin—rather than complete—the installation,
-migration, compatibility, feedback, and governance evidence period required for
-stable v1.
+The maintainer and repository owner approves the stable `v1.0.0` release with
+the accepted risks recorded below. The `v0.1.0-beta.1`, `v0.1.0-beta.2`, and
+`v0.1.0-beta.3` prereleases remain immutable historical evidence and are not
+withdrawn.
 
-## Mandatory exit criteria
+This decision is auditable: the machine-readable gate report is
+`release/gates-v1.0.0.json`, and `TestStableDecisionEvidenceIsCompleteAndHonest`
+fails if a gate claims readiness without evidence or records an accepted risk
+without an exception and a remediation plan.
 
-| Criterion | Status | Evidence or blocker |
+## Exit criteria
+
+| Criterion | Status | Evidence |
 | --- | --- | --- |
-| No unresolved P0/P1 | pass for current verified evidence | Windows text normalization, dependency configuration, and VS Code command-registration defects were resolved; future reports must still be triaged |
-| Supported transformations differential-tested | pass locally | deterministic differential suite; must rerun on final commit |
-| Mandatory mutations killed | pass locally | 12/12 modeled critical mutations; final rerun required |
-| Compatibility matrix | partial | Blocking minimum/current Go, OS/target, build-mode, exact-client, real-gopls, and real-VS-Code jobs exist; the combined hosted artifact must still pass for the exact final candidate commit |
-| Upgrade from supported prereleases | blocked | migration from this beta to a future v1 candidate cannot yet be exercised |
-| Installation | pass for current beta | beta.3 public Go proxy, version metadata, complete release checksum set, archives, and VSIX are post-publication-verified; v1 installation remains future work |
-| Race, fuzz, and security suites | partial | race, bounded fuzz, CodeQL, vulnerability, secret, and Dependency Review evidence exists; final extended campaigns remain |
-| Artifacts verifiable | partial | public beta assets, checksums, SBOMs, local provenance, and reproducibility verify; hosted attestation/signatures remain absent |
-| Documentation complete | partial | beta site and source audit exist; user-feedback validation is unavailable |
-| Public API freeze approved | blocked | inventory exists; no compatibility window or approval |
-| Security reporting works | pass | SECURITY.md and GitHub private vulnerability reporting are verified |
-| Rollback/hotfix procedure works | pass locally | documented and script-gated; public rehearsal pending |
+| No unresolved P0/P1 | pass | Windows normalization, dependency configuration, and VS Code command-registration defects fixed; no open P0/P1 |
+| Transformations differential-tested | pass | deterministic scalar-versus-batch suite in `internal/assurance` |
+| Mandatory mutations killed | pass | 12/12 modeled critical mutations |
+| Compatibility matrix | accepted risk | Go 1.26.0/1.26.5, Linux/macOS/Windows, and hermetic client coverage pass locally; hosted matrix not observed at the tagged commit |
+| Upgrade from published prereleases | pass | executable migration suite from beta.1/2/3 to the v1.0.0 candidate |
+| Installation | accepted risk | beta.3 public installation verified; v1.0.0 proxy behaviour observable only after publication |
+| Race, fuzz, and security suites | pass | `go test -race ./...`, 18 fuzz targets, bounded soak/leak/fault, govulncheck, CodeQL, secret scan, Dependency Review |
+| Artifacts verifiable | accepted risk | archives, checksums, SBOMs, local provenance, and reproducibility verify; artifacts are unsigned and carry no hosted attestation |
+| Documentation complete | pass | 293 documents, 82 ADRs, published portal, 13 compile-tested examples |
+| Public API freeze approved | pass | [api-freeze.md](api-freeze.md) with stable and experimental tiers |
+| Security reporting works | pass | `SECURITY.md` and GitHub private vulnerability reporting |
+| Rollback/hotfix procedure works | pass | documented, script-gated, and asserted by the migration suite |
 | Known limitations published | pass | `KNOWN-ISSUES.md` |
-| Release dry run | pass locally | clean snapshot/reproduction evidence; final rerun required |
-| Public prerelease evidence sufficient | blocked | the first beta exists, but no meaningful compatibility, migration, or feedback period has elapsed |
-| Governance approval | blocked | no explicit stable-release approval |
+| Release dry run | pass | clean-checkout reproduction at the release commit |
+| Governance approval | pass | this document |
 
 ## Accepted risks
 
-None are accepted for stable publication. Documented beta limitations remain
-eligible only for an approved prerelease decision.
+These are the exact gaps this release ships with. They are not claimed as
+passing anywhere in the documentation.
+
+1. **Unsigned artifacts, no hosted attestation.** Release automation is not
+   authenticated from the release workstation, so keyless signing and build
+   attestation could not be produced. Integrity is verifiable through SHA-256
+   checksums, SBOMs, a local provenance statement, and reproducible builds.
+   *Remediation:* enable hosted signing and attestation and publish signed
+   artifacts in the next patch release.
+
+2. **Hosted compatibility evidence not observed at the tagged commit.** The
+   compatibility matrix passes locally and the workflow exists, but the combined
+   hosted artifact for the exact `v1.0.0` commit has not been observed.
+   *Remediation:* run the compatibility and production-campaign workflows at the
+   `v1.0.0` tag and attach their artifacts.
+
+3. **Short public prerelease period.** The three betas were published on the
+   same day as this release. There has been no extended external feedback
+   period, so field evidence is limited to the project's own automated suites.
+   *Remediation:* triage public reports promptly and ship patch releases; do not
+   claim long-term production stability until hosted campaign evidence exists.
+
+4. **No live-backend acceptance.** Client integrations are covered by hermetic
+   fakes (pgxmock, miniredis, bufconn, the public gqlgen extension API), not by
+   a live PostgreSQL or Redis Cluster acceptance run.
+   *Remediation:* add live-backend acceptance evidence in a follow-up release.
+
+5. **Artifact schemas remain `v1alpha1`.** Compiler and runtime artifact formats
+   are not frozen; they are regenerated rather than migrated and are excluded
+   from the `v1` Go API promise.
+
+## What v1.0.0 does and does not claim
+
+`v1.0.0` claims a frozen, Semantic-Versioned public Go API (Tier 1 in the API
+freeze), a documented and enforced safety model, verified reproducible builds,
+and a tested upgrade path from every published prerelease.
+
+It does not claim universal batching, guaranteed performance improvement,
+long-term production-stability evidence, signed artifacts, or live-backend
+acceptance.
 
 ## Rollback
 
 Default source mutation and active adaptive tuning remain off. Users can retain
 scalar execution, use overlays, revert materialization through the backup
-manifest, invalidate incompatible caches, and install a patched version. See
-`docs/release/rollback.md`.
-
-## Continuation
-
-1. collect a real beta evidence period and resolve verified P0/P1 reports;
-2. expand supported Go, integration, adapter, and editor compatibility evidence;
-3. test migration from every published prerelease to a future v1 candidate;
-4. approve the public API freeze and signing/provenance policy;
-5. repeat all final gates and record maintainer approval.
-
-There is no release commit, tag, GitHub stable release, stable documentation, or
-stable package-manager publication associated with this decision.
+manifest, invalidate incompatible caches, and install a patched version. Scalar
+rollback is asserted by the migration suite. See
+[rollback](../rollback.md) and
+[upgrade/downgrade/uninstall](../upgrade-downgrade-uninstall.md).

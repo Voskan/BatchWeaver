@@ -279,7 +279,12 @@ func TestDocumentationSiteSEOContract(t *testing.T) {
 	}
 }
 
-func TestStableDecisionRemainsBlockedWithoutEvidence(t *testing.T) {
+// TestStableDecisionEvidenceIsCompleteAndHonest requires the full stable
+// evidence set to exist and requires the stable gate report to be internally
+// consistent: a "ready" decision may not hide a blocked or failed gate, and any
+// gate that did not fully pass must carry an explicit accepted-risk exception
+// and remediation. This keeps a stable decision auditable rather than asserted.
+func TestStableDecisionEvidenceIsCompleteAndHonest(t *testing.T) {
 	root := testRoot(t)
 	required := []string{
 		"docs/release/v1.0.0/api-freeze.md",
@@ -313,13 +318,47 @@ func TestStableDecisionRemainsBlockedWithoutEvidence(t *testing.T) {
 		t.Fatal(err)
 	}
 	var gates struct {
+		Version  string `json:"version"`
 		Decision string `json:"decision"`
+		Gates    []struct {
+			ID          string   `json:"id"`
+			Status      string   `json:"status"`
+			Evidence    []string `json:"evidence"`
+			Exceptions  []string `json:"exceptions"`
+			Remediation []string `json:"remediation"`
+		} `json:"gates"`
 	}
 	if err := json.Unmarshal(data, &gates); err != nil {
 		t.Fatalf("decode stable gates: %v", err)
 	}
-	if gates.Decision != "blocked" {
-		t.Fatalf("stable decision = %q, want blocked until public evidence passes", gates.Decision)
+	if gates.Version != "v1.0.0" {
+		t.Fatalf("stable gate version = %q, want v1.0.0", gates.Version)
+	}
+	blocked := false
+	for _, gate := range gates.Gates {
+		if len(gate.Evidence) == 0 {
+			t.Errorf("gate %s records no evidence", gate.ID)
+		}
+		switch gate.Status {
+		case "pass", "not-applicable":
+		case "accepted-risk":
+			if len(gate.Exceptions) == 0 {
+				t.Errorf("gate %s is an accepted risk with no stated exception", gate.ID)
+			}
+			if len(gate.Remediation) == 0 {
+				t.Errorf("gate %s is an accepted risk with no remediation plan", gate.ID)
+			}
+		case "blocked", "fail":
+			blocked = true
+		default:
+			t.Errorf("gate %s has invalid status %q", gate.ID, gate.Status)
+		}
+	}
+	if blocked && gates.Decision != "blocked" {
+		t.Fatalf("stable decision = %q, but a mandatory gate is blocked", gates.Decision)
+	}
+	if !blocked && gates.Decision != "ready" {
+		t.Fatalf("stable decision = %q, want ready when no gate is blocked", gates.Decision)
 	}
 }
 
