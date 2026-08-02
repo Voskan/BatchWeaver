@@ -1,0 +1,20 @@
+# BatchWeaver
+
+BatchWeaver is an Apache-2.0 proof-gated automatic batching compiler and typed
+request-coalescing runtime for Go. Current public version: v@@VERSION@@.
+
+Primary documentation:
+- https://voskan.github.io/BatchWeaver/docs.html
+- https://voskan.github.io/BatchWeaver/examples.html
+- https://voskan.github.io/BatchWeaver/api.html
+- https://voskan.github.io/BatchWeaver/status.html
+- https://pkg.go.dev/github.com/Voskan/BatchWeaver@v@@VERSION@@
+- https://github.com/Voskan/BatchWeaver
+
+Important limitations:
+- The current release is a public beta, not stable v1.
+- Unsupported transformations fail closed.
+- Concrete pgx, go-redis, gqlgen, and grpc-go bindings are not included.
+- Source is not uploaded and remote telemetry is not enabled.
+- Releases currently provide checksums, SBOMs, and local unsigned provenance,
+  but not cryptographic signatures or a hosted SLSA attestation.

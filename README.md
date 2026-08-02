@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/Voskan/BatchWeaver/actions/workflows/ci.yml/badge.svg)](https://github.com/Voskan/BatchWeaver/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/Voskan/BatchWeaver/actions/workflows/codeql.yml/badge.svg)](https://github.com/Voskan/BatchWeaver/actions/workflows/codeql.yml)
-[![Go Reference](https://pkg.go.dev/badge/github.com/Voskan/BatchWeaver.svg)](https://pkg.go.dev/github.com/Voskan/BatchWeaver)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Voskan/BatchWeaver.svg)](https://pkg.go.dev/github.com/Voskan/BatchWeaver@v0.1.0-beta.3)
 [![License](https://img.shields.io/github/license/Voskan/BatchWeaver)](LICENSE)
 
 BatchWeaver is a proof-gated batching compiler and typed request-coalescing
@@ -62,7 +62,7 @@ make build
 ```
 
 Package documentation and import examples are available through
-[pkg.go.dev](https://pkg.go.dev/github.com/Voskan/BatchWeaver). See
+[pkg.go.dev](https://pkg.go.dev/github.com/Voskan/BatchWeaver@v0.1.0-beta.3). See
 [Using BatchWeaver as a Go module](docs/guides/use-as-go-module.md) for the
 library and CLI installation paths.
 
@@ -201,6 +201,10 @@ See [known issues](KNOWN-ISSUES.md) and the detailed
 
 ## Documentation
 
+- [Documentation website](https://voskan.github.io/BatchWeaver/docs.html)
+- [Runnable examples](https://voskan.github.io/BatchWeaver/examples.html)
+- [Go API and CLI](https://voskan.github.io/BatchWeaver/api.html)
+- [Implemented features and v1 readiness](https://voskan.github.io/BatchWeaver/status.html)
 - [Documentation index](docs/README.md)
 - [Tutorials](docs/tutorials/verified-batching.md)
 - [How-to guides](docs/guides/scan.md)

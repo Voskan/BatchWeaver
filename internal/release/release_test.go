@@ -212,10 +212,70 @@ func TestDocumentation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, required := range []string{"docs/release/release-policy.md", "docs/release/readiness-report.md", "docs/release/compatibility.md", "docs/release/security-report.md", "docs/release/performance-report.md", "docs/release/reproducibility-report.md", "docs/release/release-checklist.md", "docs/release/rollback.md", "docs/release/0.1.0-beta.1/launch-decision.md", "docs/release/0.1.0-beta.1/publication-blockers.md", "docs/release/0.1.0-beta.2/launch-decision.md", "docs/release/0.1.0-beta.2/publication-blockers.md", "docs/release/0.1.0-beta.3/launch-decision.md", "docs/release/0.1.0-beta.3/publication-blockers.md", "docs/release/release-notes-0.1.0-beta.3.md", "docs/release/beta-exit-criteria.md", "docs/privacy.md", "docs/maintainers/beta-operations.md", "site/index.html", "KNOWN-ISSUES.md"} {
+	for _, required := range []string{"docs/release/release-policy.md", "docs/release/readiness-report.md", "docs/release/compatibility.md", "docs/release/security-report.md", "docs/release/performance-report.md", "docs/release/reproducibility-report.md", "docs/release/release-checklist.md", "docs/release/rollback.md", "docs/release/0.1.0-beta.1/launch-decision.md", "docs/release/0.1.0-beta.1/publication-blockers.md", "docs/release/0.1.0-beta.2/launch-decision.md", "docs/release/0.1.0-beta.2/publication-blockers.md", "docs/release/0.1.0-beta.3/launch-decision.md", "docs/release/0.1.0-beta.3/publication-blockers.md", "docs/release/release-notes-0.1.0-beta.3.md", "docs/release/beta-exit-criteria.md", "docs/privacy.md", "docs/maintainers/beta-operations.md", "site/index.html", "site/docs.html", "site/examples.html", "site/api.html", "site/status.html", "site/sitemap.xml", "site/robots.txt", "site/llms.txt", "site/site.webmanifest", "site/social-card.png", "KNOWN-ISSUES.md"} {
 		if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(required))); err != nil {
 			t.Errorf("required release document %s: %v", required, err)
 		}
+	}
+}
+
+func TestDocumentationSiteSEOContract(t *testing.T) {
+	root := testRoot(t)
+	pages := map[string]string{
+		"index.html":    "https://voskan.github.io/BatchWeaver/",
+		"docs.html":     "https://voskan.github.io/BatchWeaver/docs.html",
+		"examples.html": "https://voskan.github.io/BatchWeaver/examples.html",
+		"api.html":      "https://voskan.github.io/BatchWeaver/api.html",
+		"status.html":   "https://voskan.github.io/BatchWeaver/status.html",
+	}
+	required := []string{
+		`<html lang="en">`,
+		"<title>",
+		`<meta name="description"`,
+		`<meta property="og:title"`,
+		`<meta property="og:description"`,
+		`<meta property="og:image"`,
+		`<meta name="twitter:card"`,
+		`<script type="application/ld+json">`,
+		`<main id="main"`,
+	}
+	for page, canonical := range pages {
+		t.Run(page, func(t *testing.T) {
+			data, err := os.ReadFile(filepath.Join(root, "site", page))
+			if err != nil {
+				t.Fatal(err)
+			}
+			content := string(data)
+			for _, marker := range required {
+				if !strings.Contains(content, marker) {
+					t.Errorf("missing SEO/accessibility marker %q", marker)
+				}
+			}
+			if marker := `<link rel="canonical" href="` + canonical + `">`; !strings.Contains(content, marker) {
+				t.Errorf("missing canonical URL %q", canonical)
+			}
+			if count := strings.Count(content, "<h1"); count != 1 {
+				t.Errorf("h1 count = %d, want 1", count)
+			}
+		})
+	}
+
+	sitemapData, err := os.ReadFile(filepath.Join(root, "site", "sitemap.xml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	sitemap := string(sitemapData)
+	for _, canonical := range pages {
+		if !strings.Contains(sitemap, "<loc>"+canonical+"</loc>") {
+			t.Errorf("sitemap is missing %s", canonical)
+		}
+	}
+	robotsData, err := os.ReadFile(filepath.Join(root, "site", "robots.txt"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(robotsData), "Sitemap: https://voskan.github.io/BatchWeaver/sitemap.xml") {
+		t.Error("robots.txt does not advertise the canonical sitemap")
 	}
 }
 
