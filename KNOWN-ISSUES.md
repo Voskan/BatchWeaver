@@ -1,7 +1,31 @@
 # Known Issues
 
-These are verified limitations for the public `v0.1.0-beta.3` beta. No stable
-release is implied.
+Verified limitations. Entries scoped to a prerelease are retained as historical
+evidence; entries scoped to `v1.0.0` apply to the current stable release.
+
+## BW-KI-012 — v1.0.0 artifacts are unsigned and unattested
+
+- Severity: P2 for `v1.0.0`
+- Affected: every `v1.0.0` release archive and the VSIX
+- Impact: artifacts carry SHA-256 checksums, SPDX/CycloneDX SBOMs, and a local
+  unsigned provenance statement, but no cryptographic signature and no hosted
+  build attestation. Consumers who require signature verification in their
+  supply chain cannot satisfy that requirement with this release.
+- Workaround: verify `SHA256SUMS`, review the SBOMs, and reproduce the build
+  locally — builds are byte-identical under the declared toolchain.
+- Remediation: enable hosted keyless signing and build attestation in the
+  release workflow and publish signed artifacts in the next patch release.
+
+## BW-KI-013 — hosted compatibility evidence absent at the v1.0.0 commit
+
+- Severity: P3 for `v1.0.0`
+- Affected: the compatibility and production-campaign evidence set
+- Impact: the matrix and campaign workflows exist and pass, but the combined
+  hosted artifacts for the exact `v1.0.0` commit were not observed, so the
+  release relies on local verification for those gates.
+- Workaround: run the compatibility and production-campaign workflows at the
+  `v1.0.0` tag.
+- Remediation: attach both artifacts and reference them from the release notes.
 
 ## BW-KI-011 — beta.2 downloaded checksum set uses unavailable report paths
 

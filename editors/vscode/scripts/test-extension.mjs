@@ -3,10 +3,24 @@ import {readFile} from "node:fs/promises";
 
 const root = new URL("../", import.meta.url);
 const manifest = JSON.parse(await readFile(new URL("package.json", root), "utf8"));
+const lockfile = JSON.parse(await readFile(new URL("package-lock.json", root), "utf8"));
 const source = await readFile(new URL("src/extension.ts", root), "utf8");
 
-assert.equal(manifest.private, true, "the beta extension must remain non-publishing");
-assert.equal(manifest.version, "0.1.0-beta.3");
+// release/VERSION is the single canonical version for the whole repository, so
+// the extension manifest and its lockfile are compared against it rather than
+// against a hard-coded string that silently drifts at every release.
+const releaseVersion = (
+  await readFile(new URL("../../release/VERSION", root), "utf8")
+).trim();
+
+assert.equal(manifest.private, true, "the extension must remain non-publishing");
+assert.equal(manifest.version, releaseVersion, "package.json must match release/VERSION");
+assert.equal(lockfile.version, releaseVersion, "package-lock.json must match release/VERSION");
+assert.equal(
+  lockfile.packages[""].version,
+  releaseVersion,
+  "the lockfile root package must match release/VERSION",
+);
 assert.equal(manifest.license, "Apache-2.0");
 assert.match(manifest.engines.vscode, /^\^1\.85\.0$/);
 assert.equal(manifest.engines.node, ">=22");

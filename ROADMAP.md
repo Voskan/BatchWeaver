@@ -4,35 +4,39 @@ BatchWeaver plans work from verified defects, compatibility evidence, and user
 needs. The roadmap is directional, has no promised dates, and does not convert
 experimental features into support commitments.
 
-## Current: observe and harden the first beta
+## Current: close the v1.0.0 accepted risks
 
-- keep every published prerelease immutable and preserve its verified public
-  assets; `v0.1.0-beta.3` supersedes beta.1 and beta.2 for new installations;
-- monitor the Go module proxy, pkg.go.dev, release assets, documentation, and
-  security-reporting paths;
-- collect reproducible correctness, compatibility, installation, editor,
-  adapter, and performance feedback without treating silence as success.
+`v1.0.0` is published with four documented accepted risks. Closing them is the
+immediate priority:
 
-## Next: stabilize the supported surface
+- publish **signed artifacts with hosted build attestation** in the next patch
+  release, replacing the current checksum-and-local-provenance-only integrity;
+- attach **hosted compatibility and production-campaign artifacts** produced at
+  an exact released commit;
+- add **live PostgreSQL and Redis Cluster acceptance** alongside the existing
+  hermetic client coverage;
+- keep every published version immutable, monitor the module proxy, pkg.go.dev,
+  release assets, documentation, and security-reporting paths, and triage
+  reproducible reports without treating silence as success.
 
-- reproduce and fix every verified P0/P1 beta defect with regression coverage;
-- review the root, `operation`, `runtime`, `bridge`, `config`, and `diagnostics`
-  APIs and approve a compatibility baseline;
-- implement and test prerelease-to-v1 config, cache, generated-code, bridge,
-  profile, daemon, and editor migration paths;
+## Next: broaden the supported surface
+
+- reproduce and fix every verified P0/P1 report with regression coverage;
 - extend the compatibility matrix with repeated public installs and supported Go
   patch releases;
-- complete long-running race, fuzz, leak, soak, fault, and reproducibility
-  campaigns on the release commit;
+- promote artifact schemas from `v1alpha1` once their formats have stabilized;
+- decide whether `bridge` and the `adapters/*` packages graduate from the
+  experimental tier, based on their client-version matrices;
 - add concrete integrations only when their client-version matrix can be tested
   and maintained.
 
-## Stable v1 decision
+## Compatibility commitments
 
-Stable `v1.0.0` requires every mandatory exit criterion in
+The Tier 1 Go API is frozen for the `v1` series under Semantic Versioning; the
+exact tiers, deprecation policy, and supported Go window are in
+[`docs/release/v1.0.0/api-freeze.md`](docs/release/v1.0.0/api-freeze.md). The
+accepted risks and their remediation plans are in
 [`docs/release/v1.0.0/stable-release-decision.md`](docs/release/v1.0.0/stable-release-decision.md).
-No date or popularity threshold substitutes for correctness, migration,
-security, compatibility, installation, and governance evidence.
 
 ## Potential post-v1 themes
 

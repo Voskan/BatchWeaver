@@ -70,6 +70,13 @@ test-cover: ## Run unit tests and write coverage.out
 assurance: ## Run API, schema, differential, mutation, fault, soak, and budget tests
 	go test ./internal/release ./internal/assurance -count=1
 
+.PHONY: campaign-smoke
+campaign-smoke: ## Exercise the bounded soak, leak, fault, and new fuzz seed corpora
+	BATCHWEAVER_SOAK_DURATION=250ms go test -race ./internal/assurance \
+		-run '^(TestProductionLikeSoak|TestResourceLeakBudgets|TestProductionFaultMatrix)$$' -count=1
+	go test ./internal/adapter ./internal/lsp/protocol ./internal/daemon ./internal/release \
+		-run '^Fuzz' -count=1
+
 .PHONY: extension-check
 extension-check: ## Clean-install and verify the VS Code extension (requires Node 22)
 	cd editors/vscode && npm ci && npm audit --audit-level=high

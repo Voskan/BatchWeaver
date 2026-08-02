@@ -35,7 +35,7 @@ test -s "$TEMP/site/docs.html"
 test -s "$TEMP/site/examples.html"
 test -s "$TEMP/site/api.html"
 test -s "$TEMP/site/status.html"
-if rg -n '@@VERSION@@|@@COMMIT@@|localhost|/Users/|\.agent/' "$TEMP/site"; then
+if grep -rnE '@@VERSION@@|@@COMMIT@@|localhost|/Users/|\.agent/' "$TEMP/site"; then
   printf 'site contains an unresolved or private reference\n' >&2
   exit 1
 fi

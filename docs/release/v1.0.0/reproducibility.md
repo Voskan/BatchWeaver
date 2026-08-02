@@ -5,9 +5,12 @@ checksums, SPDX and CycloneDX SBOMs, local provenance, release notes, and a VSIX
 The declared artifacts reproduced byte-for-byte in two local clean outputs under
 the fixed Go and Node toolchains.
 
-This is not yet stable public evidence. No immutable source tag, protected hosted
-builder, public provenance attestation, authenticated signature, or downloaded
-public asset has been verified.
+Reproducibility is verified; signing is not. `v1.0.0` ships from an immutable
+source tag with checksums, SBOMs, and a local unsigned provenance statement, but
+no protected hosted builder, public provenance attestation, or authenticated
+signature. That gap is an explicit accepted risk in the
+[stable-release decision](stable-release-decision.md) and is tracked as
+`BW-KI-012` in `KNOWN-ISSUES.md`.
 
 Classification before publication:
 

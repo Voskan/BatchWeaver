@@ -59,6 +59,12 @@ forks, download counts, or the absence of reports.
 
 ## Exit-criteria implication
 
-The evidence window begins with this gated beta and its public installation
-verification. It is not yet long or broad enough to support stable v1. Stable
-release remains blocked.
+The evidence window began with the gated betas and their public installation
+verification. It is short: all three prereleases were published on the same day
+as `v1.0.0`, so this window contributes installation and packaging evidence but
+not an extended external feedback period.
+
+`v1.0.0` was therefore approved with that gap recorded as an explicit accepted
+risk — "short public prerelease period" — in the
+[stable-release decision](stable-release-decision.md). No long-term
+production-stability claim is made on the basis of this window.
