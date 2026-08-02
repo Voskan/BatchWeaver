@@ -11,8 +11,8 @@ pgx.Batch pipelines multiple statements; it is not the same as reducing N reads 
 
 - Exact-key synthesis (one SQL statement) is distinct from pipelining (many statements in one round trip).
 - The adapter model exposes distinct execution modes and never reports a pipeline as a single database query.
-- The concrete pgx v5 client binding is contract-defined but deferred in this build because its dependency closure is unavailable offline.
+- The concrete pgx v5 provider executes a synthesized or application-supplied parameterized query through the caller-owned `pgx` queryer and maps by ordinal.
 
 ## Consequences
 
-Users get accurate execution-mode reporting; the pgx binding is a thin, well-scoped addition.
+Users get accurate execution-mode reporting without losing transaction or session identity.

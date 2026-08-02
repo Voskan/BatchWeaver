@@ -12,7 +12,7 @@ Streaming batching is only safe with an explicit correlated envelope.
 - Client-, server-, and bidirectional-streaming support requires an explicit multiplexed contract where every message carries a logical request ID and per-item status.
 - Streams use bounded pending maps and an explicit lifecycle state machine; no unbounded goroutines or global streams.
 - Automatic stream replay is disabled unless the protocol declares replay safety and item idempotency.
-- Concrete grpc-go/bufconn integration is deferred offline; the contract and policy are defined.
+- Concrete grpc-go/bufconn coverage verifies unary explicit batch RPCs. Streaming remains contract-only until an explicit multiplexed service is supplied and tested.
 
 ## Consequences
 

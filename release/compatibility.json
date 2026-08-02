@@ -29,6 +29,9 @@
     {"category":"VS Code","environment":"engine >=1.85","status":"supported-with-limited-testing","evidence":"manifest, typecheck, lint, local VSIX; no headless host run"},
     {"category":"LSP","environment":"3.17 clients","status":"supported-with-limited-testing","evidence":"stdio initialize and protocol unit tests"},
     {"category":"adapter","environment":"database/sql + net/http","status":"supported-and-tested","evidence":"hermetic provider and httptest suites"},
-    {"category":"adapter","environment":"pgx/go-redis/gqlgen/grpc-go","status":"not-tested","evidence":"framework-neutral contracts only; concrete bindings absent"}
+    {"category":"adapter","environment":"pgx v5.10.0","status":"supported-and-tested","evidence":"typed pgx.Rows provider exercised with pgxmock v4.9.0; live PostgreSQL acceptance remains environment-specific"},
+    {"category":"adapter","environment":"go-redis v9.21.0","status":"supported-and-tested","evidence":"MGET, HMGET, and pipeline providers exercised through the real client with miniredis v2.38.0"},
+    {"category":"adapter","environment":"gqlgen v0.17.94","status":"supported-and-tested","evidence":"public operation and field interceptor lifecycle tests"},
+    {"category":"adapter","environment":"grpc-go v1.83.0","status":"supported-and-tested","evidence":"explicit unary provider exercised over a real bufconn transport with protobuf messages"}
   ]
 }

@@ -2,8 +2,9 @@
 
 The GraphQL adapter batches resolver operations by execution wave. It keeps a
 framework-neutral operation model and resolver-wave analysis
-([ADR 0053](../adr/0053-gqlgen-extension-integration.md)); the concrete gqlgen
-runtime binding is deferred in this build (offline dependency).
+([ADR 0053](../adr/0053-gqlgen-extension-integration.md)). The concrete
+`adapters/gqlgen` extension uses gqlgen's public operation and field interceptor
+APIs to establish a runtime scope and attach normalized field partitions.
 
 ## Model
 

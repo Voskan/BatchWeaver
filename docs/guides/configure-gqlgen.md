@@ -20,6 +20,18 @@ generated resolver metadata, an explicitly defined schema directive, or
 configuration. Keys derive from the parent object field, a resolver argument, a
 context partition, or a combination, extracted once with a typed extractor.
 
+Register the concrete extension on the gqlgen server:
+
+```go
+import batchgqlgen "github.com/Voskan/BatchWeaver/adapters/gqlgen"
+
+server.Use(batchgqlgen.ScopeExtension{Engine: engine})
+```
+
+Resolvers invoked by that server receive a BatchWeaver runtime scope. Use
+`batchgqlgen.PartitionFromContext(ctx)` as one component of a binding partition
+when selection shape must distinguish otherwise identical keys.
+
 ## DataLoader coexistence
 
 If DataLoaders are present, choose an ownership policy (prefer-existing,
@@ -28,6 +40,6 @@ double queues.
 
 ## Status
 
-The framework-neutral model and wave analysis are implemented and tested. The
-concrete gqlgen runtime hook is deferred in this build; see
-[limitations](../limitations/network-adapters.md).
+The framework-neutral model, wave analysis, and concrete public-API gqlgen
+extension are implemented and tested. BatchWeaver does not patch generated code
+or gqlgen internals; see [limitations](../limitations/network-adapters.md).

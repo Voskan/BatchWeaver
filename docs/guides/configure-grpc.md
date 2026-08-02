@@ -24,5 +24,8 @@ batchweaver grpc inspect --scalar=/users.v1.UserService/GetUser \
 ```
 
 Different authorization, credentials, tenant, or routing metadata partition
-callers so they never share a batch. The concrete grpc-go client integration is
-deferred in this build; see [limitations](../limitations/network-adapters.md).
+callers so they never share a batch. `adapters/grpcgo.UnaryProvider` accepts an
+existing generated batch request/response type and invokes the explicitly named
+batch RPC through `grpc.ClientConnInterface`. Its decoder must correlate exactly
+one outcome to every BatchWeaver request ID; missing or unexpected IDs fail the
+provider. See [limitations](../limitations/network-adapters.md).

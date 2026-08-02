@@ -14,7 +14,8 @@ Primary documentation:
 Important limitations:
 - The current release is a public beta, not stable v1.
 - Unsupported transformations fail closed.
-- Concrete pgx, go-redis, gqlgen, and grpc-go bindings are not included.
+- Concrete pgx, go-redis, gqlgen, and grpc-go bindings are implemented on the
+  default branch; consult the compatibility matrix for exact tested versions.
 - Source is not uploaded and remote telemetry is not enabled.
 - Releases currently provide checksums, SBOMs, and local unsigned provenance,
   but not cryptographic signatures or a hosted SLSA attestation.

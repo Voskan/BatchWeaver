@@ -11,7 +11,7 @@ Redis batching must map explicit scalar commands to explicit batch commands, not
 
 - GET maps to MGET, HGET to HMGET, and otherwise-independent commands to pipelining.
 - Arbitrary Redis command fusion and Lua synthesis are out of scope.
-- The concrete go-redis client binding is contract-defined but deferred offline; the client-agnostic slot and mapping logic is implemented and tested.
+- The concrete go-redis v9 provider implements slot-safe MGET, per-hash HMGET, and explicit pipelining over public client APIs.
 
 ## Consequences
 

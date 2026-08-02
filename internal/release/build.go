@@ -611,6 +611,28 @@ func goModuleLicense(path string) string {
 		return "Apache-2.0"
 	case path == "github.com/goccy/go-yaml":
 		return "MIT"
+	case path == "github.com/99designs/gqlgen",
+		path == "github.com/alicebob/miniredis/v2",
+		path == "github.com/jackc/pgx/v5",
+		path == "github.com/vektah/gqlparser/v2",
+		path == "github.com/google/uuid",
+		path == "github.com/jackc/pgpassfile",
+		path == "github.com/jackc/pgservicefile",
+		path == "github.com/jackc/puddle/v2",
+		path == "github.com/sosodev/duration",
+		path == "github.com/yuin/gopher-lua":
+		return "MIT"
+	case path == "github.com/pashagolub/pgxmock/v4",
+		path == "google.golang.org/protobuf":
+		return "BSD-3-Clause"
+	case path == "github.com/redis/go-redis/v9",
+		path == "github.com/cespare/xxhash/v2":
+		return "BSD-2-Clause"
+	case path == "google.golang.org/grpc",
+		strings.HasPrefix(path, "google.golang.org/genproto"):
+		return "Apache-2.0"
+	case path == "go.uber.org/atomic":
+		return "MIT"
 	case strings.HasPrefix(path, "golang.org/x/"):
 		return "BSD-3-Clause"
 	default:

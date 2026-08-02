@@ -8,7 +8,12 @@ The public API may evolve before the 1.0 release.
 
 ## [Unreleased]
 
-No changes yet.
+### Added
+
+- Concrete, compile-tested bindings for pgx v5, go-redis v9, gqlgen, and
+  grpc-go, including caller-owned transaction/session support, Redis
+  cluster-slot partitioning, request-scoped GraphQL runtime isolation, gRPC
+  metadata partitioning, per-item status mapping, and cancellation propagation.
 
 ## [0.1.0-beta.3] - 2026-08-02
 

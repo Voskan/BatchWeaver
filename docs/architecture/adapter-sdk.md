@@ -22,12 +22,11 @@ rejected. See [the adapter manifest reference](../reference/adapter-manifest.md)
 - `database/sql` — **ready**. Exact-key PostgreSQL read synthesis over the
   standard library, ordered/sparse result mapping, transaction partitioning,
   chunking, and semantic verification.
-- `pgx` — **deferred**. Contract defined; the concrete pgx v5 client binding is
-  not compiled into this build because its dependency closure is unavailable
-  offline. See [limitations](../limitations/backend-adapters.md).
-- `redis` — **deferred client**. Cluster hash-slot grouping and MGET/HMGET/
-  pipeline mapping logic are implemented and tested; the concrete go-redis client
-  binding is deferred offline.
+- `pgx` — **ready**. `adapters/pgxv5` executes parameterized exact-key array
+  queries through a caller-owned connection, transaction, or pool and maps rows
+  by request ordinal.
+- `redis` — **ready**. `adapters/redisv9` provides cluster-slot-safe MGET,
+  per-hash HMGET, and explicit pipeline providers over go-redis v9.
 
 ## Runtime provider
 

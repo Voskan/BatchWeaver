@@ -2,9 +2,13 @@
   "schema": "batchweaver.api-inventory/v1alpha1",
   "status": "candidate-not-frozen",
   "generated_from": "internal/release/testdata/public-api.txt",
-  "go_api_records": 1121,
+  "go_api_records": 1158,
   "packages": [
     {"path": "github.com/Voskan/BatchWeaver", "records": 60, "stability": "stable-candidate"},
+    {"path": "github.com/Voskan/BatchWeaver/adapters/gqlgen", "records": 9, "stability": "experimental-candidate"},
+    {"path": "github.com/Voskan/BatchWeaver/adapters/grpcgo", "records": 11, "stability": "experimental-candidate"},
+    {"path": "github.com/Voskan/BatchWeaver/adapters/pgxv5", "records": 6, "stability": "experimental-candidate"},
+    {"path": "github.com/Voskan/BatchWeaver/adapters/redisv9", "records": 11, "stability": "experimental-candidate"},
     {"path": "github.com/Voskan/BatchWeaver/bridge", "records": 6, "stability": "experimental"},
     {"path": "github.com/Voskan/BatchWeaver/config", "records": 50, "stability": "stable-candidate"},
     {"path": "github.com/Voskan/BatchWeaver/diagnostics", "records": 78, "stability": "stable-candidate"},
@@ -24,7 +28,7 @@
   },
   "approval": null,
   "blockers": [
-    "no published prerelease compatibility window",
+    "new concrete adapter packages require a published prerelease compatibility window",
     "no tested public migration",
     "no maintainer v1 API approval",
     "alpha ABI and artifact schemas"

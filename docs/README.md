@@ -61,6 +61,7 @@ tradeoffs.
 ### Adapters and protocols
 
 - [Create an adapter](guides/create-an-adapter.md)
+- [Concrete client bindings example](../examples/client-bindings/README.md)
 - [Configure database/sql](guides/configure-database-sql.md)
 - [Configure gqlgen](guides/configure-gqlgen.md)
 - [Configure gRPC](guides/configure-grpc.md)
