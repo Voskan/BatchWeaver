@@ -42,9 +42,12 @@ func TestScanFixtureJSON(t *testing.T) {
 		t.Fatalf("chdir: %v", err)
 	}
 
-	code, stdout, stderr := run(t, "scan", "--reproducible", "--fail-on", "never", "--format", "json", "./...")
+	code, stdout, stderr := run(t, "scan", "--reproducible", "--cache-status", "--fail-on", "never", "--format", "json", "./...")
 	if code != ExitOK {
 		t.Fatalf("exit = %d, stderr=%s", code, stderr)
+	}
+	if !strings.Contains(stderr, "analysis cache: source=local hit=false") {
+		t.Fatalf("cache status missing: %s", stderr)
 	}
 	var doc struct {
 		SchemaVersion string `json:"schema_version"`

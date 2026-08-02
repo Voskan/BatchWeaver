@@ -29,7 +29,7 @@ func proofInputs(ctx context.Context, patterns []string, reproducible bool, limi
 	if len(patterns) == 0 {
 		patterns = []string{"./..."}
 	}
-	snap, err := analysis.Analyze(ctx, analysis.Request{
+	snap, _, err := sharedAnalyze(ctx, analysis.Request{
 		Patterns: patterns, Reproducible: reproducible, ToolVersion: buildinfo.Get().Version,
 	})
 	if err != nil {

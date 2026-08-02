@@ -2,12 +2,15 @@ package editor
 
 import (
 	"context"
+	"errors"
 	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
 
 	"github.com/Voskan/BatchWeaver/internal/analysis"
+	"github.com/Voskan/BatchWeaver/internal/analysiscache"
+	"github.com/Voskan/BatchWeaver/internal/daemon"
 	"github.com/Voskan/BatchWeaver/internal/lsp/documents"
 	"github.com/Voskan/BatchWeaver/internal/lsp/protocol"
 )
@@ -46,16 +49,46 @@ type Result struct {
 // Analyze runs a BatchWeaver analysis over the overlay (unsaved buffers) and
 // returns a snapshot-bound Result. Patterns default to the whole module.
 func (s *Service) Analyze(ctx context.Context, overlay map[string][]byte) (*Result, error) {
-	snap, err := analysis.Analyze(ctx, analysis.Request{
+	result, _, err := s.AnalyzeWithCache(ctx, overlay)
+	return result, err
+}
+
+// AnalyzeWithCache routes through a compatible workspace daemon when present
+// and reports privacy-safe hit/miss metadata. It falls back to local analysis
+// when no usable daemon exists.
+func (s *Service) AnalyzeWithCache(ctx context.Context, overlay map[string][]byte) (*Result, analysiscache.Result, error) {
+	request := analysis.Request{
 		Patterns:     []string{"./..."},
 		Dir:          s.root,
 		Overlay:      overlay,
 		Reproducible: true,
 		ToolVersion:  s.toolVersion,
-	})
-	if err != nil {
-		return nil, err
 	}
+	var snapshot *analysis.Snapshot
+	cacheResult := analysiscache.Result{Source: "local"}
+	daemonResult, daemonErr := daemon.Analyze(ctx, s.root, daemon.AnalysisParams{
+		Patterns: request.Patterns, BuildContext: request.BuildContext,
+		Reproducible: request.Reproducible, ToolVersion: request.ToolVersion, Overlay: overlay,
+	})
+	if daemonErr == nil {
+		snapshot, cacheResult = daemonResult.Snapshot, daemonResult.Cache
+	} else if !errors.Is(daemonErr, daemon.ErrNotRunning) && !errors.Is(daemonErr, daemon.ErrStale) {
+		// A daemon failure must not make editor features unavailable; the local
+		// path remains authoritative and uses the same overlay.
+		cacheResult.Source = "fallback"
+	}
+	if snapshot == nil {
+		var err error
+		snapshot, err = analysis.Analyze(ctx, request)
+		if err != nil {
+			return nil, cacheResult, err
+		}
+	}
+	result := resultFromSnapshot(snapshot)
+	return result, cacheResult, nil
+}
+
+func resultFromSnapshot(snap *analysis.Snapshot) *Result {
 	r := &Result{
 		Snapshot:   snap,
 		callByID:   make(map[string]analysis.CallSite, len(snap.CallSites)),
@@ -75,7 +108,7 @@ func (s *Service) Analyze(ctx context.Context, overlay map[string][]byte) (*Resu
 			}
 		}
 	}
-	return r, nil
+	return r
 }
 
 // parsedLocation is a decoded "relpath:line:col" analysis location.

@@ -20,7 +20,11 @@ func (s *Server) analyzeNow(ctx context.Context) (*editor.Result, error) {
 	if svc == nil {
 		return nil, fmt.Errorf("server not initialized")
 	}
-	return svc.Analyze(ctx, s.docs.Overlay())
+	result, cacheResult, err := svc.AnalyzeWithCache(ctx, s.docs.Overlay())
+	if err == nil {
+		s.logf("analysis cache source=%s hit=%t", cacheResult.Source, cacheResult.Hit)
+	}
+	return result, err
 }
 
 func (s *Server) onHover(ctx context.Context, req *jsonrpc.Request) (any, *jsonrpc.Error) {

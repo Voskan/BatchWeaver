@@ -11,8 +11,10 @@ buffers, so the same buffers always yield the same results.
 
 ## Inputs and outputs
 
-`Service.Analyze(ctx, overlay)` runs `analysis.Analyze` with the overlay (unsaved
-buffers) and returns a `Result` that indexes call sites, operations, and
+`Service.Analyze(ctx, overlay)` first asks a compatible workspace daemon for the
+content-addressed snapshot and safely falls back to `analysis.Analyze` when the
+daemon is absent or unavailable. The overlay (unsaved buffers) is authoritative
+in both paths. The returned `Result` indexes call sites, operations, and
 candidates. `Diagnostics`, `Hover`, `CodeLens`, and `CodeActions` map that result
 to protocol types using the document's canonical UTF-16 mapper. `ScanSummary`,
 `OperationGraphText`, `PreviewText`, and `DoctorText` back the workspace commands.

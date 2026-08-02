@@ -217,11 +217,12 @@ func (s *Server) runAnalysis(ctx context.Context, gen uint64) {
 	if svc == nil || !current {
 		return
 	}
-	res, err := svc.Analyze(ctx, s.docs.Overlay())
+	res, cacheResult, err := svc.AnalyzeWithCache(ctx, s.docs.Overlay())
 	if err != nil {
 		s.logf("analysis error: %v", err)
 		return
 	}
+	s.logf("analysis cache source=%s hit=%t", cacheResult.Source, cacheResult.Hit)
 	s.mu.Lock()
 	stillCurrent := s.gen == gen
 	s.mu.Unlock()

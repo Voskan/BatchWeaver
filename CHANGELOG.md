@@ -18,6 +18,11 @@ The public API may evolve before the 1.0 release.
   INNER/LEFT join with explicit at-most-one cardinality, content-addressed SQL
   plans, generated Go bindings, source maps, compile-checked overlays, stable
   rejection diagnostics, and mutation-killing integrity validation.
+- A secure per-workspace shared analysis cache for CLI and LSP clients, with
+  complete content/toolchain/schema keys, unsaved-overlay invalidation,
+  concurrent single-flight, bounded memory and persistent disk LRU tiers,
+  corruption recovery, restart reuse, path isolation, privacy-safe hit/miss
+  observability, and local-analysis fallback when no daemon is running.
 
 ## [0.1.0-beta.3] - 2026-08-02
 
