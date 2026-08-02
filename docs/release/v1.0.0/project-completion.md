@@ -5,9 +5,11 @@
 BatchWeaver has an implemented compiler/runtime pipeline, typed public
 contracts, conservative proof and transformation stages, adapters and protocol
 contracts, adaptive controls, editor tooling, and deterministic release
-assurance. The public repository and first beta are published and verified;
-stable v1 remains blocked pending real prerelease evidence, migration, expanded
-compatibility, API-freeze approval, and final governance approval.
+assurance. Stable v1 is published and verified: the Tier 1 Go API is frozen,
+prerelease-to-v1 migration is executable, the hosted compatibility matrix passes
+at the released commit, and installation from the public module proxy is
+verified. The release ships with documented accepted risks — unsigned artifacts
+and no live-backend acceptance — each with a remediation plan.
 
 ## Architecture and safety
 
@@ -39,7 +41,9 @@ Post-publication verification found incorrect version output on its `go install`
 binary, so immutable `v0.1.0-beta.2` supersedes it with the regression fix.
 Post-publication verification then found beta.2's nested checksum paths were
 flattened by GitHub; immutable `v0.1.0-beta.3` supersedes it with a flat,
-whole-release-verifiable asset layout. No beta is stable-v1 evidence by itself.
+whole-release-verifiable asset layout. No prerelease is stable-v1 evidence by
+itself; `v1.0.0` is the first stable tag and `v1.0.1` supersedes it with the
+extension source-build fix.
 
 ## Remaining limitations
 

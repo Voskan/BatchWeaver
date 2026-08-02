@@ -84,3 +84,6 @@ editors/vscode/node_modules/
 editors/vscode/out/
 editors/vscode/*.vsix
 *.vsix
+
+# Campaign phase evidence written by .github/workflows/production-campaign.yml
+evidence/

@@ -27,7 +27,7 @@ func ParseYAML(file string, src []byte) (*Node, diagnostics.Collection) {
 		return &Node{Kind: KindScalar, ScalarType: ScalarNull, Value: "null", Pos: diagnostics.Position{File: file}}, diags
 	}
 	if len(f.Docs) > 1 {
-		pos := tokenPos(file, f.Docs[1].GetToken())
+		pos := tokenPos(file, documentToken(f.Docs[1]))
 		diags.Add(diag(CodeMultipleDocuments, pos, "configuration source must contain exactly one document"))
 		return nil, diags
 	}
@@ -144,6 +144,17 @@ func atoi(s string) int {
 
 // tokenPos converts a goccy token into a diagnostics.Position with file set.
 // A nil token yields a position that carries only the file name.
+// documentToken returns the first token of a parsed YAML document, or nil when
+// the document has no body. goccy/go-yaml's DocumentNode.GetToken dereferences
+// the document body, so a body-less document — for example the second half of
+// "---\n---" — would otherwise panic with a nil pointer dereference.
+func documentToken(doc *ast.DocumentNode) *token.Token {
+	if doc == nil || doc.Body == nil {
+		return nil
+	}
+	return doc.GetToken()
+}
+
 func tokenPos(file string, tok *token.Token) diagnostics.Position {
 	if tok == nil || tok.Position == nil {
 		return diagnostics.Position{File: file}
