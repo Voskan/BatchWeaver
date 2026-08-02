@@ -1,7 +1,7 @@
 # BatchWeaver 0.1.0-beta.1 Release Notes
 
-Status: selected public-beta version; publication is blocked until authenticated
-GitHub ownership, protection, hosted checks, and release permissions are verified.
+Status: public beta prerelease. This is not a stable-v1 or production-readiness
+claim.
 
 ## Summary
 
@@ -23,11 +23,9 @@ cannot justify conservatively.
 - explicit typed batch providers and `database/sql`/`net/http` integrations;
 - deterministic plans, diffs, overlays, transformed tests, materialize/revert;
 - macOS arm64 native validation and five cross-platform archives;
-- standalone LSP, optional gopls proxy, and a locally packaged VSIX.
+- standalone LSP, optional gopls proxy, and a release-asset VSIX.
 
 ## Installation
-
-After publication:
 
 ```bash
 go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v0.1.0-beta.1
@@ -58,8 +56,8 @@ by default.
 Go 1.26.5 is the supported toolchain. Native evidence is strongest on
 macOS/arm64; other artifact targets have limited cross-build evidence as recorded
 in `release/compatibility.json`. Concrete pgx, go-redis, gqlgen, and grpc-go
-bindings are not included. The VSIX has not completed a real Extension Host E2E.
-See `KNOWN-ISSUES.md`.
+bindings are not included. The VSIX installs and activates in a real Visual
+Studio Code 1.131.0 Extension Host on macOS arm64. See `KNOWN-ISSUES.md`.
 
 ## Breaking-change policy
 
@@ -76,6 +74,10 @@ installing the prior version. Verify artifacts with `sha256sum -c SHA256SUMS` or
 `shasum -a 256 -c SHA256SUMS`, then run `batchweaver release verify` when the
 manifest and complete asset set are together.
 
+The tag and artifacts are unsigned. `SHA256SUMS` provides integrity verification,
+the supplied provenance statement is local and unsigned, and no hosted SLSA
+level is claimed.
+
 ## Security and feedback
 
 Do not report vulnerabilities or transformation isolation failures in a public
@@ -84,5 +86,5 @@ issue forms. BatchWeaver uploads no source or runtime data and adds no telemetry
 
 ## Contributors
 
-This prerelease preparation was produced from the repository history. No external
+This prerelease was produced from the repository history. No external
 adoption, contributor, or production-validation claim is made.

@@ -11,10 +11,10 @@ query shapes—proves their safety conditions, previews deterministic changes,
 and executes compatible calls in bounded batches without silently crossing
 request, tenant, authorization, transaction, or session boundaries.
 
-> **Release status:** `v0.1.0-beta.1` is selected but not published. There is
-> currently no immutable tag, GitHub Release, or indexed pkg.go.dev version.
-> The repository is suitable for evaluation, not a stable v1 claim. See the
-> [release decision](docs/release/v1.0.0/stable-release-decision.md).
+> **Release status:** `v0.1.0-beta.1` is the current public beta. Its APIs may
+> change before v1, and the project does not yet make a stable-production claim.
+> See the [release notes](docs/release/release-notes-0.1.0-beta.1.md) and the
+> [stable-release decision](docs/release/v1.0.0/stable-release-decision.md).
 
 ## Why BatchWeaver?
 
@@ -43,29 +43,28 @@ with a diagnostic.
 
 Go 1.26.5 is the currently tested toolchain.
 
-After an immutable beta tag is published, the CLI and library commands will be:
+Install the CLI or add the typed library at the immutable beta version:
 
 ```bash
 go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v0.1.0-beta.1
 go get github.com/Voskan/BatchWeaver@v0.1.0-beta.1
 ```
 
-Those versioned commands intentionally do not work yet because no release tag
-exists. For repository evaluation:
+For a source checkout at the same version:
 
 ```bash
 git clone https://github.com/Voskan/BatchWeaver.git
 cd BatchWeaver
-git switch release/v0.1.0-beta.1
+git checkout v0.1.0-beta.1
 make build
 ./bin/batchweaver version
 ./bin/batchweaver doctor
 ```
 
-Go modules become discoverable on pkg.go.dev through the public Go module proxy
-after a semantic-version tag is published and fetched. The exact publication
-procedure and current blocker are documented in
-[Using BatchWeaver as a Go module](docs/guides/use-as-go-module.md).
+Package documentation and import examples are available through
+[pkg.go.dev](https://pkg.go.dev/github.com/Voskan/BatchWeaver). See
+[Using BatchWeaver as a Go module](docs/guides/use-as-go-module.md) for the
+library and CLI installation paths.
 
 ## Use the Go package
 
@@ -192,8 +191,10 @@ Read the [architecture overview](docs/architecture/overview.md),
   request fusion is not inferred.
 - The current public API is prerelease and is not frozen as stable v1.
 - Linux, macOS, and Windows hosted builds pass on the corrected release branch.
-- Dependency Review requires the repository Dependency Graph to be enabled.
-- No release tag, public assets, Pages deployment, or pkg.go.dev version exists.
+- The VS Code extension is supplied as a GitHub Release VSIX, not through the
+  Visual Studio Marketplace.
+- Checksums are published, but the beta has no cryptographic tag or artifact
+  signature; see the release notes and verification instructions.
 
 See [known issues](KNOWN-ISSUES.md) and the detailed
 [limitations index](docs/README.md#limitations).
@@ -229,11 +230,11 @@ make release-snapshot
 
 ## Project status
 
-The stable-release evidence audit found no public prerelease, no release assets, no
-external compatibility reports, and no verified adoption period. Stable
-`v1.0.0` is therefore blocked even when local tests pass. The repository records
-the exact evidence in [beta evidence](docs/release/v1.0.0/beta-evidence.md), the
-[v1 gate report](docs/release/v1.0.0/stable-release-decision.md), and the
+The public beta begins the evidence period required before a stable release.
+There are not yet sufficient downstream compatibility, migration, adoption, or
+feedback results to authorize `v1.0.0`, even though the beta release gates pass.
+The repository records the exact state in [beta evidence](docs/release/v1.0.0/beta-evidence.md),
+the [v1 gate report](docs/release/v1.0.0/stable-release-decision.md), and the
 [continuation plan](docs/release/v1.0.0/project-completion.md).
 
 ## License

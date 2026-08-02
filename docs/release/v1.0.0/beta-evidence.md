@@ -7,24 +7,19 @@
 - Default branch: `main`
 - Candidate branch: `release/v0.1.0-beta.1`
 - Candidate pull request: #7
-- Selected candidate: `v0.1.0-beta.1`
+- Published prerelease: `v0.1.0-beta.1`
 
 ## Public state verified
 
 The repository is public and its owner, remote URL, and default branch agree.
-The public GitHub API returned no tags and no releases. GitHub Pages returned no
-configured public site. The repository has Issues enabled and Discussions
-disabled. The only open issue-shaped item was PR #7; there were no public bug,
-compatibility, performance, editor, adapter, installation, or documentation
-reports.
-
-The Go module proxy returned an empty version list. No pkg.go.dev version can be
-treated as published until an immutable semantic-version tag is fetched by the
-proxy.
+Protected-main checks, private vulnerability reporting, Dependency Graph,
+Dependabot security updates, Discussions, labels, Pages, and release authority
+were authenticated and configured. The immutable beta tag, prerelease assets,
+documentation site, and Go proxy path are verified after publication.
 
 ## CI evidence
 
-At candidate commit `eee33b88761af4ac309298eae035d015547287f1`:
+During release-candidate verification:
 
 - CodeQL run `30739695827` passed.
 - Linux and macOS builds, validation, coverage, VS Code checks, and release
@@ -32,8 +27,12 @@ At candidate commit `eee33b88761af4ac309298eae035d015547287f1`:
 - The earlier Windows job failed on two LF-versus-CRLF baseline comparisons.
   The root cause was corrected by enforcing LF for `.txt` files. PR #7 CI run
   `30741225928` then passed Linux, macOS, and Windows build/test jobs.
-- Dependency Review run `30739695826` failed because the repository Dependency
-  Graph is disabled. This is a repository setting, not a lockfile finding.
+- Dependency Review initially failed because Dependency Graph was disabled.
+  After the owner enabled Dependency Graph, run `30741346250` passed at commit
+  `5243b07ae939e9bf8d84102f8d04e6a8a1bc2eb7`.
+- A real VS Code Extension Host smoke exposed duplicate command registration;
+  the extension now delegates server-advertised commands to the language client
+  and regression tests prevent reintroduction.
 
 ## Feedback classification
 
@@ -42,16 +41,16 @@ At candidate commit `eee33b88761af4ac309298eae035d015547287f1`:
 | Public issues | verified-report | No user reports exist |
 | PR #7 Windows log | verified-reproduction | Cross-platform text checkout defect |
 | PR #7 dependency log | verified-report | Dependency Graph disabled |
-| Public releases/assets | needs-more-information | No release exists |
+| Public releases/assets | verified-report | First beta and declared assets published and post-verified |
 | Downstream integrations | needs-more-information | None publicly evidenced |
 | Private security reports | needs-more-information | Not accessible in this session |
-| Discussions | unsupported-use-case | Repository Discussions disabled |
+| Discussions | verified-report | Repository Discussions enabled; no adoption inference made |
 
 No identity, adoption, integration, or benchmark claim is inferred from stars,
 forks, download counts, or the absence of reports.
 
 ## Exit-criteria implication
 
-The evidence window has not begun in a form capable of supporting stable v1.
-The first defensible next step is a gated beta publication followed by public
-installation and compatibility verification. Stable release remains blocked.
+The evidence window begins with this gated beta and its public installation
+verification. It is not yet long or broad enough to support stable v1. Stable
+release remains blocked.

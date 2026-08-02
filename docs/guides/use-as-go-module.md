@@ -7,15 +7,9 @@ The module path is:
 github.com/Voskan/BatchWeaver
 ```
 
-## Publication status
+## Install the beta
 
-The public repository currently has no semantic-version tag. Consequently the
-Go module proxy has no version to list and pkg.go.dev has no indexed BatchWeaver
-documentation. Source code and package documentation are ready for indexing,
-but availability must not be claimed until a release tag is published.
-
-The first planned prerelease version is `v0.1.0-beta.1`. Once its release gates
-pass and the immutable tag exists, install the library with:
+The first public prerelease is `v0.1.0-beta.1`. Install the library with:
 
 ```bash
 go get github.com/Voskan/BatchWeaver@v0.1.0-beta.1

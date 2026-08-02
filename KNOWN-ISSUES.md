@@ -1,7 +1,7 @@
 # Known Issues
 
-These are verified limitations and release blockers for the selected,
-unpublished `v0.1.0-beta.1` candidate. No stable release is implied.
+These are verified limitations for the public `v0.1.0-beta.1` beta. No stable
+release is implied.
 
 ## BW-KI-001 — Concrete framework client bindings are absent
 
@@ -13,15 +13,14 @@ unpublished `v0.1.0-beta.1` candidate. No stable release is implied.
 - Stable blocker: yes until the supported v1 surface deliberately includes or
   excludes each integration.
 
-## BW-KI-002 — VS Code host end-to-end evidence is absent
+## BW-KI-002 — VS Code distribution is VSIX-only
 
-- Severity: P1 for Marketplace publication
-- Impact: lint, typecheck, unit tests, package construction, and VSIX contents
-  pass locally, but installation and activation in a real Extension Host have
-  not been verified.
-- Workaround: use the standalone LSP and test the VSIX in a disposable Extension
-  Development Host.
-- Stable blocker: yes for a supported VS Code release.
+- Severity: P2
+- Impact: the VSIX installs and activates in a real VS Code Extension Host, but
+  it is not listed in the Visual Studio Marketplace.
+- Workaround: install the verified VSIX from the GitHub Release assets.
+- Stable blocker: marketplace distribution is not required; broader editor
+  compatibility evidence remains required before v1.
 
 ## BW-KI-003 — Shared daemon cache is not used by CLI/LSP analysis
 
@@ -39,40 +38,37 @@ unpublished `v0.1.0-beta.1` candidate. No stable release is implied.
 - Workaround: use `batchweaver transform diff` and explicit materialization.
 - Stable blocker: no when documented.
 
-## BW-KI-005 — Hosted governance and security settings are unverified
+## BW-KI-005 — Hosted provenance is unavailable
 
-- Severity: P1 for publication
-- Impact: the public API confirms the repository identity but unauthenticated
-  access cannot verify branch protection, required checks, environments, private
-  vulnerability reporting, release authority, or Pages configuration.
-- Workaround: an authorized repository owner must verify the settings before
-  publication.
-- Stable blocker: yes.
+- Severity: P2 for beta, P1 for a stronger stable supply-chain claim
+- Impact: release manifests contain local unsigned provenance statements, not a
+  hosted SLSA attestation.
+- Workaround: verify the immutable tag, `SHA256SUMS`, SBOMs, and reproducible
+  artifacts.
+- Stable blocker: policy decision required before v1.
 
-## BW-KI-006 — Dependency Graph is disabled
+## BW-KI-006 — Beta artifacts and tag are unsigned
 
-- Severity: P1 for release assurance
-- Evidence: PR #7 Dependency Review run `30739695826` failed with
-  “Dependency review is not supported on this repository.”
-- Impact: the mandatory dependency-change policy cannot execute.
-- Workaround: enable Dependency Graph in repository Security settings and rerun
-  the failed workflow. Do not mark the check optional.
-- Stable blocker: yes.
+- Severity: P2 for beta
+- Impact: integrity is protected by immutable GitHub assets and SHA-256
+  checksums, but no configured signing identity exists.
+- Workaround: compare downloads with `SHA256SUMS` and verify the tag commit.
+- Stable blocker: signing policy must be explicitly resolved before v1.
 
-## BW-KI-008 — No public module or release artifacts exist
+## BW-KI-008 — Go/toolchain compatibility is narrow
 
-- Severity: P1 for installation
-- Impact: `go get`/`go install` at `v0.1.0-beta.1`, pkg.go.dev documentation,
-  public checksums, public SBOMs, and archive installation cannot be verified.
-- Workaround: repository evaluation from a reviewed commit only.
-- Stable blocker: yes.
+- Severity: P2
+- Impact: Go 1.26.5 is the only supported toolchain for this beta; additional
+  Go and integration client versions remain untested.
+- Workaround: use the declared toolchain and compatibility matrix.
+- Stable blocker: broader approved compatibility evidence is required.
 
 ## BW-KI-009 — Stable evidence period has not begun
 
 - Severity: P1 for v1 governance
-- Impact: there are no published prereleases, external compatibility reports,
-  verified downstream integrations, or public installation results. Absence of
-  reports is not stability evidence.
-- Workaround: publish a gated beta, collect and reproduce evidence, then repeat
-  the stable-release audit.
+- Impact: the first published prerelease has no completed evidence period,
+  verified downstream integrations, or external compatibility reports. Absence
+  of reports is not stability evidence.
+- Workaround: collect and reproduce beta evidence, then repeat the stable-release
+  audit.
 - Stable blocker: yes.

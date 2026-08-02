@@ -1,8 +1,8 @@
 # Prerelease-to-v1 Migration Plan
 
-No public prerelease exists yet, so an upgrade from a downloadable version
-cannot be executed. This plan defines the migration contract that must be tested
-after beta publication and before stable v1.
+The supported prerelease baseline is `v0.1.0-beta.1`. An upgrade to v1 cannot be
+executed until a future v1 candidate exists. This plan defines the migration
+contract that must pass before stable publication.
 
 ## Required migration sequence
 
@@ -41,5 +41,5 @@ in [rollback](../rollback.md) and
 
 Every actually published beta or RC must have its own fixture that covers
 configuration, generated bridges, caches, adapter manifests, editor settings,
-profiles, materialization backup/revert, and scalar rollback. At present this
-matrix is blocked because there is no published source version.
+profiles, materialization backup/revert, and scalar rollback. The beta fixture
+can now be frozen; execution remains blocked until a v1 candidate exists.

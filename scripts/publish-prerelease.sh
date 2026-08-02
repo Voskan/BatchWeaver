@@ -13,9 +13,11 @@ fi
 
 command -v gh >/dev/null
 gh auth status >/dev/null
-scripts/verify-github-release-gates.sh
+scripts/verify-github-release-gates.sh --publish
 test "$(git describe --exact-match --tags HEAD)" = "$EXPECTED_VERSION"
 test -f "$DIST/release-manifest.json"
+test "$(jq -r .decision release/gates-v0.1.0-beta.1.json)" = "ready"
+test "$(jq '[.gates[] | select(.required and (.status == "blocked" or .status == "fail"))] | length' release/gates-v0.1.0-beta.1.json)" -eq 0
 go run ./cmd/batchweaver release verify "$DIST/release-manifest.json"
 
 if gh release view "$EXPECTED_VERSION" --repo "$EXPECTED_REPO" >/dev/null 2>&1; then

@@ -7,14 +7,15 @@ policy described in the API-freeze decision.
 
 ## Current version
 
-The selected first beta is `v0.1.0-beta.1`. It has not been tagged or published.
-The source repository, release branch, and PR #7 are public, but GitHub Releases
-and the Go module proxy contain no BatchWeaver version.
+The current public beta is `v0.1.0-beta.1`. It is distributed by an immutable
+Git tag and prerelease GitHub Release, including platform archives, checksums,
+SBOMs, local provenance statements, and a VSIX. The Go module uses the same tag.
 
 Beta publication requires green mandatory workflows, verified repository
 identity and permissions, checksums, SBOMs, provenance limitations, installation
 tests, security reporting, rollback, and a factual release decision. Snapshot
-commands cannot publish.
+commands cannot publish; the separately confirmed publish helper uploads only
+manifest-declared assets from the exact immutable tag.
 
 ## Stable release
 

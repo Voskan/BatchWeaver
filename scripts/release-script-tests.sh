@@ -9,7 +9,9 @@ if scripts/publish-prerelease.sh >"$REFUSAL_LOG" 2>&1; then
 fi
 rg -q 'Refusing publication' "$REFUSAL_LOG"
 
-test "$(jq -r .decision release/gates-v0.1.0-beta.1.json)" = "blocked"
-test "$(jq '[.gates[] | select(.required and (.status == "blocked" or .status == "fail"))] | length' release/gates-v0.1.0-beta.1.json)" -gt 0
+test "$(jq -r .decision release/gates-v0.1.0-beta.1.json)" = "ready"
+test "$(jq '[.gates[] | select(.required and (.status == "blocked" or .status == "fail"))] | length' release/gates-v0.1.0-beta.1.json)" -eq 0
+rg -q -- 'verify-github-release-gates.sh --publish' scripts/publish-prerelease.sh
+rg -q -- 'git ls-remote --tags origin' scripts/verify-github-release-gates.sh
 
-printf 'Release helper refusal and blocked-state tests passed.\n'
+printf 'Release helper refusal and ready-state tests passed.\n'

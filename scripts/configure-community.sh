@@ -5,7 +5,7 @@ if [ "${1:-}" != "--confirm-Voskan-BatchWeaver" ]; then
   printf 'Refusing GitHub mutation without --confirm-Voskan-BatchWeaver\n' >&2
   exit 2
 fi
-scripts/verify-github-release-gates.sh
+scripts/verify-github-release-gates.sh --repository-only
 LABELS_TMP=$(mktemp)
 trap 'rm -f "$LABELS_TMP"' EXIT
 python3 - <<'PY' > "$LABELS_TMP"
@@ -25,4 +25,4 @@ while IFS=$'\t' read -r name color description; do
     gh label create "$name" --repo Voskan/BatchWeaver --color "$color" --description "$description"
   fi
 done < "$LABELS_TMP"
-printf 'Labels configured. Discussions remain disabled pending an explicit governance decision.\n'
+printf 'Labels configured; Discussions and private security reporting are enabled.\n'

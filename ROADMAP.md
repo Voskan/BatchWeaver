@@ -4,15 +4,11 @@ BatchWeaver plans work from verified defects, compatibility evidence, and user
 needs. The roadmap is directional, has no promised dates, and does not convert
 experimental features into support commitments.
 
-## Current: publish and observe the first beta
+## Current: observe and harden the first beta
 
-- make PR #7 green on every declared platform;
-- enable and verify GitHub Dependency Graph, private vulnerability reporting,
-  branch protection, required checks, and release permissions;
-- publish and independently install `v0.1.0-beta.1` only after its gates pass;
-- verify the Go module proxy, pkg.go.dev, release assets, checksums, SBOMs,
-  provenance, and documentation deployment;
-- run a real VS Code Extension Host installation and activation test;
+- keep `v0.1.0-beta.1` immutable and preserve its verified public assets;
+- monitor the Go module proxy, pkg.go.dev, release assets, documentation, and
+  security-reporting paths;
 - collect reproducible correctness, compatibility, installation, editor,
   adapter, and performance feedback without treating silence as success.
 

@@ -8,6 +8,10 @@ The public API may evolve before the 1.0 release.
 
 ## [Unreleased]
 
+No changes yet.
+
+## [0.1.0-beta.1] - 2026-08-02
+
 ### Added
 
 - Stable-release evidence triage and package-readiness documentation: a
@@ -15,8 +19,9 @@ The public API may evolve before the 1.0 release.
   current architecture and package-boundary diagrams, reorganized documentation
   index, public API inventory, migration plan, blocked v1 decision, beta evidence,
   compatibility/security/performance/reproducibility/documentation reports, and
-  post-v1 release and incident procedures. Stable v1 remains blocked because no
-  prerelease, public installs, migration evidence, or stable approval exists.
+  post-v1 release and incident procedures. Stable v1 remains blocked because
+  the beta evidence period, migration evidence, API freeze, and stable approval
+  are incomplete.
 
 ### Fixed
 
@@ -31,8 +36,9 @@ The public API may evolve before the 1.0 release.
   deterministic GitHub Pages source/workflow, privacy-safe `doctor --bundle`,
   beta issue forms and label policy, support/security/governance and incident
   procedures, adoption/migration/rollout guides, launch-health and beta-exit
-  criteria, and an unposted announcement/demo kit. Publication remains blocked
-  until authenticated GitHub and hosted release gates are verified.
+  criteria, and an unposted announcement/demo kit. Authenticated GitHub,
+  Dependency Review, protected-main, security-reporting, community, and editor
+  host gates are verified for the beta.
 
 - Release-candidate assurance commands: `release check|build|verify|reproduce|
   notes|manifest|clean`, `compatibility report`, `verify differential`, and

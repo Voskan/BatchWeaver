@@ -241,7 +241,7 @@ func TestStableDecisionRemainsBlockedWithoutEvidence(t *testing.T) {
 	}
 }
 
-func TestLaunchGateReportIsClosedAndBlockedTruthfully(t *testing.T) {
+func TestLaunchGateReportDecisionMatchesRequiredGateState(t *testing.T) {
 	root := testRoot(t)
 	data, err := os.ReadFile(filepath.Join(root, "release", "gates-v0.1.0-beta.1.json"))
 	if err != nil {
@@ -282,8 +282,11 @@ func TestLaunchGateReportIsClosedAndBlockedTruthfully(t *testing.T) {
 			t.Errorf("gate %s has invalid status %q", gate.ID, gate.Status)
 		}
 	}
-	if !blocked || report.Decision != "blocked" {
+	if blocked && report.Decision != "blocked" {
 		t.Fatalf("mandatory blocked gates must block publication: %+v", report)
+	}
+	if !blocked && report.Decision != "ready" {
+		t.Fatalf("closed gates must produce a ready publication decision: %+v", report)
 	}
 }
 

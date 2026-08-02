@@ -12,7 +12,7 @@
   <a class="skip" href="#main">Skip to content</a>
   <header><nav aria-label="Main"><a href="#start">Getting started</a><a href="#safety">Safety</a><a href="#compatibility">Compatibility</a><a href="#adopt">Adoption</a><a href="#community">Community</a></nav></header>
   <main id="main">
-    <p class="eyebrow">Public beta preparation · @@VERSION@@ · source @@COMMIT@@</p>
+    <p class="eyebrow">Public beta · @@VERSION@@ · source @@COMMIT@@</p>
     <h1>Proof-gated semantic batching for Go</h1>
     <p class="lead">BatchWeaver finds supported scalar access patterns, proves a conservative transformation, previews the diff, and runs transformed tests through an overlay before source changes are considered.</p>
     <aside><strong>Beta:</strong> APIs may change. Review every diff and run your full suite. Unsupported patterns remain scalar.</aside>
@@ -22,7 +22,7 @@ batchweaver version
 batchweaver doctor
 batchweaver scan ./...
 batchweaver transform plan ./...
-batchweaver test -- -race ./...</code></pre><p>The public install command becomes valid only after the immutable beta tag is published. The library will be documented on <a href="https://pkg.go.dev/github.com/Voskan/BatchWeaver">pkg.go.dev</a> after the Go module proxy indexes that tag.</p></section>
+batchweaver test -- -race ./...</code></pre><p>The command pins the immutable beta tag. Importable package documentation and compile-tested examples are available on <a href="https://pkg.go.dev/github.com/Voskan/BatchWeaver">pkg.go.dev</a>.</p></section>
 
     <section id="safety"><h2>Safety model</h2><div class="grid"><article><h3>Proof first</h3><p>No supported transformation proceeds without explicit proof obligations. Unknowns are rejections, not optimism.</p></article><article><h3>Preview first</h3><p>Source is unchanged by default. Plans, diffs, overlays, type checking, and transformed tests precede materialization.</p></article><article><h3>Boundaries preserved</h3><p>Ordering, errors, cancellation, deadlines, partitions, authorization, transactions, and result contracts are part of eligibility.</p></article></div></section>
 

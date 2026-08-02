@@ -1,17 +1,18 @@
 # v0.1.0-beta.1 Launch Health
 
-Status: **not published**. No adoption metrics exist.
+Status: **public beta published**. The evidence period begins with this version;
+no adoption claim is made.
 
 | Area | State | Evidence |
 | --- | --- | --- |
-| Repository | Public source repository observed | Unauthenticated public API |
-| Tag/release | Blocked | No tags or releases exist |
-| Artifacts | Local snapshot verified | Clean release rehearsal manifest/checksums |
-| Documentation | Source prepared; not deployed | `site/` and manual workflow |
-| Install | Local archive smoke only | Public `go install` unavailable |
-| VS Code | VSIX content verified; host E2E blocked | Known issue BW-KI-002 |
-| Feedback | Forms prepared; no real feedback | No issues at audit time |
-| Security | Local gates pass; hosted settings blocked | Authentication required |
+| Repository | Public and protected | Authenticated admin verification and required checks |
+| Tag/release | `v0.1.0-beta.1` prerelease | Immutable tag and GitHub Release |
+| Artifacts | Published and checksummed | Release manifest, SHA256SUMS, archives, SBOMs, provenance, VSIX |
+| Documentation | GitHub Pages | Workflow-deployed versioned beta site |
+| Install | Public verification required | Go proxy, archives, and VSIX checked immediately after publication |
+| VS Code | VSIX install and activation pass | Visual Studio Code 1.131.0, macOS arm64 |
+| Feedback | Forms and Discussions available | No adoption inference from absence of reports |
+| Security | Reporting and hosted gates enabled | CodeQL, Dependency Review, secret scanning, push protection |
 
 Update this report only with observed public evidence. Absence of reports is not
 evidence of stability.

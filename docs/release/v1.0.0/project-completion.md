@@ -5,8 +5,9 @@
 BatchWeaver has an implemented compiler/runtime pipeline, typed public
 contracts, conservative proof and transformation stages, adapters and protocol
 contracts, adaptive controls, editor tooling, and deterministic release
-assurance. The public repository is established, but the release process is not
-complete: no prerelease has been published and stable v1 is blocked.
+assurance. The public repository and first beta are published and verified;
+stable v1 remains blocked pending real prerelease evidence, migration, expanded
+compatibility, API-freeze approval, and final governance approval.
 
 ## Architecture and safety
 
@@ -28,20 +29,19 @@ Local assurance covers unit, race, differential, selected mutation, fault,
 short-soak, performance budget, vulnerability, license, artifact, SBOM,
 provenance, and reproducibility checks. Hosted CodeQL and Linux, macOS, and
 Windows build/test jobs pass after the verified text-normalization correction.
-Dependency Review is blocked by a disabled repository feature.
+Dependency Review passes after enabling Dependency Graph. A real Extension Host
+smoke passes after fixing duplicate VS Code command registration.
 
 ## Release history
 
-There are no public BatchWeaver tags or releases. `v0.1.0-beta.1` is selected
-and represented by a release branch and PR, not by an immutable distribution.
+`v0.1.0-beta.1` is the first immutable public tag and GitHub prerelease. It is a
+beta distribution, not stable-v1 evidence by itself.
 
 ## Remaining limitations
 
 The exact list is maintained in `KNOWN-ISSUES.md`. Principal blockers are
-hosted repository settings, dependency review, VS Code
-host E2E, public module/archive installation, public migration evidence, API
-approval, security-reporting verification, and a meaningful beta evidence
-period.
+broader compatibility, public migration evidence, API approval, hosted
+attestation/signing policy, and a meaningful beta evidence period.
 
 ## Maintenance handoff
 
