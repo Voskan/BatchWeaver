@@ -6,8 +6,10 @@ package release
 import "time"
 
 const (
+	// ManifestSchema is the only release-manifest schema supported by this build.
 	ManifestSchema = "batchweaver.release/v1alpha1"
-	RuntimeABI     = "batchweaver.runtime/v1alpha1"
+	// RuntimeABI identifies the generated bridge/runtime compatibility surface.
+	RuntimeABI = "batchweaver.runtime/v1alpha1"
 )
 
 // Target identifies a supported release build target.
@@ -28,11 +30,13 @@ var DefaultTargets = []Target{
 	{GOOS: "windows", GOARCH: "amd64"},
 }
 
+// Digest is a named cryptographic digest.
 type Digest struct {
 	Algorithm string `json:"algorithm"`
 	Value     string `json:"value"`
 }
 
+// Artifact describes one file declared by a release manifest.
 type Artifact struct {
 	Path            string  `json:"path"`
 	Kind            string  `json:"kind"`
@@ -45,6 +49,7 @@ type Artifact struct {
 	Reproducibility string  `json:"reproducibility"`
 }
 
+// Toolchain records deterministic build inputs relevant to reproduction.
 type Toolchain struct {
 	GoVersion string `json:"go_version"`
 	CGO       string `json:"cgo"`
@@ -52,6 +57,7 @@ type Toolchain struct {
 	BuildVCS  bool   `json:"build_vcs"`
 }
 
+// References links the manifest to its assurance reports.
 type References struct {
 	Compatibility string `json:"compatibility"`
 	Security      string `json:"security"`
@@ -77,15 +83,21 @@ type Manifest struct {
 	ProvenanceModel string     `json:"provenance_model"`
 }
 
+// CheckStatus is the non-ambiguous outcome of a release gate.
 type CheckStatus string
 
 const (
-	StatusPass    CheckStatus = "PASS"
-	StatusFail    CheckStatus = "FAIL"
-	StatusNotRun  CheckStatus = "NOT-RUN"
+	// StatusPass indicates that a gate executed successfully.
+	StatusPass CheckStatus = "PASS"
+	// StatusFail indicates that a gate executed and failed.
+	StatusFail CheckStatus = "FAIL"
+	// StatusNotRun indicates that a required gate did not execute.
+	StatusNotRun CheckStatus = "NOT-RUN"
+	// StatusSkipped indicates an explicitly inapplicable optional gate.
 	StatusSkipped CheckStatus = "SKIPPED"
 )
 
+// CheckResult records one release gate without treating skipped work as passing.
 type CheckResult struct {
 	ID          string      `json:"id"`
 	Name        string      `json:"name"`
@@ -94,6 +106,7 @@ type CheckResult struct {
 	Remediation string      `json:"remediation,omitempty"`
 }
 
+// ReadinessReport is the machine-readable aggregate of release gates.
 type ReadinessReport struct {
 	Schema      string        `json:"schema"`
 	Commit      string        `json:"commit"`
@@ -104,6 +117,7 @@ type ReadinessReport struct {
 	Publication string        `json:"publication"`
 }
 
+// BuildOptions configures an unpublished deterministic snapshot build.
 type BuildOptions struct {
 	Root       string
 	Output     string

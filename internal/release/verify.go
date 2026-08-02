@@ -31,7 +31,7 @@ func LoadManifest(path string) (*Manifest, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	dec := json.NewDecoder(io.LimitReader(f, 8<<20))
 	dec.DisallowUnknownFields()
 	var manifest Manifest
@@ -92,19 +92,20 @@ func Verify(manifestPath string) error {
 		if size != artifact.Size || digest != artifact.Digest {
 			return fmt.Errorf("BW9014: artifact %s checksum or size mismatch", artifact.Path)
 		}
-		if artifact.Kind == "binary-archive" {
+		switch {
+		case artifact.Kind == "binary-archive":
 			if err := verifyBinaryArchive(path, artifact.Platform, manifest.Version, manifest.Commit); err != nil {
 				return err
 			}
-		} else if strings.HasPrefix(artifact.Kind, "sbom-") {
+		case strings.HasPrefix(artifact.Kind, "sbom-"):
 			if err := verifySBOM(path, artifact.Kind); err != nil {
 				return err
 			}
-		} else if artifact.Kind == "provenance" {
+		case artifact.Kind == "provenance":
 			if err := verifyProvenance(path, manifest); err != nil {
 				return err
 			}
-		} else if artifact.Kind == "vscode-vsix" {
+		case artifact.Kind == "vscode-vsix":
 			if err := verifyVSIX(path); err != nil {
 				return err
 			}
@@ -126,7 +127,7 @@ func verifyVSIX(path string) error {
 	if err != nil {
 		return err
 	}
-	defer zr.Close()
+	defer func() { _ = zr.Close() }()
 	required := map[string]bool{"extension/package.json": false, "extension/out/extension.js": false, "extension/NOTICE": false, "extension/THIRD_PARTY_NOTICES.md": false, "extension.vsixmanifest": false, "[Content_Types].xml": false}
 	licensePresent := false
 	for _, f := range zr.File {
@@ -219,7 +220,7 @@ func verifyChecksums(path string, manifest *Manifest) error {
 	if err != nil {
 		return fmt.Errorf("checksums: %w", err)
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	got := make(map[string]string)
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
@@ -267,7 +268,7 @@ func verifyBinaryArchive(path, platform, version, commit string) error {
 		if err != nil {
 			return err
 		}
-		defer zr.Close()
+		defer func() { _ = zr.Close() }()
 		for _, f := range zr.File {
 			if err := validateArchiveName(f.Name); err != nil {
 				return err
@@ -285,7 +286,7 @@ func verifyBinaryArchive(path, platform, version, commit string) error {
 					return openErr
 				}
 				executable, openErr = io.ReadAll(io.LimitReader(r, 100<<20))
-				r.Close()
+				_ = r.Close()
 				if openErr != nil {
 					return openErr
 				}
@@ -296,12 +297,12 @@ func verifyBinaryArchive(path, platform, version, commit string) error {
 		if err != nil {
 			return err
 		}
-		defer f.Close()
+		defer func() { _ = f.Close() }()
 		gz, err := gzip.NewReader(f)
 		if err != nil {
 			return err
 		}
-		defer gz.Close()
+		defer func() { _ = gz.Close() }()
 		tr := tar.NewReader(gz)
 		for {
 			h, nextErr := tr.Next()
@@ -314,7 +315,7 @@ func verifyBinaryArchive(path, platform, version, commit string) error {
 			if err := validateArchiveName(h.Name); err != nil {
 				return err
 			}
-			if h.Typeflag != tar.TypeReg && h.Typeflag != tar.TypeRegA {
+			if !h.FileInfo().Mode().IsRegular() {
 				return fmt.Errorf("archive contains non-regular entry %s", h.Name)
 			}
 			if got[h.Name] {
@@ -355,7 +356,7 @@ func verifyEmbeddedBuildInfo(data []byte, name, version, commit string) error {
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(dir)
+	defer func() { _ = os.RemoveAll(dir) }()
 	path := filepath.Join(dir, name)
 	if err := os.WriteFile(path, data, 0o755); err != nil {
 		return err
@@ -399,7 +400,7 @@ func Reproduce(manifestPath, root string) error {
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(temp)
+	defer func() { _ = os.RemoveAll(temp) }()
 	rebuilt, err := Build(BuildOptions{Root: root, Output: temp, Version: manifest.Version, Snapshot: true})
 	if err != nil {
 		return err
@@ -442,4 +443,5 @@ func Reproduce(manifestPath, root string) error {
 	return nil
 }
 
+// NativePlatform reports whether a target matches the verifier process.
 func NativePlatform(platform string) bool { return platform == runtime.GOOS+"/"+runtime.GOARCH }

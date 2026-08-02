@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// CheckOptions configures release-readiness evaluation.
 type CheckOptions struct {
 	Root string
 }
@@ -34,11 +35,12 @@ func Check(opts CheckOptions) (*ReadinessReport, error) {
 	add := func(result CheckResult) { report.Checks = append(report.Checks, result) }
 
 	status, statusErr := git(root, "status", "--porcelain", "--untracked-files=all")
-	if statusErr != nil {
+	switch {
+	case statusErr != nil:
 		add(failed("BW9001", "Working tree", statusErr.Error(), "run from a clean checkout"))
-	} else if status != "" {
+	case status != "":
 		add(failed("BW9001", "Working tree", "source tree is dirty", "commit or remove local changes before a release dry run"))
-	} else {
+	default:
 		add(passed("BW9001", "Working tree", "clean"))
 	}
 
@@ -86,7 +88,7 @@ func Check(opts CheckOptions) (*ReadinessReport, error) {
 	if tempErr != nil {
 		add(failed("BW9017", "Release dry run", tempErr.Error(), "ensure a writable temporary directory is available"))
 	} else {
-		defer os.RemoveAll(temp)
+		defer func() { _ = os.RemoveAll(temp) }()
 		manifest, buildErr := Build(BuildOptions{Root: root, Output: temp, Version: version, Snapshot: true})
 		if buildErr != nil {
 			add(failed("BW9017", "Release dry run", buildErr.Error(), "run batchweaver release build --snapshot and resolve the failure"))
@@ -123,6 +125,7 @@ func failed(id, name, detail, remediation string) CheckResult {
 	return CheckResult{ID: id, Name: name, Status: StatusFail, Detail: detail, Remediation: remediation}
 }
 
+// SecurityReport records local checks, omissions, and redaction policy.
 type SecurityReport struct {
 	Schema            string        `json:"schema"`
 	Checks            []CheckResult `json:"checks"`
@@ -195,7 +198,7 @@ func AuditSecurity(root string) SecurityReport {
 				weak = append(weak, filepath.Base(path)+": unpinned action")
 			}
 		}
-		f.Close()
+		_ = f.Close()
 		if !hasPermissions {
 			weak = append(weak, filepath.Base(path)+": missing permissions")
 		}
@@ -219,6 +222,7 @@ func bytesContainNUL(data []byte) bool {
 	return false
 }
 
+// AuditLicenses verifies repository license inputs and dependency inventory.
 func AuditLicenses(root string) error {
 	license, err := os.ReadFile(filepath.Join(root, "LICENSE"))
 	if err != nil {
@@ -238,7 +242,7 @@ func AuditLicenses(root string) error {
 		return fmt.Errorf("VS Code extension license metadata is missing")
 	}
 	if _, err := modules(root); err != nil {
-		return fmt.Errorf("Go dependency inventory: %w", err)
+		return fmt.Errorf("go dependency inventory: %w", err)
 	}
 	return nil
 }

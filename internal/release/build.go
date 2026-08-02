@@ -90,7 +90,7 @@ func Build(opts BuildOptions) (*Manifest, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer os.RemoveAll(work)
+	defer func() { _ = os.RemoveAll(work) }()
 
 	common, err := commonEntries(root)
 	if err != nil {
@@ -261,27 +261,27 @@ func writeTarGz(path string, entries []archiveEntry, stamp time.Time) error {
 		return err
 	}
 	gz, _ := gzip.NewWriterLevel(f, gzip.BestCompression)
-	gz.Header.ModTime = stamp
-	gz.Header.Name = ""
-	gz.Header.Comment = ""
+	gz.ModTime = stamp
+	gz.Name = ""
+	gz.Comment = ""
 	tw := tar.NewWriter(gz)
 	for _, entry := range entries {
 		h := &tar.Header{Name: filepath.ToSlash(entry.name), Mode: int64(entry.mode.Perm()), Size: int64(len(entry.data)), ModTime: stamp, Uid: 0, Gid: 0, Format: tar.FormatUSTAR}
 		if err := tw.WriteHeader(h); err != nil {
-			f.Close()
+			_ = f.Close()
 			return err
 		}
 		if _, err := tw.Write(entry.data); err != nil {
-			f.Close()
+			_ = f.Close()
 			return err
 		}
 	}
 	if err := tw.Close(); err != nil {
-		f.Close()
+		_ = f.Close()
 		return err
 	}
 	if err := gz.Close(); err != nil {
-		f.Close()
+		_ = f.Close()
 		return err
 	}
 	return f.Close()
@@ -296,19 +296,19 @@ func writeZip(path string, entries []archiveEntry, stamp time.Time) error {
 	for _, entry := range entries {
 		h := &zip.FileHeader{Name: filepath.ToSlash(entry.name), Method: zip.Deflate}
 		h.SetMode(entry.mode)
-		h.SetModTime(stamp)
+		h.Modified = stamp
 		w, createErr := zw.CreateHeader(h)
 		if createErr != nil {
-			f.Close()
+			_ = f.Close()
 			return createErr
 		}
 		if _, createErr = w.Write(entry.data); createErr != nil {
-			f.Close()
+			_ = f.Close()
 			return createErr
 		}
 	}
 	if err := zw.Close(); err != nil {
-		f.Close()
+		_ = f.Close()
 		return err
 	}
 	return f.Close()
@@ -317,12 +317,12 @@ func writeZip(path string, entries []archiveEntry, stamp time.Time) error {
 func buildVSIX(root, output string, stamp time.Time) error {
 	versionOut, err := run(root, nil, "node", "--version")
 	if err != nil {
-		return fmt.Errorf("Node 22 is required: %w", err)
+		return fmt.Errorf("node 22 is required: %w", err)
 	}
 	majorText := strings.SplitN(strings.TrimPrefix(strings.TrimSpace(string(versionOut)), "v"), ".", 2)[0]
 	major, parseErr := strconv.Atoi(majorText)
 	if parseErr != nil || major < 22 {
-		return fmt.Errorf("Node 22 or newer is required, found %s", strings.TrimSpace(string(versionOut)))
+		return fmt.Errorf("node 22 or newer is required, found %s", strings.TrimSpace(string(versionOut)))
 	}
 	extension := filepath.Join(root, "editors", "vscode")
 	for _, command := range [][]string{{"ci"}, {"audit", "--audit-level=high"}, {"run", "lint"}, {"run", "typecheck"}, {"run", "compile"}, {"test"}, {"run", "package"}} {
@@ -331,7 +331,7 @@ func buildVSIX(root, output string, stamp time.Time) error {
 		}
 	}
 	input := filepath.Join(extension, "batchweaver-vscode.vsix")
-	defer os.Remove(input)
+	defer func() { _ = os.Remove(input) }()
 	return normalizeZip(input, output, stamp)
 }
 
@@ -340,7 +340,7 @@ func normalizeZip(input, output string, stamp time.Time) error {
 	if err != nil {
 		return err
 	}
-	defer zr.Close()
+	defer func() { _ = zr.Close() }()
 	entries := make([]archiveEntry, 0, len(zr.File))
 	for _, f := range zr.File {
 		if err := validateArchiveName(f.Name); err != nil {
@@ -354,7 +354,7 @@ func normalizeZip(input, output string, stamp time.Time) error {
 			return openErr
 		}
 		data, readErr := io.ReadAll(io.LimitReader(r, 100<<20))
-		r.Close()
+		_ = r.Close()
 		if readErr != nil {
 			return readErr
 		}
