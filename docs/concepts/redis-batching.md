@@ -18,6 +18,6 @@ responsible for routing and MOVED/ASK handling.
 
 ## Client status
 
-The client-agnostic slot and mapping logic is implemented and tested. The concrete
-go-redis client binding is deferred in this build (offline dependency); see
-[limitations](../limitations/backend-adapters.md).
+`adapters/redisv9` implements MGET, HMGET, and explicit pipelining against
+go-redis v9. It preserves original request order, duplicates, missing outcomes,
+and per-command error identity; see [limitations](../limitations/backend-adapters.md).

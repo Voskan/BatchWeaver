@@ -1,8 +1,8 @@
 # Backend Adapter Limitations
 
-This stage delivers the adapter SDK, exact-key PostgreSQL synthesis over the
-standard library, the Redis cluster slot algorithm, and contract verification —
-all dependency-free and hermetically tested.
+This build includes the adapter SDK, exact-key PostgreSQL synthesis over the
+standard library, concrete pgx v5 and go-redis v9 runtime providers, Redis
+cluster-slot safety, and contract verification.
 
 ## Supported
 
@@ -13,16 +13,16 @@ all dependency-free and hermetically tested.
 - A typed, reflection-free runtime SQL provider that maps rows by ordinal,
   preserving order, duplicates, and `sql.ErrNoRows`, verified with a fake driver.
 - Redis CRC-16 cluster slot computation, hash-tag handling, and slot grouping.
+- `adapters/pgxv5`: caller-owned pgx connection/transaction/pool execution,
+  deterministic chunking, ordinal correlation, duplicates, and missing results.
+- `adapters/redisv9`: cluster-slot-safe MGET, per-hash HMGET, and explicit typed
+  pipelines with per-item error mapping.
 - A scalar/batch contract-verification harness with a deterministic artifact.
 - CLI: `adapter list | inspect | explain | verify | doctor`.
 
-## Deferred (blocked offline; contracts ready)
-
-- The concrete **pgx v5** and **go-redis v9** client bindings are not compiled in
-  because their dependency closures are unavailable with the module proxy
-  disabled. Their manifests are marked `deferred`, their capabilities defined, and
-  the client-agnostic logic (SQL synthesis, mapping, Redis slots) is implemented
-  so the bindings are thin additions once the dependencies are available.
+Integration coverage uses pgxmock for the pgx.Rows contract and miniredis through
+the real go-redis client. A live PostgreSQL or Redis Cluster deployment remains
+an environment-specific acceptance test, not a claim made by the hermetic suite.
 
 ## Not implemented (out of scope)
 
@@ -33,7 +33,8 @@ all dependency-free and hermetically tested.
   pipeline is a later step.
 - Generated row-decoder code generation (the runtime provider takes a typed
   decoder; emitting decoders as source is deferred).
-- Real database/Redis integration tests behind an opt-in build tag.
+- Containerized PostgreSQL and multi-node Redis Cluster acceptance in every
+  supported CI environment.
 
 ## Diagnostics
 

@@ -176,6 +176,8 @@ Read the [architecture overview](docs/architecture/overview.md),
   transformations through build overlays;
 - narrow exact-key PostgreSQL read synthesis, `database/sql`, Redis mapping,
   explicit HTTP/OpenAPI batching, GraphQL wave analysis, and gRPC contracts;
+- typed pgx v5, go-redis v9, gqlgen, and grpc-go integration packages on the
+  default branch, with pgxmock, miniredis, public-extension, and bufconn tests;
 - privacy-safe adaptive analysis, fairness, overload control, recursive waves,
   and bounded shadow/active tuning;
 - standalone LSP, optional gopls proxy, workspace daemon, and VS Code extension;
@@ -184,7 +186,10 @@ Read the [architecture overview](docs/architecture/overview.md),
 
 ## Important limitations
 
-- Concrete pgx, go-redis, gqlgen, and grpc-go client bindings are not included.
+- The current `v0.1.0-beta.3` artifacts predate the concrete client bindings;
+  until a newer immutable release is published, use a reviewed source commit to
+  evaluate `adapters/pgxv5`, `adapters/redisv9`, `adapters/gqlgen`, and
+  `adapters/grpcgo`.
 - SQL synthesis is limited to documented exact-key PostgreSQL reads; writes and
   arbitrary SQL rewrites are rejected.
 - GraphQL/gRPC optimization requires explicit integrations; arbitrary network

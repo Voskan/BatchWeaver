@@ -38,7 +38,7 @@ func TestPublicAPIBaseline(t *testing.T) {
 
 func publicAPI(t *testing.T, root string) string {
 	t.Helper()
-	patterns := []string{".", "./bridge", "./config", "./diagnostics", "./operation", "./runtime"}
+	patterns := []string{".", "./adapters/gqlgen", "./adapters/grpcgo", "./adapters/pgxv5", "./adapters/redisv9", "./bridge", "./config", "./diagnostics", "./operation", "./runtime"}
 	pkgs, err := packages.Load(&packages.Config{Mode: packages.NeedName | packages.NeedTypes, Dir: root}, patterns...)
 	if err != nil {
 		t.Fatal(err)

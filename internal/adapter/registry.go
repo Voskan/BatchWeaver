@@ -29,23 +29,23 @@ func builtinManifests() []Manifest {
 		},
 		{
 			SchemaVersion: SchemaVersion, AdapterID: "pgx", Version: 1,
-			DisplayName: "pgx", Category: CategoryBackend, Status: StatusDeferred, RuntimeABI: RuntimeABIVersion,
-			Dialects: []string{"postgres"}, Clients: []string{"github.com/jackc/pgx/v5"},
+			DisplayName: "pgx", Category: CategoryBackend, Status: StatusReady, RuntimeABI: RuntimeABIVersion,
+			Dialects: []string{"postgres"}, Clients: []string{"github.com/jackc/pgx/v5@v5.10.0"},
 			Capabilities: []Capability{
 				CapExplicitBatchBinding, CapExactKeyReadSynthesis, CapOrderedResultMapping,
 				CapSparseResultMapping, CapTransactionPartition, CapChunking,
 			},
-			Notes: "Contract defined; concrete pgx v5 client binding deferred (offline dependency).",
+			Notes: "Typed pgx v5 array provider with caller-owned connection/transaction identity and ordinal mapping.",
 		},
 		{
 			SchemaVersion: SchemaVersion, AdapterID: "redis", Version: 1,
-			DisplayName: "redis", Category: CategoryBackend, Status: StatusDeferred, RuntimeABI: RuntimeABIVersion,
-			Clients: []string{"github.com/redis/go-redis/v9"},
+			DisplayName: "redis", Category: CategoryBackend, Status: StatusReady, RuntimeABI: RuntimeABIVersion,
+			Clients: []string{"github.com/redis/go-redis/v9@v9.21.0"},
 			Capabilities: []Capability{
 				CapExplicitBatchBinding, CapMGet, CapHMGet, CapPipeline,
 				CapClusterSlotPartition, CapOrderedResultMapping,
 			},
-			Notes: "Cluster hash-slot grouping implemented; concrete go-redis client binding deferred (offline dependency).",
+			Notes: "Typed MGET, HMGET, and explicit pipeline providers with cluster-slot partitioning.",
 		},
 		{
 			SchemaVersion: SchemaVersion, AdapterID: "http/openapi", Version: 1,
@@ -59,23 +59,23 @@ func builtinManifests() []Manifest {
 		},
 		{
 			SchemaVersion: SchemaVersion, AdapterID: "graphql/gqlgen", Version: 1,
-			DisplayName: "graphql/gqlgen", Category: CategoryNetwork, Status: StatusDeferred, RuntimeABI: RuntimeABIVersion,
-			Clients: []string{"github.com/99designs/gqlgen"},
+			DisplayName: "graphql/gqlgen", Category: CategoryNetwork, Status: StatusReady, RuntimeABI: RuntimeABIVersion,
+			Clients: []string{"github.com/99designs/gqlgen@v0.17.94"},
 			Capabilities: []Capability{
 				CapGraphQLOperationScope, CapGraphQLResolverWave, CapGraphQLSelectionNorm,
 				CapGraphQLErrorPath, CapGraphQLNullability, CapGraphQLSubscription,
 			},
-			Notes: "Framework-neutral operation model and resolver-wave analysis implemented; concrete gqlgen runtime hooks deferred (offline dependency).",
+			Notes: "Public gqlgen extension hooks establish operation scopes and normalized field partitions.",
 		},
 		{
 			SchemaVersion: SchemaVersion, AdapterID: "grpc-go", Version: 1,
-			DisplayName: "grpc-go", Category: CategoryNetwork, Status: StatusDeferred, RuntimeABI: RuntimeABIVersion,
-			Clients: []string{"google.golang.org/grpc"},
+			DisplayName: "grpc-go", Category: CategoryNetwork, Status: StatusReady, RuntimeABI: RuntimeABIVersion,
+			Clients: []string{"google.golang.org/grpc@v1.83.0"},
 			Capabilities: []Capability{
 				CapGRPCUnaryBatch, CapGRPCMetadata, CapGRPCStatusDetails, CapGRPCInterceptor,
 				CapBoundedChunking, CapTransportPartitioning,
 			},
-			Notes: "Explicit batch-binding, metadata-partition, and status-mapping policy implemented; concrete grpc-go client/bufconn integration deferred (offline dependency).",
+			Notes: "Typed explicit unary batch provider, identity-safe metadata partitions, and bufconn integration coverage.",
 		},
 	}
 	for i := range ms {

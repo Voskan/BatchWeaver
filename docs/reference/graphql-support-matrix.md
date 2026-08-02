@@ -10,7 +10,8 @@
 | normalized selection digest / partitioning | supported |
 | error path / nullability preservation model | supported |
 | one scope per operation | supported |
-| concrete gqlgen runtime hook | deferred (offline dependency) |
+| gqlgen operation scope extension | supported and tested |
+| gqlgen normalized field partition context | supported and tested |
 | cross-operation / cross-request batching | rejected |
 | subscription lifetime-wide batching | rejected |
 | top-level mutation reordering | rejected |

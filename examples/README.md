@@ -9,6 +9,8 @@ demonstrates a declarative contract.
   contracts.
 - [configuration](configuration) — valid YAML and JSON configuration, semantically
   equivalent.
+- [client-bindings](client-bindings) — compile-tested pgx v5, go-redis v9,
+  gqlgen, and grpc-go integration surface with runnable adapter suites.
 - [static-prefetch](static-prefetch) — the static-loop-prefetch transformation,
   proven equivalent to the original N+1 loop.
 - [adaptive-runtime](adaptive-runtime) — profiling a synthetic workload and

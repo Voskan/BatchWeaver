@@ -1,9 +1,11 @@
 # gRPC adapter
 
 The gRPC adapter binds explicit unary scalar-to-batch RPCs and defines the
-metadata, call-option, and status policies for coalescing. The concrete grpc-go
-client/bufconn integration is deferred in this build (offline dependency); the
-binding model and policies are implemented and tested.
+metadata, call-option, and status policies for coalescing. The concrete
+`adapters/grpcgo` provider invokes an explicit unary batch method through
+`grpc.ClientConnInterface`; a real grpc-go bufconn fixture verifies the wire
+integration. Streaming remains contract-only and requires an explicit
+multiplexed protocol.
 
 ## Explicit batch binding
 

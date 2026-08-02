@@ -15,7 +15,10 @@ The VSIX packager pin follows its [official npm package](https://www.npmjs.com/p
 whose current line requires Node 22. Pins are updated through a reviewed pull
 request, never by an unreviewed "latest" lookup.
 
-Concrete pgx, go-redis, gqlgen, and grpc-go client bindings are not present and
-therefore have no supported client-version claim. Framework-neutral parsing,
-partitioning, and contract verification are not a substitute for an integration
-test against those clients.
+The source compatibility matrix now pins pgx v5.10.0, go-redis v9.21.0, gqlgen
+v0.17.94, and grpc-go v1.83.0. pgx is exercised through pgxmock's implementation
+of the public pgx.Rows contract; go-redis through the real client and miniredis;
+gqlgen through its public extension interfaces; and grpc-go through a real
+bufconn transport. Live PostgreSQL and multi-node Redis Cluster deployments are
+still environment-specific acceptance tests and are not implied by the
+hermetic matrix.

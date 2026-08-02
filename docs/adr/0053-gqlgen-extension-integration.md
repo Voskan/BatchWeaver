@@ -11,8 +11,8 @@ BatchWeaver must integrate with gqlgen without patching its internals.
 
 - The GraphQL adapter keeps a framework-neutral operation model and resolver-wave analysis, independent of any framework.
 - Concrete gqlgen integration is through its supported extension, middleware, and field-context hooks only; gqlgen internals are never patched.
-- The concrete gqlgen runtime hook is deferred in this build because the dependency is unavailable offline; the neutral model and wave analysis are implemented and tested.
+- The concrete gqlgen runtime hook uses public operation and field interceptors to establish runtime scopes and normalized field partitions.
 
 ## Consequences
 
-The GraphQL logic is reusable and testable now; the gqlgen binding is a thin, well-scoped addition.
+The GraphQL logic remains framework-neutral while the binding stays thin and avoids generated-code or internal-API patches.

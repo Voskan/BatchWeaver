@@ -1,9 +1,8 @@
 # Network Adapter Limitations
 
-This stage delivers the network protocol adapter SDK, a fully implemented HTTP
-batch adapter, GraphQL resolver-wave analysis, gRPC batch-binding and metadata
-policy, OpenAPI extension loading, and protocol verification — all dependency-free
-and hermetically tested.
+This build delivers the network protocol adapter SDK, HTTP batching, GraphQL
+resolver-wave analysis, a concrete gqlgen extension, explicit grpc-go unary
+batch invocation, OpenAPI loading, and protocol verification.
 
 ## Supported
 
@@ -20,23 +19,19 @@ and hermetically tested.
 - **gRPC:** explicit unary batch-binding model with strict validation, metadata
   partition policy, response-correlation modes, and a streaming lifecycle/state
   vocabulary.
+- **gqlgen:** public operation/field interceptors establish one runtime scope per
+  operation and expose normalized field partitions without changing results.
+- **grpc-go:** a typed explicit unary provider is tested over a real bufconn
+  transport, including exact response-ID validation and metadata partitioning.
 - CLI: `adapter list --category`, `graphql inspect|graph`, `grpc inspect`,
   `http verify`, `openapi validate|inspect`.
-
-## Deferred (blocked offline; contracts ready)
-
-- The concrete **gqlgen** runtime hooks and **grpc-go/bufconn** client and server
-  integrations are not compiled in because their dependency closures are
-  unavailable with the module proxy disabled. Their manifests are marked
-  `deferred`, capabilities defined, and the framework-neutral logic (GraphQL model
-  and waves, gRPC binding/metadata/status policy) implemented so the integrations
-  are thin additions once the dependencies are available.
 
 ## Not implemented (out of scope)
 
 - Universal GraphQL query optimization, arbitrary GraphQL-to-SQL, cross-operation
   or cross-request GraphQL merging, and subscription-lifetime batching.
-- Automatic server-side generation of remote gRPC batch methods.
+- Automatic server-side generation of remote gRPC batch methods and automatic
+  batching of streaming RPCs.
 - Arbitrary HTTP request fusion, undocumented batch protocols, NDJSON/multipart
   batch bodies (capability reserved only), and remote OpenAPI reference resolution.
 - Distributed cross-process batching and any deployment/gateway concern.

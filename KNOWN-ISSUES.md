@@ -26,13 +26,15 @@ release is implied.
 
 ## BW-KI-001 — Concrete framework client bindings are absent
 
-- Severity: P2
-- Affected: pgx, go-redis, gqlgen, and grpc-go integrations
-- Impact: framework-neutral contracts and verification logic exist, but users
-  must provide an explicit binding.
-- Workaround: use the Adapter SDK, `database/sql`, or `net/http` providers.
-- Stable blocker: yes until the supported v1 surface deliberately includes or
-  excludes each integration.
+- Severity: P2 for `v0.1.0-beta.3`; resolved on the default branch
+- Affected: pgx, go-redis, gqlgen, and grpc-go integrations in published beta.3
+- Resolution: public `adapters/pgxv5`, `adapters/redisv9`, `adapters/gqlgen`,
+  and `adapters/grpcgo` packages add typed client integrations and hermetic
+  integration coverage.
+- Workaround for beta.3: use the Adapter SDK, `database/sql`, or `net/http`
+  providers, or evaluate the reviewed source commit containing the bindings.
+- Stable blocker: focused implementation is resolved; broader client/platform
+  compatibility evidence remains required.
 
 ## BW-KI-002 — VS Code distribution is VSIX-only
 

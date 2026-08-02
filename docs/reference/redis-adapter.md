@@ -1,7 +1,7 @@
 # Redis adapter reference
 
-Status: cluster slot and result-mapping logic implemented and tested; concrete
-go-redis client binding deferred (offline dependency).
+Status: `adapters/redisv9` is implemented against go-redis v9.21.0 and tested
+through the real client with miniredis.
 
 ## Command mapping
 
