@@ -31,7 +31,7 @@ analysis and proof schema versions.
 | `id` | transformation ID (`bwtransform_…`) |
 | `candidate_id` | analysis candidate ID |
 | `certificate_id` | semantic proof certificate ID |
-| `strategy` | `static-loop-prefetch` |
+| `strategy` | a closed strategy ID, including static/runtime coalescing and exact/composite/bounded-join SQL synthesis |
 | `operation` | operation ID |
 | `source` | anchor (file, package, function, range, structural hash, resolution) |
 | `phases` | generated phases |
@@ -46,6 +46,10 @@ analysis and proof schema versions.
 The source map (`batchweaver.sourcemap/v1alpha1`) contains segments mapping
 generated line ranges to a role, transformation, candidate, and certificate. See
 [source maps](../concepts/source-maps.md).
+
+SQL-generated bindings use the `sql-synthesis` role and record the synthesis
+digest as both analysis/contract evidence. Their validation summary must show
+parse, type-check, proof preconditions, and structural validation as passed.
 
 ## Determinism
 

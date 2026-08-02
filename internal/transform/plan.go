@@ -474,6 +474,12 @@ func lineDelta(orig, trans []byte) (inserted, removed int) {
 // bridge symbol.
 func structuralOK(plan *Plan) ValidationState {
 	for _, tr := range plan.Transformations {
+		if tr.Strategy == StrategyExactKeySQLSynthesis || tr.Strategy == StrategyCompositeKeySQLSynthesis || tr.Strategy == StrategyBoundedJoinSQLSynthesis {
+			if len(tr.GeneratedSymbols) != 2 || tr.Source.File == "" {
+				return ValidationFailed
+			}
+			continue
+		}
 		if tr.Strategy == StrategyStaticLoopPrefetch {
 			if len(tr.GeneratedSymbols) != 4 {
 				return ValidationFailed

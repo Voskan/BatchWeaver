@@ -42,6 +42,21 @@ func BuildSourceMap(plan *Plan) SourceMap {
 
 // locateRoles finds representative generated lines for a transformation's roles.
 func locateRoles(file string, lines []string, tr Transformation) []SourceMapSegment {
+	if tr.Strategy == StrategyExactKeySQLSynthesis || tr.Strategy == StrategyCompositeKeySQLSynthesis || tr.Strategy == StrategyBoundedJoinSQLSynthesis {
+		if len(tr.GeneratedSymbols) == 0 {
+			return nil
+		}
+		for i, line := range lines {
+			if strings.Contains(line, "const "+tr.GeneratedSymbols[0]+" =") {
+				return []SourceMapSegment{{
+					ID: shortID("bwseg", file, string(RoleSQLSynthesis), tr.ID), File: file,
+					GeneratedStart: i + 1, GeneratedEnd: i + 1, Role: RoleSQLSynthesis,
+					Transformation: tr.ID, Candidate: tr.CandidateID, Certificate: tr.CertificateID,
+				}}
+			}
+		}
+		return nil
+	}
 	if len(tr.GeneratedSymbols) < 4 {
 		return nil
 	}

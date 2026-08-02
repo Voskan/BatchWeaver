@@ -15,6 +15,7 @@ prompt to keep every stage's codes distinct.
 | `BW6104` | parameter mapping ambiguous |
 | `BW6105` | projection mapping ambiguous (`SELECT *`) |
 | `BW6106` | result cardinality unsupported |
+| `BW6107` | join shape or relation identity unsupported |
 | `BW6201` | transaction identity unavailable |
 | `BW6202` | generated query exceeds parameter limit |
 | `BW6401` | Redis command cannot be safely batched |

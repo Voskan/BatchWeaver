@@ -17,7 +17,8 @@ Schema: `batchweaver.adapter/v1alpha1`.
 ## Capability vocabulary
 
 `explicit-batch-binding`, `exact-key-read-synthesis`,
-`composite-key-read-synthesis`, `ordered-result-mapping`, `keyed-result-mapping`,
+`composite-key-read-synthesis`, `bounded-join-read-synthesis`,
+`ordered-result-mapping`, `keyed-result-mapping`,
 `sparse-result-mapping`, `per-item-error`, `global-error`,
 `transaction-partitioning`, `session-partitioning`, `prepared-statements`,
 `chunking`, `pipeline`, `cluster-slot-partitioning`, `semantic-verification`,

@@ -22,3 +22,9 @@ gqlgen through its public extension interfaces; and grpc-go through a real
 bufconn transport. Live PostgreSQL and multi-node Redis Cluster deployments are
 still environment-specific acceptance tests and are not implied by the
 hermetic matrix.
+
+The standard-library PostgreSQL path additionally covers exact and composite
+keys, one explicitly at-most-one INNER/LEFT join, duplicate/missing mapping,
+content-addressed mutation rejection, and a generated Go binding compiled
+through an overlay. This remains hermetic SQL/driver evidence, not a live
+PostgreSQL deployment claim.

@@ -206,6 +206,14 @@ func runTransformVerify(ctx context.Context, app *App, args []string) error {
 	if err != nil {
 		return &CommandError{Code: ExitStale, Message: err.Error()}
 	}
+	if stored.ProofSchema == "batchweaver.sql-proof/v1alpha1" {
+		if err := transform.VerifySQLSynthesisPlan(stored); err != nil {
+			fmt.Fprintf(app.Stdout(), "VERIFY FAILED\n  %v\n", err)
+			return &CommandError{Code: ExitStale}
+		}
+		fmt.Fprintf(app.Stdout(), "VERIFY PASS\n  SQL synthesis plan %s\n  generated content, source map, structure, and canonical digest match\n", stored.ID)
+		return nil
+	}
 	fresh, err := planFromArgs(ctx, args[1:], transform.Filter{}, nil)
 	if err != nil {
 		return &CommandError{Code: ExitError, Message: err.Error()}

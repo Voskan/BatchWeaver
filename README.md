@@ -174,7 +174,8 @@ Read the [architecture overview](docs/architecture/overview.md),
   discovery, and deterministic reports;
 - semantic proof certificates and static loop-prefetch/runtime-lowering
   transformations through build overlays;
-- narrow exact-key PostgreSQL read synthesis, `database/sql`, Redis mapping,
+- exact/composite-key PostgreSQL read synthesis with bounded at-most-one joins,
+  compile-checked SQL binding overlays, `database/sql`, Redis mapping,
   explicit HTTP/OpenAPI batching, GraphQL wave analysis, and gRPC contracts;
 - typed pgx v5, go-redis v9, gqlgen, and grpc-go integration packages on the
   default branch, with pgxmock, miniredis, public-extension, and bufconn tests;
@@ -190,7 +191,8 @@ Read the [architecture overview](docs/architecture/overview.md),
   until a newer immutable release is published, use a reviewed source commit to
   evaluate `adapters/pgxv5`, `adapters/redisv9`, `adapters/gqlgen`, and
   `adapters/grpcgo`.
-- SQL synthesis is limited to documented exact-key PostgreSQL reads; writes and
+- SQL synthesis is limited to documented exact/composite-key PostgreSQL reads
+  and one explicitly at-most-one INNER/LEFT join; writes, one-to-many joins, and
   arbitrary SQL rewrites are rejected.
 - GraphQL/gRPC optimization requires explicit integrations; arbitrary network
   request fusion is not inferred.
