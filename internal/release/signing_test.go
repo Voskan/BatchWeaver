@@ -2,6 +2,7 @@ package release
 
 import (
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -93,12 +94,15 @@ func TestVerifyScriptChecksEveryIdentityDimension(t *testing.T) {
 		}
 	}
 
-	info, err := os.Stat(path)
+	// The invariant that matters is the mode git records, because that is what a
+	// consumer receives on checkout. Windows working trees do not carry Unix
+	// permission bits, so read the mode from the index rather than the filesystem.
+	out, err := exec.Command("git", "-C", root, "ls-files", "-s", "scripts/verify-release-signatures.sh").Output()
 	if err != nil {
-		t.Fatal(err)
+		t.Skipf("git is unavailable to check the recorded file mode: %v", err)
 	}
-	if info.Mode().Perm()&0o111 == 0 {
-		t.Error("verification script is not executable")
+	if !strings.HasPrefix(string(out), "100755") {
+		t.Errorf("verification script must be recorded as executable (100755), got %q", strings.TrimSpace(string(out)))
 	}
 }
 
