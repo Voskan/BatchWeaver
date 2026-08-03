@@ -648,12 +648,135 @@ func validateNPMLicenses(packages []npmPackage) error {
 			}
 			return fmt.Errorf("npm dependency %s@%s has no reviewable license metadata", pkg.Name, pkg.Version)
 		}
-		upper := strings.ToUpper(pkg.License)
-		if strings.Contains(upper, "AGPL") || strings.Contains(upper, "SSPL") || strings.Contains(upper, "GPL-") || strings.HasPrefix(upper, "GPL") {
+		if !licenseExpressionAcceptable(pkg.License) {
 			return fmt.Errorf("npm dependency %s@%s has incompatible license %s", pkg.Name, pkg.Version, pkg.License)
 		}
 	}
 	return nil
+}
+
+// licenseExpressionAcceptable evaluates an SPDX license expression against the
+// project's policy.
+//
+// The distinction that matters is between a disjunction and a conjunction. A
+// dual license such as "MIT OR GPL-3.0-or-later" lets the consumer choose, so it
+// is acceptable whenever any operand is; treating it as copyleft because the
+// string contains "GPL" would reject a permissive option the project is entitled
+// to take. A conjunction such as "MIT AND GPL-3.0-only" imposes every operand,
+// so all of them must be acceptable.
+func licenseExpressionAcceptable(expr string) bool {
+	tokens := tokenizeLicenseExpression(expr)
+	if len(tokens) == 0 {
+		return false
+	}
+	pos := 0
+	ok, consumedAll := parseLicenseOr(tokens, &pos)
+	return ok && consumedAll && pos == len(tokens)
+}
+
+// parseLicenseOr parses `term (OR term)*` and reports whether the expression is
+// acceptable and whether it parsed cleanly.
+func parseLicenseOr(tokens []string, pos *int) (acceptable, ok bool) {
+	acceptable, ok = parseLicenseAnd(tokens, pos)
+	if !ok {
+		return false, false
+	}
+	for *pos < len(tokens) && strings.EqualFold(tokens[*pos], "OR") {
+		*pos++
+		right, rightOK := parseLicenseAnd(tokens, pos)
+		if !rightOK {
+			return false, false
+		}
+		acceptable = acceptable || right
+	}
+	return acceptable, true
+}
+
+// parseLicenseAnd parses `factor (AND factor)*`.
+func parseLicenseAnd(tokens []string, pos *int) (acceptable, ok bool) {
+	acceptable, ok = parseLicenseFactor(tokens, pos)
+	if !ok {
+		return false, false
+	}
+	for *pos < len(tokens) && strings.EqualFold(tokens[*pos], "AND") {
+		*pos++
+		right, rightOK := parseLicenseFactor(tokens, pos)
+		if !rightOK {
+			return false, false
+		}
+		acceptable = acceptable && right
+	}
+	return acceptable, true
+}
+
+// parseLicenseFactor parses a parenthesized expression or a single license
+// identifier, including a trailing "WITH <exception>" clause.
+func parseLicenseFactor(tokens []string, pos *int) (acceptable, ok bool) {
+	if *pos >= len(tokens) {
+		return false, false
+	}
+	if tokens[*pos] == "(" {
+		*pos++
+		inner, innerOK := parseLicenseOr(tokens, pos)
+		if !innerOK || *pos >= len(tokens) || tokens[*pos] != ")" {
+			return false, false
+		}
+		*pos++
+		return inner, true
+	}
+	id := tokens[*pos]
+	if id == ")" || strings.EqualFold(id, "AND") || strings.EqualFold(id, "OR") {
+		return false, false
+	}
+	*pos++
+	// "GPL-2.0 WITH Classpath-exception-2.0" is still governed by its license id.
+	if *pos+1 < len(tokens) && strings.EqualFold(tokens[*pos], "WITH") {
+		*pos += 2
+	}
+	return licenseIDAcceptable(id), true
+}
+
+// licenseIDAcceptable reports whether a single SPDX license identifier is
+// compatible with redistributing BatchWeaver under Apache-2.0.
+func licenseIDAcceptable(id string) bool {
+	upper := strings.ToUpper(strings.TrimSuffix(id, "+"))
+	switch {
+	case strings.HasPrefix(upper, "AGPL"), strings.HasPrefix(upper, "SSPL"):
+		return false
+	case strings.HasPrefix(upper, "LGPL"):
+		// Weak copyleft is still outside the policy for bundled dependencies.
+		return false
+	case strings.HasPrefix(upper, "GPL"):
+		return false
+	default:
+		return true
+	}
+}
+
+// tokenizeLicenseExpression splits an SPDX expression into identifiers,
+// operators, and parentheses.
+func tokenizeLicenseExpression(expr string) []string {
+	var tokens []string
+	var current strings.Builder
+	flush := func() {
+		if current.Len() > 0 {
+			tokens = append(tokens, current.String())
+			current.Reset()
+		}
+	}
+	for _, r := range expr {
+		switch r {
+		case '(', ')':
+			flush()
+			tokens = append(tokens, string(r))
+		case ' ', '\t', '\n':
+			flush()
+		default:
+			current.WriteRune(r)
+		}
+	}
+	flush()
+	return tokens
 }
 
 func writeProvenance(manifest *Manifest, path string) error {
