@@ -640,13 +640,59 @@ func goModuleLicense(path string) string {
 	}
 }
 
+// reviewedNPMLicenseExceptions lists dependency path fragments whose license
+// metadata cannot be evaluated automatically and has therefore been reviewed by
+// hand. Every entry states why it is safe.
+//
+// An entry here is a maintainer decision, not a way to silence the audit: a
+// dependency that is missing from this list and carries unevaluable metadata
+// still fails the release.
+var reviewedNPMLicenseExceptions = map[string]string{
+	// Platform-specific esbuild binaries ship without a license field; the
+	// esbuild project is MIT and these are build-time only.
+	"node_modules/@esbuild/": "esbuild platform binary, MIT upstream, build-time only",
+	// The VS Code signing helper and its platform packages declare
+	// "SEE LICENSE IN LICENSE.txt" rather than an SPDX identifier. They are
+	// Microsoft packaging tools used only to build the VSIX; they are not
+	// redistributed inside the extension bundle or the Go module.
+	"node_modules/@vscode/vsce-sign": "VS Code packaging tool, build-time only, not redistributed",
+}
+
+// unevaluableNPMLicense reports whether a license string is an npm convention
+// that carries no machine-checkable grant.
+func unevaluableNPMLicense(license string) bool {
+	upper := strings.ToUpper(strings.TrimSpace(license))
+	return upper == "" ||
+		strings.HasPrefix(upper, "SEE LICENSE IN") ||
+		strings.HasPrefix(upper, "LICENSEREF-") ||
+		upper == "UNLICENSED"
+}
+
+// reviewedNPMException returns the recorded rationale for a dependency path.
+func reviewedNPMException(path string) (string, bool) {
+	for fragment, reason := range reviewedNPMLicenseExceptions {
+		if strings.Contains(path, fragment) {
+			return reason, true
+		}
+	}
+	return "", false
+}
+
 func validateNPMLicenses(packages []npmPackage) error {
 	for _, pkg := range packages {
-		if pkg.License == "" {
-			if strings.Contains(pkg.Path, "node_modules/@esbuild/") || strings.Contains(pkg.Path, "node_modules/@vscode/vsce-sign-") {
+		// "SEE LICENSE IN <file>", "UNLICENSED", a LicenseRef, or no field at all
+		// is not an SPDX expression, so it cannot be evaluated. Such a dependency
+		// is allowed only when a maintainer has reviewed it and recorded why.
+		if unevaluableNPMLicense(pkg.License) {
+			if _, ok := reviewedNPMException(pkg.Path); ok {
 				continue
 			}
-			return fmt.Errorf("npm dependency %s@%s has no reviewable license metadata", pkg.Name, pkg.Version)
+			shown := pkg.License
+			if shown == "" {
+				shown = "<none>"
+			}
+			return fmt.Errorf("npm dependency %s@%s has unevaluable license metadata %q and no recorded review",
+				pkg.Name, pkg.Version, shown)
 		}
 		if !licenseExpressionAcceptable(pkg.License) {
 			return fmt.Errorf("npm dependency %s@%s has incompatible license %s", pkg.Name, pkg.Version, pkg.License)

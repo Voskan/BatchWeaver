@@ -81,3 +81,29 @@ func TestValidateNPMLicensesRejectsCopyleft(t *testing.T) {
 		t.Error("copyleft-only dependency was accepted")
 	}
 }
+
+// TestUnevaluableLicenseRequiresRecordedReview covers the npm conventions that
+// carry no machine-checkable grant. They are allowed only for dependencies a
+// maintainer has reviewed and recorded, so the audit cannot be silenced by an
+// upstream package simply omitting SPDX metadata.
+func TestUnevaluableLicenseRequiresRecordedReview(t *testing.T) {
+	reviewed := []npmPackage{
+		{Name: "@vscode/vsce-sign", Version: "2.0.9", License: "SEE LICENSE IN LICENSE.txt", Path: "node_modules/@vscode/vsce-sign"},
+		{Name: "@vscode/vsce-sign-darwin-arm64", Version: "2.0.2", License: "", Path: "node_modules/@vscode/vsce-sign-darwin-arm64"},
+		{Name: "@esbuild/darwin-arm64", Version: "0.28.1", License: "", Path: "node_modules/@esbuild/darwin-arm64"},
+	}
+	if err := validateNPMLicenses(reviewed); err != nil {
+		t.Errorf("reviewed build-time dependency rejected: %v", err)
+	}
+
+	for _, unreviewed := range []npmPackage{
+		{Name: "mystery", Version: "1.0.0", License: "SEE LICENSE IN LICENSE.txt", Path: "node_modules/mystery"},
+		{Name: "proprietary", Version: "1.0.0", License: "UNLICENSED", Path: "node_modules/proprietary"},
+		{Name: "custom-ref", Version: "1.0.0", License: "LicenseRef-Custom", Path: "node_modules/custom-ref"},
+		{Name: "no-metadata", Version: "1.0.0", License: "", Path: "node_modules/no-metadata"},
+	} {
+		if err := validateNPMLicenses([]npmPackage{unreviewed}); err == nil {
+			t.Errorf("unevaluable license accepted without a recorded review: %s", unreviewed.Name)
+		}
+	}
+}
