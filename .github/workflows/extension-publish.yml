@@ -1,0 +1,122 @@
+---
+name: Publish VS Code Extension
+
+# Publishes the BatchWeaver extension to the Visual Studio Marketplace from an
+# immutable, authorized release tag only.
+#
+# This workflow cannot manufacture a publisher identity. It stays inert until the
+# repository owner creates the protected `marketplace` environment and stores a
+# Marketplace personal access token in it as `VSCE_PAT`. The token is passed to
+# vsce through the environment and is never echoed, written to a file, or
+# committed.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Immutable release tag to publish (for example v1.0.1)
+        required: true
+        type: string
+      dry_run:
+        description: Package and validate without publishing
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: extension-publish-${{ inputs.tag }}
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: "22.22.0"
+
+jobs:
+  publish:
+    name: Package, validate, and publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Publishing requires an owner-approved protected environment holding VSCE_PAT.
+    environment: marketplace
+    steps:
+      - name: Reject a non-release ref
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          case "$TAG" in
+            v*) ;;
+            *) printf 'refusing to publish a non-release ref: %s\n' "$TAG" >&2; exit 1 ;;
+          esac
+
+      - name: Checkout the exact tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.tag }}
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Verify the manifest version matches the tag
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          MANIFEST="$(node -p "require('./editors/vscode/package.json').version")"
+          CANONICAL="$(tr -d '[:space:]' < release/VERSION)"
+          if [ "v$MANIFEST" != "$TAG" ] || [ "$MANIFEST" != "$CANONICAL" ]; then
+            printf 'version mismatch: tag=%s manifest=%s release/VERSION=%s\n' \
+              "$TAG" "$MANIFEST" "$CANONICAL" >&2
+            exit 1
+          fi
+
+      - name: Clean install and verify
+        working-directory: editors/vscode
+        run: |
+          set -euo pipefail
+          npm ci
+          npm audit --audit-level=high
+          npm run lint
+          npm run typecheck
+          npm run compile
+          npm test
+
+      - name: Package the VSIX
+        working-directory: editors/vscode
+        run: |
+          set -euo pipefail
+          npx --yes @vscode/vsce@3.6.2 package --no-dependencies --out batchweaver.vsix
+          npx --yes @vscode/vsce@3.6.2 ls --no-dependencies
+
+      - name: Retain the packaged VSIX
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v5.0.0
+        with:
+          name: batchweaver-vsix-${{ inputs.tag }}
+          path: editors/vscode/batchweaver.vsix
+          retention-days: 90
+          if-no-files-found: error
+
+      - name: Publish to the Marketplace
+        if: ${{ inputs.dry_run == false }}
+        working-directory: editors/vscode
+        env:
+          # Supplied by the protected `marketplace` environment. Never logged.
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: |
+          set -euo pipefail
+          if [ -z "${VSCE_PAT:-}" ]; then
+            printf 'VSCE_PAT is not configured in the marketplace environment\n' >&2
+            exit 1
+          fi
+          npx --yes @vscode/vsce@3.6.2 publish --no-dependencies --packagePath batchweaver.vsix
+
+      - name: Report dry-run outcome
+        if: ${{ inputs.dry_run == true }}
+        run: |
+          printf 'Dry run complete: the VSIX was built and validated but not published.\n'
+          printf 'Re-run with dry_run=false once the marketplace environment holds VSCE_PAT.\n'

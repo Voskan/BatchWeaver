@@ -27,15 +27,15 @@ the complete sitemap, robots discovery, and the social preview asset.
   until an actual v1 candidate exists;
 - no independent documentation feedback from downstream prerelease users;
 - stable commands cannot truthfully use `@v1.0.0`;
-- beta-to-v1 migration examples cannot be finalized until a real v1 candidate
-  exists.
+- downstream documentation feedback from independent adopters is still absent.
 
-The current `v0.1.0-beta.3` release, module-proxy version, pkg.go.dev package
+The current `v1.0.1` release, module-proxy version, pkg.go.dev package
 documentation, Pages site, release assets, and verification instructions are
-public. The expanded Pages portal has also been built and deployed from the
-protected default branch and verified at its production URLs. Those facts
-improve evaluation documentation but do not substitute for stable API approval
-or downstream adoption evidence.
+public. The expanded Pages portal is built and deployed from the protected
+default branch and verified at its production URLs. Prerelease-to-v1 migration
+is executable and covers every published prerelease. Those facts support the
+stable API approval recorded in the stable-release decision, but they do not
+substitute for downstream adoption evidence, which remains open.
 
 Outcome: **beta documentation complete for current claims; stable completeness
 blocked by v1-specific evidence**.

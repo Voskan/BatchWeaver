@@ -12,7 +12,7 @@ Primary documentation:
 - https://github.com/Voskan/BatchWeaver
 
 Important limitations:
-- The current release is a public beta, not stable v1.
+- The current release is stable v1. The Tier 1 Go API is frozen under Semantic Versioning; the bridge and adapters/* packages remain experimental.
 - Unsupported transformations fail closed.
 - Concrete pgx, go-redis, gqlgen, and grpc-go bindings are implemented on the
   default branch; consult the compatibility matrix for exact tested versions.

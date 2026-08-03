@@ -15,7 +15,7 @@ No. Performance depends on workload and backend. Use reproducible measurements.
 
 ## Is it production ready?
 
-The beta is for controlled evaluation. It has no universal production claim.
+The stable release freezes the Tier 1 Go API. It still makes no universal production claim: unsupported patterns stay scalar.
 
 ## Does it upload code or telemetry?
 

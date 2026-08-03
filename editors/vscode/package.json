@@ -113,5 +113,35 @@
     "esbuild": "0.28.1",
     "eslint": "10.8.0",
     "typescript": "5.9.3"
-  }
+  },
+  "keywords": [
+    "go",
+    "golang",
+    "batching",
+    "n+1",
+    "database",
+    "performance",
+    "lsp",
+    "compiler",
+    "dataloader",
+    "sql"
+  ],
+  "homepage": "https://voskan.github.io/BatchWeaver/",
+  "bugs": {
+    "url": "https://github.com/Voskan/BatchWeaver/issues"
+  },
+  "qna": "https://github.com/Voskan/BatchWeaver/discussions",
+  "pricing": "Free",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#0d1117",
+    "theme": "dark"
+  },
+  "badges": [
+    {
+      "url": "https://github.com/Voskan/BatchWeaver/actions/workflows/ci.yml/badge.svg",
+      "href": "https://github.com/Voskan/BatchWeaver/actions/workflows/ci.yml",
+      "description": "CI status"
+    }
+  ]
 }

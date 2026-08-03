@@ -1,0 +1,157 @@
+---
+name: Release Signing and Attestation
+
+# Identity-bound public verification for an immutable release tag. This workflow
+# never publishes and never accepts a private signing key: it uses the workflow's
+# own OIDC identity for keyless Sigstore signing and GitHub build attestations,
+# so every signature is bound to this repository, this workflow, and the exact
+# tag it ran from.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Immutable release tag to sign (for example v1.0.1)
+        required: true
+        type: string
+
+# Least privilege. id-token and attestations are the only elevated scopes, and
+# contents:write exists solely to attach signature material to the release.
+permissions:
+  contents: read
+
+concurrency:
+  group: release-signing-${{ inputs.tag || github.ref }}
+  cancel-in-progress: false
+
+env:
+  GO_VERSION: "1.26.5"
+  NODE_VERSION: "22.22.0"
+
+jobs:
+  sign:
+    name: Sign and attest release artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    # A protected environment gates the elevated identity behind repository
+    # policy rather than behind workflow code alone.
+    environment: release-signing
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    outputs:
+      digest: ${{ steps.manifest.outputs.digest }}
+    steps:
+      - name: Resolve release tag
+        id: tag
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          TAG="${INPUT_TAG:-$REF_NAME}"
+          case "$TAG" in
+            v*) ;;
+            *) printf 'refusing to sign a non-release ref: %s\n' "$TAG" >&2; exit 1 ;;
+          esac
+          printf 'tag=%s\n' "$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout the exact tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.tag.outputs.tag }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          check-latest: false
+
+      - name: Set up Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build reproducible release artifacts
+        run: |
+          set -euo pipefail
+          go run ./cmd/batchweaver release build --snapshot --output dist
+          go run ./cmd/batchweaver release verify dist/release-manifest.json
+
+      - name: Record the manifest digest
+        id: manifest
+        run: |
+          set -euo pipefail
+          DIGEST="$(sha256sum dist/release-manifest.json | cut -d' ' -f1)"
+          printf 'digest=%s\n' "$DIGEST" >> "$GITHUB_OUTPUT"
+
+      # Attestation covers every declared artifact: archives, the VSIX,
+      # checksums, SBOMs, and the release manifest itself.
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-path: |
+            dist/*.tar.gz
+            dist/*.zip
+            dist/*.vsix
+            dist/SHA256SUMS
+            dist/*.spdx.json
+            dist/*.cdx.json
+            dist/release-manifest.json
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+
+      - name: Keyless sign every declared artifact
+        env:
+          COSIGN_YES: "true"
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for artifact in dist/*.tar.gz dist/*.zip dist/*.vsix dist/SHA256SUMS \
+                          dist/*.spdx.json dist/*.cdx.json dist/release-manifest.json; do
+            printf 'signing %s\n' "$artifact"
+            cosign sign-blob --yes \
+              --output-signature "$artifact.sig" \
+              --output-certificate "$artifact.pem" \
+              "$artifact"
+          done
+
+      - name: Verify signatures before publishing them
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          set -euo pipefail
+          scripts/verify-release-signatures.sh dist "$TAG"
+
+      - name: Upload signature material to the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          FILES=(dist/*.sig dist/*.pem)
+          if [ "${#FILES[@]}" -eq 0 ]; then
+            printf 'no signature material was produced\n' >&2
+            exit 1
+          fi
+          gh release upload "$TAG" "${FILES[@]}" --clobber
+
+      - name: Retain signing evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v5.0.0
+        with:
+          name: release-signing-${{ steps.tag.outputs.tag }}
+          path: |
+            dist/SHA256SUMS
+            dist/release-manifest.json
+            dist/*.sig
+            dist/*.pem
+          retention-days: 90
+          if-no-files-found: error

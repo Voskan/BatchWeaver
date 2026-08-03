@@ -9,8 +9,8 @@ candidate, records evidence, rejects unknowns, creates a deterministic plan,
 shows a diff, and runs transformed code through a Go overlay. A typed runtime
 coalesces only compatible requests and preserves scalar fallback.
 
-The beta supports narrow documented strategies and explicit providers; it does
+The release supports narrow documented strategies and explicit providers; it does
 not batch arbitrary SQL, GraphQL, gRPC, or HTTP. Benchmark results require raw
-commands, hardware, Go version, datasets, statistics, and limitations. The beta
+commands, hardware, Go version, datasets, statistics, and limitations. The release
 request is simple: try a sanitized non-production example and report what is
 proven, rejected, confusing, or incompatible.

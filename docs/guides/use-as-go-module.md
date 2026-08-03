@@ -7,18 +7,18 @@ The module path is:
 github.com/Voskan/BatchWeaver
 ```
 
-## Install the beta
+## Install
 
-The current public prerelease is `v0.1.0-beta.3`. Install the library with:
+The current stable release is `v1.0.1`. Install the library with:
 
 ```bash
-go get github.com/Voskan/BatchWeaver@v0.1.0-beta.3
+go get github.com/Voskan/BatchWeaver@v1.0.1
 ```
 
 Install the command separately with:
 
 ```bash
-go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v0.1.0-beta.3
+go install github.com/Voskan/BatchWeaver/cmd/batchweaver@v1.0.1
 ```
 
 Then browse these package pages:
