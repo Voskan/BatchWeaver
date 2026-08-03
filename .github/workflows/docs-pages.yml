@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       confirm_deploy:
-        description: Type deploy-v0.1.0-beta.3 after publication gates pass
+        description: Type deploy-v<release/VERSION> after publication gates pass
         required: true
         type: string
 
@@ -17,7 +17,6 @@ concurrency:
 
 jobs:
   build:
-    if: inputs.confirm_deploy == 'deploy-v0.1.0-beta.3'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -26,6 +25,18 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      # The confirmation is checked against release/VERSION at the deployed
+      # commit, so it cannot drift out of date at the next release.
+      - name: Confirm the deployment matches the canonical version
+        env:
+          CONFIRM: ${{ inputs.confirm_deploy }}
+        run: |
+          set -euo pipefail
+          EXPECTED="deploy-v$(tr -d '[:space:]' < release/VERSION)"
+          if [ "$CONFIRM" != "$EXPECTED" ]; then
+            printf 'confirmation %s does not match %s\n' "$CONFIRM" "$EXPECTED" >&2
+            exit 1
+          fi
       - run: scripts/build-docs-site.sh _site
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
